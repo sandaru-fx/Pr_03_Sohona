@@ -6,7 +6,7 @@ async function main() {
 
   const ping = await prisma.$runCommandRaw({ ping: 1 });
   console.log("MongoDB ping OK:", ping);
-  console.log("Phase 5 connectivity check passed (db push still needs Atlas URL).");
+  console.log("Day 1 DB connectivity check passed.");
 }
 
 main()

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getServerEnv } from "@/lib/env";
 
 export default function Home() {
@@ -10,8 +11,14 @@ export default function Home() {
         Digital Legacy Platform
       </h1>
       <p className="mt-3 max-w-md text-center text-sm text-zinc-600">
-        Phase 2 env config is active. App URL: {env.APP_URL}
+        Day 2 admin auth complete. App URL: {env.APP_URL}
       </p>
+      <Link
+        href="/login"
+        className="mt-8 inline-flex h-11 items-center justify-center bg-zinc-900 px-5 text-sm font-medium text-white transition hover:bg-zinc-800"
+      >
+        Admin login
+      </Link>
     </main>
   );
 }

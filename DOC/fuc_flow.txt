@@ -1,0 +1,28 @@
+මචන්, මුළු system එකම end-to-end වැඩ කරන විදිහ පියවරෙන් පියවර මෙහෙමයි.
+
+**1. Admin Flow (Profile Creation)**
+
+* Admin **Google OAuth** හරහා dashboard එකට login වෙනවා.
+* අලුත් profile එකක් create කරද්දී basic name එක විතරක් ඇතුලත් කරනවා.
+* System එකෙන් automatically Unique **QR Code** එකක් සහ high-entropy **One-Time Setup Link** එකක් generate කරනවා.
+* Setup link එකේ raw token එක client ට දෙනවා, ඒකේ hash එක විතරක් DB එකේ save කරනවා.
+
+**2. Client Setup Flow (One-Time Initialization)**
+
+* Client අර One-Time URL එකෙන් ගිහින් එයාගේ **PIN** එක set කරනවා (මේක DB එකේ hash වෙලා save වෙන්නේ).
+* Client upload කරන photos/videos/voice කෙලින්ම **Cloudflare R2** bucket එකට යන්නේ **Presigned POST URLs** හරහා.
+* Upload එක ඉවර වුණාම `isSetupComplete = true` වෙනවා.
+* One-Time Setup token එක DB එකෙන් සම්පූර්ණයෙන්ම delete කරලා, අනාගතයට පාවිච්චි කරන්න වෙනම **Secret Manage Link** එකක් client ට දෙනවා.
+
+**3. Public Visitor Flow (Viewing via QR)**
+
+* අනාගත visitor කෙනෙක් ස්මාරකයේ තියෙන QR එක scan කරාම කෙලින්ම Public Profile page එකට එනවා (මෙතන කිසිම edit access එකක් නැහැ).
+* Visitor ගෙන් PIN එක ඉල්ලනවා.
+* PIN එක හරි නම්, backend එකෙන් R2 bucket එකට කතා කරලා විනාඩි 15කින් expire වෙන **Short-lived Signed URLs** ටිකක් generate කරලා frontend එකට එවනවා.
+* Visitor ට media ටික play වෙනවා, හැබැයි direct permanent link එකක් browser එකේ කොහෙවත් නෑ.
+
+**4. Owner Edit Flow (Secure Management)**
+
+* Client ට අනාගතයේ වෙනසක් කරන්න ඕනෙ නම් QR එකෙන් යන්න බෑ, අර **Secret Manage Link** එකෙන් විතරයි යන්න පුළුවන්.
+* PIN එක ගහද්දී Upstash Redis හරහා **Rate Limiting** වැඩ කරනවා. වැරදි PIN එක 5 පාරක් ගැහුවොත් විනාඩි 15කට profile එක lock වෙනවා.
+* Authentication success වුණාම Edit Dashboard එකට ගිහින් statements වෙනස් කරන්න හෝ media re-upload/delete කරන්න පුළුවන්.

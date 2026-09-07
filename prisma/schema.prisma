@@ -1,0 +1,201 @@
+// Sohona — Day 1 domain schema (MongoDB + Prisma)
+// Auth.js models + Profile PIN rules approved.
+// Client generated in Phase 5. `db push` when DATABASE_URL (Atlas) is set.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// -----------------------------------------------------------------------------
+// Admin auth (Auth.js / NextAuth Prisma adapter + role gate)
+// Temple staff only. Never stores family private content.
+// -----------------------------------------------------------------------------
+
+model User {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  role          UserRole  @default(ADMIN)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts        Account[]
+  sessions        Session[]
+  profilesCreated Profile[] @relation("ProfileCreatedBy")
+}
+
+enum UserRole {
+  ADMIN
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken String   @unique
+  userId       String   @db.ObjectId
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// -----------------------------------------------------------------------------
+// Memorial profile — admin-safe identity + auth secrets (hashes only)
+// Private statements/media live in separate collections.
+//
+// PIN security rules (app-enforced):
+// 1) Setup MUST create hashedPin (owner edit always requires PIN).
+// 2) isPublicPinRequired toggles QR public-view PIN gate only.
+// 3) Manage/edit link ALWAYS requires PIN — never bypass via flag.
+// 4) hashedPin is null ONLY before setup completes (admin create → family setup).
+// -----------------------------------------------------------------------------
+
+model Profile {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  displayName String
+
+  /// Public routing id embedded in QR / public URL (high entropy, not ObjectId)
+  qrId String @unique
+
+  /// One-time family setup token — STORE HASH ONLY. Null after use/invalidation.
+  setupTokenHash      String?
+  setupTokenExpiresAt DateTime?
+  setupUsedAt         DateTime?
+  isSetupComplete     Boolean   @default(false)
+
+  /// Argon2id hash only. Null only pre-setup; REQUIRED once isSetupComplete=true.
+  /// Always required for manage/edit — independent of isPublicPinRequired.
+  hashedPin String?
+
+  /// QR public view only: true = ask PIN, false = show content without PIN.
+  /// Does NOT weaken manage/edit — owner flows always verify hashedPin.
+  isPublicPinRequired Boolean @default(false)
+
+  /// Long-lived secret manage-link token — STORE HASH ONLY
+  manageTokenHash String?
+
+  /// Brute-force protection (DB foundation; Redis rate limit comes Day 8)
+  failedPinAttempts Int       @default(0)
+  pinLockedUntil    DateTime?
+
+  createdByAdminId String? @db.ObjectId
+  createdByAdmin   User?   @relation("ProfileCreatedBy", fields: [createdByAdminId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  statements     Statement[]
+  mediaAssets    MediaAsset[]
+  securityEvents SecurityEvent[]
+
+  @@index([isSetupComplete])
+  @@index([createdByAdminId])
+}
+
+// -----------------------------------------------------------------------------
+// Private family content — admin APIs must NEVER query these for temple staff UI
+// -----------------------------------------------------------------------------
+
+model Statement {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  profileId String  @db.ObjectId
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  body      String
+  sortOrder Int    @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([profileId])
+}
+
+enum MediaKind {
+  PHOTO
+  VIDEO
+  VOICE
+}
+
+model MediaAsset {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  profileId String  @db.ObjectId
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  kind         MediaKind
+  /// Private R2 object key only — never a public URL
+  r2ObjectKey  String    @unique
+  contentType  String
+  sizeBytes    Int
+  originalName String?
+  sortOrder    Int       @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([profileId])
+}
+
+// -----------------------------------------------------------------------------
+// Security audit trail (failed PIN, locks, setup misuse, etc.)
+// -----------------------------------------------------------------------------
+
+model SecurityEvent {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  profileId String?  @db.ObjectId
+  profile   Profile? @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  type      SecurityEventType
+  /// Store hashed IP (privacy) — not raw IP long-term
+  ipHash    String?
+  userAgent String?
+  metadata  Json?
+  createdAt DateTime          @default(now())
+
+  @@index([profileId, createdAt])
+  @@index([type, createdAt])
+}
+
+enum SecurityEventType {
+  SETUP_TOKEN_OK
+  SETUP_TOKEN_FAIL
+  SETUP_COMPLETED
+  PIN_VERIFY_OK
+  PIN_VERIFY_FAIL
+  PIN_LOCKED
+  MANAGE_TOKEN_OK
+  MANAGE_TOKEN_FAIL
+  MEDIA_SIGNED_URL_ISSUED
+}

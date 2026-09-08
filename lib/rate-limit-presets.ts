@@ -12,6 +12,8 @@ export const RATE_LIMIT_PRESETS = {
   publicPinProfile: { windowMs: 15 * 60 * 1000, max: 20 },
   /** Family setup APIs + setup-token media upload. */
   setupIp: { windowMs: 15 * 60 * 1000, max: 30 },
+  /** Owner manage APIs after PIN session (statements / media / settings). */
+  manageIp: { windowMs: 15 * 60 * 1000, max: 60 },
   /** Signed media URL minting. */
   mediaUrlIp: { windowMs: 5 * 60 * 1000, max: 60 },
   /** Soft admin API throttle. */

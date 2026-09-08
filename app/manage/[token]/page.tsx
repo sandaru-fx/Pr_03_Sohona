@@ -1,41 +1,59 @@
-type ManageStubProps = {
+import { ManageGateCard } from "@/components/manage/ManageGateCard";
+import { loadManageOwnerContent } from "@/lib/manage-content";
+import { resolveManageGate } from "@/lib/manage-lookup";
+import { hasValidManageSession } from "@/lib/manage-session";
+import { isR2Configured } from "@/lib/r2-config";
+
+type ManagePageProps = {
   params: Promise<{ token: string }>;
 };
 
 export const dynamic = "force-dynamic";
 
-export function generateMetadata() {
+export async function generateMetadata({ params }: ManagePageProps) {
+  const { token: rawToken } = await params;
+  const result = await resolveManageGate(decodeURIComponent(rawToken));
+
+  if (result.status === "ready") {
+    return {
+      title: `Manage · ${result.profile.displayName} · Sohona`,
+      robots: { index: false, follow: false },
+    };
+  }
+
   return {
     title: "Manage memorial · Sohona",
-    robots: {
-      index: false,
-      follow: false,
-    },
+    robots: { index: false, follow: false },
   };
 }
 
 /**
- * Day 5 stub — manage-link target.
- * Owner edit flow lands in Day 9.
+ * Day 9 — manage-link gate + PIN session + owner edit dashboard (9.4).
  */
-export default async function ManageStubPage({ params }: ManageStubProps) {
-  const { token } = await params;
+export default async function ManagePage({ params }: ManagePageProps) {
+  const { token: rawToken } = await params;
+  const manageToken = decodeURIComponent(rawToken);
+  const result = await resolveManageGate(manageToken);
+
+  const hasManageSession =
+    result.status === "ready"
+      ? await hasValidManageSession(result.profile.id)
+      : false;
+
+  const ownerContent =
+    result.status === "ready" && hasManageSession
+      ? await loadManageOwnerContent(result.profile.id)
+      : null;
 
   return (
-    <main className="flex min-h-full flex-1 flex-col items-center justify-center bg-zinc-50 px-6 py-16 text-zinc-900">
-      <div className="w-full max-w-md rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm">
-        <p className="text-sm tracking-wide text-zinc-500">Sohona</p>
-        <h1 className="mt-2 text-2xl font-semibold tracking-tight">
-          Private manage link
-        </h1>
-        <p className="mt-3 text-sm leading-6 text-zinc-600">
-          This manage link is valid. Owner editing (PIN gate + update memories)
-          will be available in a later phase.
-        </p>
-        <p className="mt-6 rounded-xl bg-zinc-50 px-3 py-2 font-mono text-xs text-zinc-500 break-all">
-          token: {token.slice(0, 8)}…
-        </p>
-      </div>
+    <main className="flex min-h-full flex-1 flex-col items-center bg-zinc-50 px-6 py-12 text-zinc-900 sm:py-16">
+      <ManageGateCard
+        result={result}
+        manageToken={manageToken}
+        hasManageSession={hasManageSession}
+        ownerContent={ownerContent}
+        r2Configured={isR2Configured()}
+      />
     </main>
   );
 }

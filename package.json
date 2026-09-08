@@ -17,6 +17,7 @@
     "day6:verify": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day6-verify.ts",
     "day7:verify": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day7-verify.ts",
     "day8:verify": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day8-verify.ts",
+    "day9:verify": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day9-verify.ts",
     "redis:check": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/redis-check.ts"
   },
   "dependencies": {

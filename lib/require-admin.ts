@@ -4,6 +4,7 @@ import type { Session } from "next-auth";
 import { auth } from "@/auth";
 import { isAdminEmailAllowed } from "@/lib/admin-allowlist";
 import { isAdminSession } from "@/lib/auth-guards";
+import { enforceIpRateLimit } from "@/lib/rate-limit-presets";
 
 export type AdminSession = Session & {
   user: { id: string; role: "ADMIN" };
@@ -30,10 +31,18 @@ export function adminJson(
 
 /**
  * API guard: ADMIN role + current allow-list membership required.
+ * Optional request enables soft Day 8 IP rate limiting.
  */
-export async function requireAdminApi(): Promise<
+export async function requireAdminApi(
+  request?: Request,
+): Promise<
   { session: AdminSession; error?: undefined } | { session?: undefined; error: NextResponse }
 > {
+  if (request) {
+    const limited = await enforceIpRateLimit(request, "adminIp");
+    if (limited) return { error: limited };
+  }
+
   const session = await auth();
 
   if (!isActiveAdmin(session)) {

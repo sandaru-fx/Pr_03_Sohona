@@ -14,8 +14,8 @@ type RouteContext = {
  * GET /api/admin/profiles/[id]
  * Admin-safe profile detail (no private content / token hashes).
  */
-export async function GET(_request: Request, context: RouteContext) {
-  const gate = await requireAdminApi();
+export async function GET(request: Request, context: RouteContext) {
+  const gate = await requireAdminApi(request);
   if (gate.error) return gate.error;
 
   const { id } = await context.params;

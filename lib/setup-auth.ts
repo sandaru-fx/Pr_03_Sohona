@@ -1,6 +1,7 @@
 import { timingSafeEqual } from "crypto";
 import { prisma } from "@/lib/prisma";
 import { isMongoObjectId } from "@/lib/object-id";
+import { securityEventRequestFields } from "@/lib/request-identity";
 import {
   assertSetupNotRateLimited,
   recordSetupTokenEvent,
@@ -37,14 +38,21 @@ function safeEqualHex(a: string, b: string): boolean {
 
 /**
  * Authorize family setup actions with the one-time setup token.
- * Logs fail events + applies Day 5 rate-limit foundation (Redis comes Day 8).
+ * Logs fail/success events (hashed IP when request provided).
+ * DB fail-window + Day 8 Redis IP limits both apply.
  */
 export async function authorizeSetupToken(input: {
   profileId: string;
   setupToken: string;
   /** When true, records SETUP_TOKEN_OK (use for sensitive finish steps). */
   recordSuccess?: boolean;
+  /** Optional request for hashed IP / UA on SecurityEvent rows. */
+  request?: Request;
 }): Promise<SetupAuthSuccess | SetupAuthFailure> {
+  const requestFields = input.request
+    ? securityEventRequestFields(input.request)
+    : {};
+
   if (!isMongoObjectId(input.profileId)) {
     return {
       ok: false,
@@ -65,6 +73,7 @@ export async function authorizeSetupToken(input: {
       profileId: input.profileId,
       ok: false,
       reason: "missing_token",
+      ...requestFields,
     });
     return {
       ok: false,
@@ -90,6 +99,7 @@ export async function authorizeSetupToken(input: {
       profileId: input.profileId,
       ok: false,
       reason: "missing_or_cleared_hash",
+      ...requestFields,
     });
     return {
       ok: false,
@@ -104,6 +114,7 @@ export async function authorizeSetupToken(input: {
       profileId: profile.id,
       ok: false,
       reason: "already_complete",
+      ...requestFields,
     });
     return {
       ok: false,
@@ -121,6 +132,7 @@ export async function authorizeSetupToken(input: {
       profileId: profile.id,
       ok: false,
       reason: "expired",
+      ...requestFields,
     });
     return {
       ok: false,
@@ -136,6 +148,7 @@ export async function authorizeSetupToken(input: {
       profileId: profile.id,
       ok: false,
       reason: "hash_mismatch",
+      ...requestFields,
     });
     return {
       ok: false,
@@ -150,6 +163,7 @@ export async function authorizeSetupToken(input: {
       profileId: profile.id,
       ok: true,
       reason: "authorized",
+      ...requestFields,
     });
   }
 

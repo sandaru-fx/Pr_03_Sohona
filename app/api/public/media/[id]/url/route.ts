@@ -7,6 +7,8 @@ import {
   getSignedR2GetUrl,
   R2_SIGNED_GET_EXPIRES_IN_SECONDS,
 } from "@/lib/r2-signed-get";
+import { enforceIpRateLimit } from "@/lib/rate-limit-presets";
+import { securityEventRequestFields } from "@/lib/request-identity";
 
 export const runtime = "nodejs";
 
@@ -19,7 +21,10 @@ type RouteContext = {
  * After public memorial access is granted, issue a short-lived signed R2 GET URL.
  * Never returns r2ObjectKey to the client.
  */
-export async function GET(_request: Request, context: RouteContext) {
+export async function GET(request: Request, context: RouteContext) {
+  const ipLimited = await enforceIpRateLimit(request, "mediaUrlIp");
+  if (ipLimited) return ipLimited;
+
   if (!isR2Configured()) {
     return NextResponse.json(
       {
@@ -57,6 +62,7 @@ export async function GET(_request: Request, context: RouteContext) {
       data: {
         profileId: auth.profile.id,
         type: "MEDIA_SIGNED_URL_ISSUED",
+        ...securityEventRequestFields(request),
         metadata: {
           source: "public_view",
           mediaId: auth.media.id,

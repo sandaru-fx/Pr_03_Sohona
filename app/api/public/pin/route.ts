@@ -9,6 +9,11 @@ import {
   PUBLIC_PIN_MAX_ATTEMPTS,
 } from "@/lib/public-pin-lock";
 import { applyPublicViewSessionCookie } from "@/lib/public-view-session";
+import {
+  enforceIpRateLimit,
+  enforcePublicPinProfileRateLimit,
+} from "@/lib/rate-limit-presets";
+import { securityEventRequestFields } from "@/lib/request-identity";
 import { publicPinSchema } from "@/lib/validators/public-pin";
 
 export const runtime = "nodejs";
@@ -33,9 +38,12 @@ function lockedResponse(lockedUntil: Date) {
 /**
  * POST /api/public/pin
  * Verify public-view PIN for a memorial QR profile and set a short session cookie.
- * Day 6.4: 5 fails → 15-minute DB lock foundation (Redis comes Day 8).
+ * Day 6 DB lock + Day 8 Redis IP/profile rate limits.
  */
 export async function POST(request: Request) {
+  const ipLimited = await enforceIpRateLimit(request, "publicPinIp");
+  if (ipLimited) return ipLimited;
+
   let json: unknown;
   try {
     json = await request.json();
@@ -85,6 +93,12 @@ export async function POST(request: Request) {
     );
   }
 
+  const profileLimited = await enforcePublicPinProfileRateLimit(
+    request,
+    profile.id,
+  );
+  if (profileLimited) return profileLimited;
+
   if (!profile.isPublicPinRequired) {
     return NextResponse.json(
       {
@@ -117,6 +131,7 @@ export async function POST(request: Request) {
     });
   }
 
+  const requestFields = securityEventRequestFields(request);
   const ok = await verifyPin(profile.hashedPin, parsed.data.pin);
 
   if (!ok) {
@@ -138,6 +153,7 @@ export async function POST(request: Request) {
         data: {
           profileId: profile.id,
           type: shouldLock ? "PIN_LOCKED" : "PIN_VERIFY_FAIL",
+          ...requestFields,
           metadata: {
             source: "public_view",
             attempts: nextFails,
@@ -180,6 +196,7 @@ export async function POST(request: Request) {
       data: {
         profileId: profile.id,
         type: "PIN_VERIFY_OK",
+        ...requestFields,
         metadata: { source: "public_view" },
       },
     }),

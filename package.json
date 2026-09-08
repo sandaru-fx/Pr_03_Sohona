@@ -15,13 +15,16 @@
     "day4:verify": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day4-verify.ts",
     "day5:verify": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day5-verify.ts",
     "day6:verify": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day6-verify.ts",
-    "day7:verify": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day7-verify.ts"
+    "day7:verify": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day7-verify.ts",
+    "day8:verify": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day8-verify.ts",
+    "redis:check": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/redis-check.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.3",
     "@aws-sdk/client-s3": "^3.1127.0",
     "@aws-sdk/s3-request-presigner": "^3.1127.0",
     "@prisma/client": "^6.19.3",
+    "@upstash/redis": "^1.38.4",
     "argon2": "^0.45.1",
     "clsx": "^2.1.1",
     "lucide-react": "^1.42.0",

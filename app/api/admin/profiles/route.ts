@@ -18,8 +18,8 @@ export const runtime = "nodejs";
  * GET /api/admin/profiles
  * Admin-safe profile list (no private content / token hashes).
  */
-export async function GET() {
-  const gate = await requireAdminApi();
+export async function GET(request: Request) {
+  const gate = await requireAdminApi(request);
   if (gate.error) return gate.error;
 
   const profiles = await listAdminProfiles();
@@ -32,7 +32,7 @@ export async function GET() {
  * Returns the one-time setup URL once — token is stored hashed only.
  */
 export async function POST(request: Request) {
-  const gate = await requireAdminApi();
+  const gate = await requireAdminApi(request);
   if (gate.error) return gate.error;
 
   let json: unknown;

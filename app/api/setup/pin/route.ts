@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { hashPin } from "@/lib/pin";
 import { prisma } from "@/lib/prisma";
+import { enforceIpRateLimit } from "@/lib/rate-limit-presets";
 import { authorizeSetupToken } from "@/lib/setup-auth";
 import { setupPinSchema } from "@/lib/validators/setup-pin";
 
@@ -12,6 +13,9 @@ export const runtime = "nodejs";
  * Does not complete setup yet (statements/media finish in later phases).
  */
 export async function POST(request: Request) {
+  const ipLimited = await enforceIpRateLimit(request, "setupIp");
+  if (ipLimited) return ipLimited;
+
   let json: unknown;
   try {
     json = await request.json();
@@ -40,6 +44,7 @@ export async function POST(request: Request) {
   const auth = await authorizeSetupToken({
     profileId: parsed.data.profileId,
     setupToken: parsed.data.setupToken,
+    request,
   });
 
   if (!auth.ok) {

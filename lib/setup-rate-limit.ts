@@ -1,8 +1,8 @@
 import { prisma } from "@/lib/prisma";
 
 /**
- * Day 5 foundation for setup abuse protection.
- * Day 8 replaces/extends this with Redis sliding windows.
+ * Day 5 DB foundation for setup abuse protection.
+ * Day 8 Redis IP limits are the first line; this remains a profile-level hard net.
  */
 export const SETUP_FAIL_WINDOW_MS = 15 * 60 * 1000;
 export const SETUP_FAIL_MAX_ATTEMPTS = 20;
@@ -53,12 +53,16 @@ export async function recordSetupTokenEvent(input: {
   profileId?: string | null;
   ok: boolean;
   reason?: string;
+  ipHash?: string;
+  userAgent?: string;
 }) {
   try {
     await prisma.securityEvent.create({
       data: {
         profileId: input.profileId ?? undefined,
         type: input.ok ? "SETUP_TOKEN_OK" : "SETUP_TOKEN_FAIL",
+        ipHash: input.ipHash,
+        userAgent: input.userAgent,
         metadata: input.reason ? { reason: input.reason } : undefined,
       },
     });

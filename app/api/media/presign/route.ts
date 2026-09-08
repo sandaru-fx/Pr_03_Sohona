@@ -5,6 +5,7 @@ import { validateUploadRequest } from "@/lib/media-rules";
 import { isR2Configured } from "@/lib/r2-config";
 import { getR2BucketName, getR2Client } from "@/lib/r2";
 import { buildR2ObjectKey } from "@/lib/r2-object-key";
+import { enforceIpRateLimit } from "@/lib/rate-limit-presets";
 import { authorizeSetupToken } from "@/lib/setup-auth";
 import { mediaPresignSchema } from "@/lib/validators/media-presign";
 
@@ -18,6 +19,9 @@ const PRESIGN_EXPIRES_IN_SECONDS = 10 * 60; // 10 minutes
  * File bytes never pass through the Next.js server.
  */
 export async function POST(request: Request) {
+  const ipLimited = await enforceIpRateLimit(request, "setupIp");
+  if (ipLimited) return ipLimited;
+
   if (!isR2Configured()) {
     return NextResponse.json(
       {
@@ -57,6 +61,7 @@ export async function POST(request: Request) {
   const auth = await authorizeSetupToken({
     profileId: parsed.data.profileId,
     setupToken: parsed.data.setupToken,
+    request,
   });
 
   if (!auth.ok) {

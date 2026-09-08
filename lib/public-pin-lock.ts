@@ -1,4 +1,4 @@
-/** Day 6 DB foundation — Redis sliding window lands in Day 8. */
+/** Day 6 DB foundation — Redis IP limits are Day 8 first line; this lock stays authoritative. */
 export const PUBLIC_PIN_MAX_ATTEMPTS = 5;
 export const PUBLIC_PIN_LOCK_MS = 15 * 60 * 1000;
 

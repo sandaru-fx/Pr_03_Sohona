@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { enforceIpRateLimit } from "@/lib/rate-limit-presets";
 import { authorizeSetupToken } from "@/lib/setup-auth";
 import { setupStatementsSchema } from "@/lib/validators/setup-statements";
 
@@ -10,6 +11,9 @@ export const runtime = "nodejs";
  * Replace memorial statements during family setup (setup-token auth).
  */
 export async function POST(request: Request) {
+  const ipLimited = await enforceIpRateLimit(request, "setupIp");
+  if (ipLimited) return ipLimited;
+
   let json: unknown;
   try {
     json = await request.json();
@@ -38,6 +42,7 @@ export async function POST(request: Request) {
   const auth = await authorizeSetupToken({
     profileId: parsed.data.profileId,
     setupToken: parsed.data.setupToken,
+    request,
   });
 
   if (!auth.ok) {

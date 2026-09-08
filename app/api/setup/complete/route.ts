@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { getServerEnv } from "@/lib/env";
 import { prisma } from "@/lib/prisma";
+import { enforceIpRateLimit } from "@/lib/rate-limit-presets";
+import { securityEventRequestFields } from "@/lib/request-identity";
 import { authorizeSetupToken } from "@/lib/setup-auth";
 import { generateManageToken, hashToken } from "@/lib/tokens";
 import { setupCompleteSchema } from "@/lib/validators/setup-complete";
@@ -13,6 +15,9 @@ export const runtime = "nodejs";
  * Uses a conditional update so parallel completes cannot mint two manage tokens.
  */
 export async function POST(request: Request) {
+  const ipLimited = await enforceIpRateLimit(request, "setupIp");
+  if (ipLimited) return ipLimited;
+
   let json: unknown;
   try {
     json = await request.json();
@@ -42,6 +47,7 @@ export async function POST(request: Request) {
     profileId: parsed.data.profileId,
     setupToken: parsed.data.setupToken,
     recordSuccess: true,
+    request,
   });
 
   if (!auth.ok) {
@@ -124,6 +130,7 @@ export async function POST(request: Request) {
     data: {
       profileId: profile.id,
       type: "SETUP_COMPLETED",
+      ...securityEventRequestFields(request),
       metadata: { source: "family_setup" },
     },
   });

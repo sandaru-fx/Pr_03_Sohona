@@ -12,13 +12,15 @@
     "db:ping": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/db-ping.ts",
     "day3:verify": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day3-verify.ts",
     "r2:check": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/r2-check.ts",
-    "day4:verify": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day4-verify.ts"
+    "day4:verify": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day4-verify.ts",
+    "day5:verify": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day5-verify.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.3",
     "@aws-sdk/client-s3": "^3.1127.0",
     "@aws-sdk/s3-request-presigner": "^3.1127.0",
     "@prisma/client": "^6.19.3",
+    "argon2": "^0.45.1",
     "clsx": "^2.1.1",
     "lucide-react": "^1.42.0",
     "next": "16.3.4",

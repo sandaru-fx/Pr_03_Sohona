@@ -12,6 +12,11 @@ export function generateSetupToken(): string {
   return randomBytes(32).toString("base64url");
 }
 
+/** Long-lived manage-link token (plaintext returned once to family on setup complete). */
+export function generateManageToken(): string {
+  return randomBytes(32).toString("base64url");
+}
+
 /**
  * Hash for high-entropy setup/manage tokens.
  * SHA-256 is appropriate here; low-entropy PINs use Argon2id later.

@@ -1,6 +1,10 @@
 import { timingSafeEqual } from "crypto";
 import { prisma } from "@/lib/prisma";
 import { isMongoObjectId } from "@/lib/object-id";
+import {
+  assertSetupNotRateLimited,
+  recordSetupTokenEvent,
+} from "@/lib/setup-rate-limit";
 import { hashToken } from "@/lib/tokens";
 
 export type SetupAuthSuccess = {
@@ -33,11 +37,13 @@ function safeEqualHex(a: string, b: string): boolean {
 
 /**
  * Authorize family setup actions with the one-time setup token.
- * Used by Day 4 media presign until Day 5 completes the full setup UI.
+ * Logs fail events + applies Day 5 rate-limit foundation (Redis comes Day 8).
  */
 export async function authorizeSetupToken(input: {
   profileId: string;
   setupToken: string;
+  /** When true, records SETUP_TOKEN_OK (use for sensitive finish steps). */
+  recordSuccess?: boolean;
 }): Promise<SetupAuthSuccess | SetupAuthFailure> {
   if (!isMongoObjectId(input.profileId)) {
     return {
@@ -48,8 +54,18 @@ export async function authorizeSetupToken(input: {
     };
   }
 
+  const rate = await assertSetupNotRateLimited(input.profileId);
+  if (!rate.ok) {
+    return rate;
+  }
+
   const setupToken = input.setupToken.trim();
   if (!setupToken) {
+    await recordSetupTokenEvent({
+      profileId: input.profileId,
+      ok: false,
+      reason: "missing_token",
+    });
     return {
       ok: false,
       status: 401,
@@ -70,6 +86,11 @@ export async function authorizeSetupToken(input: {
   });
 
   if (!profile || !profile.setupTokenHash) {
+    await recordSetupTokenEvent({
+      profileId: input.profileId,
+      ok: false,
+      reason: "missing_or_cleared_hash",
+    });
     return {
       ok: false,
       status: 401,
@@ -79,6 +100,11 @@ export async function authorizeSetupToken(input: {
   }
 
   if (profile.isSetupComplete) {
+    await recordSetupTokenEvent({
+      profileId: profile.id,
+      ok: false,
+      reason: "already_complete",
+    });
     return {
       ok: false,
       status: 409,
@@ -91,6 +117,11 @@ export async function authorizeSetupToken(input: {
     profile.setupTokenExpiresAt &&
     profile.setupTokenExpiresAt.getTime() < Date.now()
   ) {
+    await recordSetupTokenEvent({
+      profileId: profile.id,
+      ok: false,
+      reason: "expired",
+    });
     return {
       ok: false,
       status: 401,
@@ -101,12 +132,25 @@ export async function authorizeSetupToken(input: {
 
   const providedHash = hashToken(setupToken);
   if (!safeEqualHex(providedHash, profile.setupTokenHash)) {
+    await recordSetupTokenEvent({
+      profileId: profile.id,
+      ok: false,
+      reason: "hash_mismatch",
+    });
     return {
       ok: false,
       status: 401,
       error: "InvalidSetupToken",
       message: "Setup token is invalid or profile was not found.",
     };
+  }
+
+  if (input.recordSuccess) {
+    await recordSetupTokenEvent({
+      profileId: profile.id,
+      ok: true,
+      reason: "authorized",
+    });
   }
 
   return {

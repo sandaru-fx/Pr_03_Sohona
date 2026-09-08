@@ -123,6 +123,8 @@ model Profile {
 
   @@index([isSetupComplete])
   @@index([createdByAdminId])
+  @@index([setupTokenHash])
+  @@index([manageTokenHash])
 }
 
 // -----------------------------------------------------------------------------

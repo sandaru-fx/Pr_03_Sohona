@@ -1,34 +1,70 @@
-/**
- * Day 2 Phase 2.5 — Admin dashboard shell.
- * Create Profile becomes real in Day 3.
- */
-export default function AdminPage() {
-  return (
-    <main>
-      <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
-      <p className="mt-2 max-w-xl text-sm leading-6 text-zinc-600">
-        Create memorial profiles, generate setup links, and issue QR codes.
-        Private family media stays invisible to temple admins.
-      </p>
+import Link from "next/link";
+import { PlusCircle, Users } from "lucide-react";
+import { listAdminProfiles } from "@/lib/admin-profiles";
 
-      <div className="mt-8 flex flex-wrap items-center gap-3">
-        <button
-          type="button"
-          disabled
-          title="Coming in Day 3"
-          className="h-11 bg-zinc-900 px-5 text-sm font-medium text-white disabled:cursor-not-allowed disabled:bg-zinc-400"
-        >
-          Create Profile
-        </button>
-        <p className="text-sm text-zinc-500">Placeholder — wired in Day 3</p>
+export default async function AdminDashboardPage() {
+  const profiles = await listAdminProfiles();
+  const pending = profiles.filter((profile) => !profile.isSetupComplete).length;
+  const complete = profiles.filter((profile) => profile.isSetupComplete).length;
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
+          Dashboard
+        </h1>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-600">
+          Create memorial profiles and issue secure family setup links. Private
+          family media stays invisible to temple admins.
+        </p>
       </div>
 
-      <section className="mt-10 border-t border-zinc-200 pt-8">
-        <h2 className="text-sm font-medium text-zinc-900">Profiles</h2>
-        <p className="mt-2 text-sm text-zinc-600">
-          No profiles yet. Day 3 adds creation + QR + setup token flow.
-        </p>
-      </section>
-    </main>
+      <div className="grid gap-4 sm:grid-cols-3">
+        <div className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
+          <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">
+            Total profiles
+          </p>
+          <p className="mt-2 text-3xl font-semibold tracking-tight text-zinc-900">
+            {profiles.length}
+          </p>
+        </div>
+        <div className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
+          <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">
+            Awaiting setup
+          </p>
+          <p className="mt-2 text-3xl font-semibold tracking-tight text-zinc-900">
+            {pending}
+          </p>
+        </div>
+        <div className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
+          <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">
+            Setup complete
+          </p>
+          <p className="mt-2 text-3xl font-semibold tracking-tight text-zinc-900">
+            {complete}
+          </p>
+        </div>
+      </div>
+
+      <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
+        <h2 className="text-sm font-medium text-zinc-900">Quick actions</h2>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <Link
+            href="/admin/create"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-zinc-900 px-5 text-sm font-medium text-white transition hover:bg-zinc-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2"
+          >
+            <PlusCircle className="h-4 w-4" aria-hidden />
+            Create Profile
+          </Link>
+          <Link
+            href="/admin/profiles"
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-zinc-300 bg-white px-5 text-sm font-medium text-zinc-800 transition hover:bg-zinc-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2"
+          >
+            <Users className="h-4 w-4" aria-hidden />
+            View Profiles
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 }

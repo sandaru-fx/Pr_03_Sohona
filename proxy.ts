@@ -1,19 +1,35 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
+import { isAdminEmailAllowed } from "@/lib/admin-allowlist";
 import { isAdminSession } from "@/lib/auth-guards";
 
 /**
- * Day 2 Phase 2.4 — protect /admin/* (Next.js 16 uses proxy.ts, not middleware.ts).
- * Optimistic gate only; admin layout also re-checks the session authoritatively.
+ * Protect /admin pages (redirect) and /api/admin (JSON 401).
+ * Layout + requireAdmin* remain the authoritative checks.
  */
 export const proxy = auth((req) => {
   const { pathname } = req.nextUrl;
+  const isAdminPage = pathname.startsWith("/admin");
+  const isAdminApi = pathname.startsWith("/api/admin");
 
-  if (!pathname.startsWith("/admin")) {
+  if (!isAdminPage && !isAdminApi) {
     return NextResponse.next();
   }
 
-  if (!isAdminSession(req.auth)) {
+  const allowed =
+    isAdminSession(req.auth) && isAdminEmailAllowed(req.auth.user.email);
+
+  if (!allowed) {
+    if (isAdminApi) {
+      return NextResponse.json(
+        { error: "Unauthorized", message: "Admin sign-in required." },
+        {
+          status: 401,
+          headers: { "Cache-Control": "no-store, max-age=0" },
+        },
+      );
+    }
+
     const loginUrl = new URL("/login", req.nextUrl.origin);
     loginUrl.searchParams.set("callbackUrl", pathname);
     loginUrl.searchParams.set("error", "Unauthorized");
@@ -24,5 +40,5 @@ export const proxy = auth((req) => {
 });
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin/:path*", "/api/admin/:path*"],
 };

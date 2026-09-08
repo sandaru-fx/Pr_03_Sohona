@@ -1,31 +1,57 @@
-type PublicProfileStubProps = {
+import { PublicGateCard } from "@/components/public/PublicGateCard";
+import {
+  canViewPublicContent,
+  loadPublicMemorialContent,
+  resolvePublicProfileGate,
+} from "@/lib/public-profile";
+import { hasValidPublicViewSession } from "@/lib/public-view-session";
+
+type PublicProfilePageProps = {
   params: Promise<{ qrId: string }>;
 };
 
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }: PublicProfilePageProps) {
+  const { qrId: rawQrId } = await params;
+  const result = await resolvePublicProfileGate(decodeURIComponent(rawQrId));
+
+  if (result.status === "ready") {
+    return {
+      title: `${result.profile.displayName} · Sohona`,
+      robots: { index: false, follow: false },
+    };
+  }
+
+  return {
+    title: "Memorial · Sohona",
+    robots: { index: false, follow: false },
+  };
+}
+
 /**
- * Day 3 stub — QR target route.
- * Full public memorial view lands in Day 6.
+ * Day 6 complete — public QR gate, PIN session, view-only memorial, lock foundation.
  */
-export default async function PublicProfileStubPage({
+export default async function PublicProfilePage({
   params,
-}: PublicProfileStubProps) {
-  const { qrId } = await params;
+}: PublicProfilePageProps) {
+  const { qrId: rawQrId } = await params;
+  const qrId = decodeURIComponent(rawQrId);
+  const result = await resolvePublicProfileGate(qrId);
+  const hasViewSession =
+    result.status === "ready" && result.access === "pin_required"
+      ? await hasValidPublicViewSession(qrId)
+      : false;
+
+  const allowed = canViewPublicContent(result, hasViewSession);
+  const content =
+    allowed && result.status === "ready"
+      ? await loadPublicMemorialContent(result.profile.id)
+      : null;
 
   return (
     <main className="flex min-h-full flex-1 flex-col items-center justify-center bg-zinc-50 px-6 py-16 text-zinc-900">
-      <div className="w-full max-w-md rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm">
-        <p className="text-sm tracking-wide text-zinc-500">Sohona</p>
-        <h1 className="mt-2 text-2xl font-semibold tracking-tight">
-          Memorial profile
-        </h1>
-        <p className="mt-3 text-sm leading-6 text-zinc-600">
-          This QR code is linked correctly. The full public memorial experience
-          (PIN gate + media) will be available in a later phase.
-        </p>
-        <p className="mt-6 rounded-xl bg-zinc-50 px-3 py-2 font-mono text-xs text-zinc-500 break-all">
-          qrId: {qrId}
-        </p>
-      </div>
+      <PublicGateCard result={result} content={content} />
     </main>
   );
 }

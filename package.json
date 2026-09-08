@@ -13,7 +13,8 @@
     "day3:verify": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day3-verify.ts",
     "r2:check": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/r2-check.ts",
     "day4:verify": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day4-verify.ts",
-    "day5:verify": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day5-verify.ts"
+    "day5:verify": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day5-verify.ts",
+    "day6:verify": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day6-verify.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.3",

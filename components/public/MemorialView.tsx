@@ -1,4 +1,4 @@
-import { FileAudio, FileImage, FileVideo } from "lucide-react";
+import { MemorialMediaItem } from "@/components/public/MemorialMediaItem";
 import type {
   PublicMediaMetaItem,
   PublicStatementItem,
@@ -9,25 +9,15 @@ type MemorialViewProps = {
   statements: PublicStatementItem[];
   media: PublicMediaMetaItem[];
   pinProtected: boolean;
+  r2Configured: boolean;
 };
-
-function formatBytes(size: number) {
-  if (size < 1024) return `${size} B`;
-  if (size < 1024 * 1024) return `${(size / 1024).toFixed(1)} KB`;
-  return `${(size / (1024 * 1024)).toFixed(1)} MB`;
-}
-
-function MediaIcon({ kind }: { kind: PublicMediaMetaItem["kind"] }) {
-  if (kind === "PHOTO") return <FileImage className="h-4 w-4" aria-hidden />;
-  if (kind === "VIDEO") return <FileVideo className="h-4 w-4" aria-hidden />;
-  return <FileAudio className="h-4 w-4" aria-hidden />;
-}
 
 export function MemorialView({
   displayName,
   statements,
   media,
   pinProtected,
+  r2Configured,
 }: MemorialViewProps) {
   return (
     <div className="w-full max-w-2xl space-y-6">
@@ -71,31 +61,27 @@ export function MemorialView({
           Photos, videos & voice
         </h2>
         <p className="mt-1 text-sm text-zinc-600">
-          Media files are listed here. Secure playback arrives in Day 7.
+          Media opens through short-lived secure links. Nothing is stored as a
+          permanent public URL.
         </p>
+
+        {!r2Configured && media.length > 0 ? (
+          <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
+            Cloudflare R2 is not connected yet, so playback is paused. Metadata
+            still shows what the family uploaded.
+          </div>
+        ) : null}
 
         {media.length === 0 ? (
           <p className="mt-5 text-sm text-zinc-500">No media uploaded yet.</p>
         ) : (
-          <ul className="mt-5 divide-y divide-zinc-200 rounded-xl border border-zinc-200">
+          <ul className="mt-5 overflow-hidden rounded-xl border border-zinc-200">
             {media.map((item) => (
-              <li
+              <MemorialMediaItem
                 key={item.id}
-                className="flex items-center gap-3 px-4 py-3 text-sm"
-              >
-                <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-zinc-100 text-zinc-600">
-                  <MediaIcon kind={item.kind} />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate font-medium text-zinc-900">
-                    {item.originalName ?? item.kind}
-                  </p>
-                  <p className="text-xs text-zinc-500">
-                    {item.kind} · {formatBytes(item.sizeBytes)}
-                  </p>
-                </div>
-                <span className="shrink-0 text-xs text-zinc-400">Locked</span>
-              </li>
+                item={item}
+                enabled={r2Configured}
+              />
             ))}
           </ul>
         )}

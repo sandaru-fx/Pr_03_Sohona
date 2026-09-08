@@ -11,11 +11,13 @@ import { cn } from "@/lib/utils";
 type PublicGateCardProps = {
   result: PublicProfileGateResult;
   content?: PublicMemorialContent | null;
+  r2Configured?: boolean;
 };
 
 export function PublicGateCard({
   result,
   content = null,
+  r2Configured = false,
 }: PublicGateCardProps) {
   if (result.status === "ready" && content) {
     return (
@@ -24,6 +26,7 @@ export function PublicGateCard({
         statements={content.statements}
         media={content.media}
         pinProtected={result.access === "pin_required"}
+        r2Configured={r2Configured}
       />
     );
   }

@@ -5,6 +5,7 @@ import {
   resolvePublicProfileGate,
 } from "@/lib/public-profile";
 import { hasValidPublicViewSession } from "@/lib/public-view-session";
+import { isR2Configured } from "@/lib/r2-config";
 
 type PublicProfilePageProps = {
   params: Promise<{ qrId: string }>;
@@ -30,7 +31,7 @@ export async function generateMetadata({ params }: PublicProfilePageProps) {
 }
 
 /**
- * Day 6 complete — public QR gate, PIN session, view-only memorial, lock foundation.
+ * Day 6–7 — public QR gate, PIN session, view-only memorial + secure media.
  */
 export default async function PublicProfilePage({
   params,
@@ -51,7 +52,11 @@ export default async function PublicProfilePage({
 
   return (
     <main className="flex min-h-full flex-1 flex-col items-center justify-center bg-zinc-50 px-6 py-16 text-zinc-900">
-      <PublicGateCard result={result} content={content} />
+      <PublicGateCard
+        result={result}
+        content={content}
+        r2Configured={isR2Configured()}
+      />
     </main>
   );
 }

@@ -25,6 +25,55 @@ export function assertStatementWordLimit(
   return { ok: true, usedWords, maxWords: maxStatementWords };
 }
 
+/** Pure photo-count check (no DB) — used by APIs + Step 5 verify. */
+export function assertPhotoCountWithinLimit(
+  photoCount: number,
+  maxImages: number,
+): LimitCheckResult {
+  if (photoCount >= maxImages) {
+    return {
+      ok: false,
+      error: "PhotoLimit",
+      message: `This package allows at most ${maxImages} images.`,
+    };
+  }
+  return { ok: true };
+}
+
+/** Pure VIDEO/VOICE duration check (no DB). */
+export function assertAvDurationWithinLimit(input: {
+  kind: Extract<MediaKind, "VIDEO" | "VOICE">;
+  durationSeconds: number | null | undefined;
+  maxSeconds: number;
+}): LimitCheckResult {
+  const duration = input.durationSeconds;
+
+  if (
+    typeof duration !== "number" ||
+    !Number.isFinite(duration) ||
+    duration <= 0
+  ) {
+    return {
+      ok: false,
+      error: "DurationRequired",
+      message: `${input.kind} uploads must include a positive durationSeconds value.`,
+    };
+  }
+
+  const rounded = Math.ceil(duration);
+  if (rounded > input.maxSeconds) {
+    const label = input.kind === "VIDEO" ? "video" : "audio";
+    const minutes = Math.round(input.maxSeconds / 60);
+    return {
+      ok: false,
+      error: "DurationLimit",
+      message: `This package allows ${label} up to ${minutes} minute${minutes === 1 ? "" : "s"} (${input.maxSeconds}s). This file is about ${rounded}s.`,
+    };
+  }
+
+  return { ok: true };
+}
+
 /**
  * Enforce package media rules before saving a new MediaAsset.
  * Photos: max count. Video/voice: duration seconds.
@@ -41,42 +90,15 @@ export async function assertMediaUploadAllowed(input: {
     const photoCount = await prisma.mediaAsset.count({
       where: { profileId: input.profileId, kind: "PHOTO" },
     });
-    if (photoCount >= limits.maxImages) {
-      return {
-        ok: false,
-        error: "PhotoLimit",
-        message: `This package allows at most ${limits.maxImages} images.`,
-      };
-    }
-    return { ok: true };
+    return assertPhotoCountWithinLimit(photoCount, limits.maxImages);
   }
 
   const maxSeconds =
     input.kind === "VIDEO" ? limits.maxVideoSeconds : limits.maxAudioSeconds;
-  const duration = input.durationSeconds;
 
-  if (
-    typeof duration !== "number" ||
-    !Number.isFinite(duration) ||
-    duration <= 0
-  ) {
-    return {
-      ok: false,
-      error: "DurationRequired",
-      message: `${input.kind} uploads must include a positive durationSeconds value.`,
-    };
-  }
-
-  const rounded = Math.ceil(duration);
-  if (rounded > maxSeconds) {
-    const label = input.kind === "VIDEO" ? "video" : "audio";
-    const minutes = Math.round(maxSeconds / 60);
-    return {
-      ok: false,
-      error: "DurationLimit",
-      message: `This package allows ${label} up to ${minutes} minute${minutes === 1 ? "" : "s"} (${maxSeconds}s). This file is about ${rounded}s.`,
-    };
-  }
-
-  return { ok: true };
+  return assertAvDurationWithinLimit({
+    kind: input.kind,
+    durationSeconds: input.durationSeconds,
+    maxSeconds,
+  });
 }

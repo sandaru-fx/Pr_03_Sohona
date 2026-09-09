@@ -29,6 +29,12 @@ test.describe("Sohona public site smoke", () => {
     ).toBeVisible();
     await expect(page.getByText("Package A")).toBeVisible();
     await expect(page.getByText("25 years").first()).toBeVisible();
+    await expect(page.getByText(/QR comments/i)).toBeVisible();
+    await expect(
+      page.getByText(/Temple admin never sees private statements, media, or comments/i),
+    ).toBeVisible();
+    await expect(page.getByText("Package C")).toBeVisible();
+    await expect(page.getByText("100 years").first()).toBeVisible();
 
     await page.goto("/contact");
     await expect(
@@ -95,6 +101,23 @@ test.describe("Auth and memorial gates", () => {
       data: { isPublicPinRequired: true },
     });
     expect(settings.status()).toBe(401);
+
+    const commentDelete = await request.delete(
+      "/api/manage/comments/507f1f77bcf86cd799439011",
+    );
+    expect(commentDelete.status()).toBe(401);
+  });
+
+  test("public comment API rejects invalid memorial", async ({ request }) => {
+    const response = await request.post("/api/public/comments", {
+      data: {
+        qrId: "playwright-missing-qr-id-zzzz",
+        body: "A kind note for this memorial.",
+      },
+    });
+    expect([400, 404]).toContain(response.status());
+    const json = (await response.json()) as { error?: string };
+    expect(json.error).toBeTruthy();
   });
 
   test("admin API rejects without session", async ({ request }) => {

@@ -28,6 +28,8 @@
     "packages:step1": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/packages-step1-verify.ts",
     "packages:step3": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/packages-step3-verify.ts",
     "packages:step4": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/packages-step4-verify.ts",
+    "packages:step5": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/packages-step5-verify.ts",
+    "packages:verify": "npm run packages:step1 && npm run packages:step3 && npm run packages:step4 && npm run packages:step5",
     "redis:check": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/redis-check.ts"
   },
   "dependencies": {

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getServerEnv } from "@/lib/env";
+import { computePackageWindow } from "@/lib/packages";
 import { prisma } from "@/lib/prisma";
 import { enforceIpRateLimit } from "@/lib/rate-limit-presets";
 import { securityEventRequestFields } from "@/lib/request-identity";
@@ -12,6 +13,7 @@ export const runtime = "nodejs";
 /**
  * POST /api/setup/complete
  * Finalize family setup: invalidate setup token, issue manage token once.
+ * Starts package retention clock (packageStartedAt / packageEndsAt).
  * Uses a conditional update so parallel completes cannot mint two manage tokens.
  */
 export async function POST(request: Request) {
@@ -66,6 +68,7 @@ export async function POST(request: Request) {
       hashedPin: true,
       isSetupComplete: true,
       manageTokenHash: true,
+      packageTier: true,
     },
   });
 
@@ -99,6 +102,7 @@ export async function POST(request: Request) {
   const manageToken = generateManageToken();
   const manageTokenHash = hashToken(manageToken);
   const setupUsedAt = new Date();
+  const packageWindow = computePackageWindow(setupUsedAt, profile.packageTier);
 
   const updated = await prisma.profile.updateMany({
     where: {
@@ -113,6 +117,8 @@ export async function POST(request: Request) {
       setupTokenHash: null,
       setupTokenExpiresAt: null,
       manageTokenHash,
+      packageStartedAt: packageWindow.packageStartedAt,
+      packageEndsAt: packageWindow.packageEndsAt,
     },
   });
 
@@ -131,7 +137,11 @@ export async function POST(request: Request) {
       profileId: profile.id,
       type: "SETUP_COMPLETED",
       ...securityEventRequestFields(request),
-      metadata: { source: "family_setup" },
+      metadata: {
+        source: "family_setup",
+        packageTier: profile.packageTier,
+        retentionYears: packageWindow.retentionYears,
+      },
     },
   });
 
@@ -148,6 +158,9 @@ export async function POST(request: Request) {
         qrId: profile.qrId,
         isSetupComplete: true,
         setupUsedAt,
+        packageTier: profile.packageTier,
+        packageStartedAt: packageWindow.packageStartedAt,
+        packageEndsAt: packageWindow.packageEndsAt,
       },
       manage: {
         url: manageUrl,

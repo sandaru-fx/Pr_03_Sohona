@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { getServerEnv } from "@/lib/env";
 import { isMongoObjectId } from "@/lib/object-id";
 
-/** Admin-safe profile fields only — never include PIN/media/statements/token hashes. */
+/** Admin-safe profile fields only — never include PIN/media/statements/comments/token hashes. */
 export const adminProfileSelect = {
   id: true,
   displayName: true,
@@ -10,6 +10,9 @@ export const adminProfileSelect = {
   isSetupComplete: true,
   setupTokenExpiresAt: true,
   setupUsedAt: true,
+  packageTier: true,
+  packageStartedAt: true,
+  packageEndsAt: true,
   createdAt: true,
   updatedAt: true,
 } as const;
@@ -21,6 +24,7 @@ export const ADMIN_PROFILE_FORBIDDEN_FIELDS = [
   "manageTokenHash",
   "statements",
   "mediaAssets",
+  "comments",
   "securityEvents",
   "failedPinAttempts",
   "pinLockedUntil",
@@ -33,6 +37,9 @@ export type AdminProfileListItem = {
   isSetupComplete: boolean;
   setupTokenExpiresAt: Date | null;
   setupUsedAt: Date | null;
+  packageTier: "A" | "B" | "C";
+  packageStartedAt: Date | null;
+  packageEndsAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
 };

@@ -107,6 +107,14 @@ model Profile {
   /// Long-lived secret manage-link token — STORE HASH ONLY
   manageTokenHash String?
 
+  /// Package tier (A/B/C). Content limits identical; retention years differ.
+  /// Existing memorials default to A until admin changes (Step 2 picker).
+  packageTier PackageTier @default(A)
+
+  /// Retention clock — set when family setup completes (not on admin create).
+  packageStartedAt DateTime?
+  packageEndsAt    DateTime?
+
   /// Brute-force protection (DB foundation; Redis rate limit comes Day 8)
   failedPinAttempts Int       @default(0)
   pinLockedUntil    DateTime?
@@ -119,12 +127,20 @@ model Profile {
 
   statements     Statement[]
   mediaAssets    MediaAsset[]
+  comments       Comment[]
   securityEvents SecurityEvent[]
 
   @@index([isSetupComplete])
   @@index([createdByAdminId])
   @@index([setupTokenHash])
   @@index([manageTokenHash])
+  @@index([packageTier])
+}
+
+enum PackageTier {
+  A
+  B
+  C
 }
 
 // -----------------------------------------------------------------------------
@@ -168,6 +184,27 @@ model MediaAsset {
   updatedAt DateTime @updatedAt
 
   @@index([profileId])
+}
+
+/// QR-page comments — private from temple admin (never admin-selected).
+model Comment {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  profileId String  @db.ObjectId
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  body      String
+  wordCount Int
+  status    CommentStatus @default(VISIBLE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([profileId, createdAt])
+}
+
+enum CommentStatus {
+  VISIBLE
+  HIDDEN
 }
 
 // -----------------------------------------------------------------------------

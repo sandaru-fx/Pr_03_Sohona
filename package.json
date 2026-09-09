@@ -25,6 +25,7 @@
     "day9:verify": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day9-verify.ts",
     "day10:env-check": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day10-env-check.ts",
     "day10:wiring-check": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day10-wiring-check.ts",
+    "packages:step1": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/packages-step1-verify.ts",
     "redis:check": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/redis-check.ts"
   },
   "dependencies": {

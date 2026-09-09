@@ -26,6 +26,7 @@ export const MANAGE_CONTENT_FORBIDDEN_FIELDS = [
   "failedPinAttempts",
   "pinLockedUntil",
   "securityEvents",
+  "comments",
 ] as const;
 
 export type ManageOwnerContent = {

@@ -77,6 +77,7 @@ export async function POST(request: Request) {
         setupTokenHash,
         setupTokenExpiresAt,
         isSetupComplete: false,
+        packageTier: "A",
         createdByAdminId: gate.session.user.id,
       },
       select: {
@@ -85,6 +86,7 @@ export async function POST(request: Request) {
         qrId: true,
         isSetupComplete: true,
         setupTokenExpiresAt: true,
+        packageTier: true,
         createdAt: true,
       },
     });
@@ -101,6 +103,7 @@ export async function POST(request: Request) {
           setupTokenHash,
           setupTokenExpiresAt,
           isSetupComplete: false,
+          packageTier: "A",
           createdByAdminId: gate.session.user.id,
         },
         select: {
@@ -109,6 +112,7 @@ export async function POST(request: Request) {
           qrId: true,
           isSetupComplete: true,
           setupTokenExpiresAt: true,
+          packageTier: true,
           createdAt: true,
         },
       });

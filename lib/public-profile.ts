@@ -1,3 +1,4 @@
+import { getCommentQuota, type CommentQuota } from "@/lib/comment-limits";
 import { prisma } from "@/lib/prisma";
 import { isPinLocked } from "@/lib/public-pin-lock";
 
@@ -6,6 +7,7 @@ export type PublicProfileSummary = {
   displayName: string;
   qrId: string;
   isPublicPinRequired: boolean;
+  packageTier: "A" | "B" | "C";
 };
 
 export type PublicStatementItem = {
@@ -22,9 +24,18 @@ export type PublicMediaMetaItem = {
   contentType: string;
 };
 
+export type PublicCommentItem = {
+  id: string;
+  body: string;
+  wordCount: number;
+  createdAt: Date;
+};
+
 export type PublicMemorialContent = {
   statements: PublicStatementItem[];
   media: PublicMediaMetaItem[];
+  comments: PublicCommentItem[];
+  commentQuota: CommentQuota;
 };
 
 export type PublicPinLockState = {
@@ -72,6 +83,7 @@ export async function resolvePublicProfileGate(
       qrId: true,
       isSetupComplete: true,
       isPublicPinRequired: true,
+      packageTier: true,
       pinLockedUntil: true,
     },
   });
@@ -109,6 +121,7 @@ export async function resolvePublicProfileGate(
       displayName: profile.displayName,
       qrId: profile.qrId,
       isPublicPinRequired: profile.isPublicPinRequired,
+      packageTier: profile.packageTier,
     },
     access,
     pinLock,
@@ -139,6 +152,13 @@ export const PUBLIC_MEDIA_META_SELECT = {
   contentType: true,
 } as const;
 
+export const PUBLIC_COMMENT_SELECT = {
+  id: true,
+  body: true,
+  wordCount: true,
+  createdAt: true,
+} as const;
+
 /** Guarded by day6:verify — never select these for public memorial payloads. */
 export const PUBLIC_CONTENT_FORBIDDEN_FIELDS = [
   "hashedPin",
@@ -152,7 +172,14 @@ export const PUBLIC_CONTENT_FORBIDDEN_FIELDS = [
 export async function loadPublicMemorialContent(
   profileId: string,
 ): Promise<PublicMemorialContent> {
-  const [statements, media] = await Promise.all([
+  const profile = await prisma.profile.findUnique({
+    where: { id: profileId },
+    select: { packageTier: true },
+  });
+
+  const tier = profile?.packageTier ?? "A";
+
+  const [statements, media, comments, commentQuota] = await Promise.all([
     prisma.statement.findMany({
       where: { profileId },
       orderBy: { sortOrder: "asc" },
@@ -163,9 +190,15 @@ export async function loadPublicMemorialContent(
       orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
       select: PUBLIC_MEDIA_META_SELECT,
     }),
+    prisma.comment.findMany({
+      where: { profileId, status: "VISIBLE" },
+      orderBy: { createdAt: "asc" },
+      select: PUBLIC_COMMENT_SELECT,
+    }),
+    getCommentQuota(profileId, tier),
   ]);
 
-  return { statements, media };
+  return { statements, media, comments, commentQuota };
 }
 
 export function canViewPublicContent(

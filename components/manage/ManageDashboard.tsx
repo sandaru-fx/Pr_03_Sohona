@@ -28,6 +28,14 @@ type MediaItem = {
   durationSeconds?: number | null;
 };
 
+type CommentItem = {
+  id: string;
+  body: string;
+  wordCount: number;
+  status: "VISIBLE" | "HIDDEN";
+  createdAt: string | Date;
+};
+
 type ManageDashboardProps = {
   displayName: string;
   qrId: string;
@@ -36,6 +44,7 @@ type ManageDashboardProps = {
   r2Configured: boolean;
   initialStatements: Array<{ id: string; body: string }>;
   initialMedia: MediaItem[];
+  initialComments: CommentItem[];
 };
 
 function newDraft(body = ""): StatementDraft {
@@ -66,6 +75,7 @@ export function ManageDashboard({
   r2Configured,
   initialStatements,
   initialMedia,
+  initialComments,
 }: ManageDashboardProps) {
   const router = useRouter();
   const publicPath = `/p/${encodeURIComponent(qrId)}`;
@@ -77,6 +87,7 @@ export function ManageDashboard({
       : [newDraft()],
   );
   const [media, setMedia] = useState<MediaItem[]>(initialMedia);
+  const [comments, setComments] = useState<CommentItem[]>(initialComments);
   const [kind, setKind] = useState<"PHOTO" | "VIDEO" | "VOICE">("PHOTO");
   const [publicPinRequired, setPublicPinRequired] =
     useState(isPublicPinRequired);
@@ -84,6 +95,9 @@ export function ManageDashboard({
   const [savingStatements, setSavingStatements] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [deletingCommentId, setDeletingCommentId] = useState<string | null>(
+    null,
+  );
   const [togglingPin, setTogglingPin] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -108,6 +122,7 @@ export function ManageDashboard({
     savingStatements ||
     uploading ||
     Boolean(deletingId) ||
+    Boolean(deletingCommentId) ||
     togglingPin ||
     loggingOut;
 
@@ -301,6 +316,37 @@ export function ManageDashboard({
       setError("Network error while deleting media.");
     } finally {
       setDeletingId(null);
+    }
+  }
+
+  async function onDeleteComment(commentId: string) {
+    setError(null);
+    setMessage(null);
+    setDeletingCommentId(commentId);
+
+    try {
+      const response = await fetch(`/api/manage/comments/${commentId}`, {
+        method: "DELETE",
+      });
+      const data = (await response.json().catch(() => ({}))) as {
+        message?: string;
+        error?: string;
+      };
+
+      if (!response.ok) {
+        setError(data.message ?? data.error ?? "Could not delete comment.");
+        return;
+      }
+
+      setComments((current) =>
+        current.filter((item) => item.id !== commentId),
+      );
+      setMessage(data.message ?? "Comment removed.");
+      router.refresh();
+    } catch {
+      setError("Network error while deleting comment.");
+    } finally {
+      setDeletingCommentId(null);
     }
   }
 
@@ -586,6 +632,55 @@ export function ManageDashboard({
                   className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-zinc-200 text-zinc-500 transition hover:bg-red-50 hover:text-red-700 disabled:opacity-40"
                 >
                   {deletingId === item.id ? (
+                    <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                  ) : (
+                    <Trash2 className="h-4 w-4" aria-hidden />
+                  )}
+                </button>
+              </li>
+            ))
+          )}
+        </ul>
+      </section>
+
+      <section className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="text-sm font-medium text-zinc-900">QR comments</h2>
+          <p className="text-xs tabular-nums text-zinc-500">
+            {comments.length} / {limits.maxComments}
+          </p>
+        </div>
+        <p className="mt-1 text-sm text-zinc-600">
+          Visitors leave these on the public QR page. Temple admin never sees
+          them. You can remove any comment here.
+        </p>
+
+        <ul className="mt-5 divide-y divide-zinc-200 rounded-xl border border-zinc-200">
+          {comments.length === 0 ? (
+            <li className="px-4 py-6 text-sm text-zinc-500">
+              No comments on this memorial yet.
+            </li>
+          ) : (
+            comments.map((item) => (
+              <li
+                key={item.id}
+                className="flex items-start justify-between gap-3 px-4 py-3 text-sm"
+              >
+                <div className="min-w-0">
+                  <p className="whitespace-pre-wrap text-zinc-800">{item.body}</p>
+                  <p className="mt-1 text-xs text-zinc-500">
+                    {item.wordCount} words
+                    {item.status === "HIDDEN" ? " · hidden" : null}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  aria-label="Delete comment"
+                  disabled={busy}
+                  onClick={() => void onDeleteComment(item.id)}
+                  className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-zinc-200 text-zinc-500 transition hover:bg-red-50 hover:text-red-700 disabled:opacity-40"
+                >
+                  {deletingCommentId === item.id ? (
                     <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
                   ) : (
                     <Trash2 className="h-4 w-4" aria-hidden />

@@ -130,6 +130,7 @@ function main() {
       displayName: "Test",
       qrId,
       isPublicPinRequired: false,
+      packageTier: "A",
     },
     access: "open",
     pinLock: null,

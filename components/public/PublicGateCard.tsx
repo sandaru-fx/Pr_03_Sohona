@@ -23,8 +23,12 @@ export function PublicGateCard({
     return (
       <MemorialView
         displayName={result.profile.displayName}
+        qrId={result.profile.qrId}
+        packageTier={result.profile.packageTier}
         statements={content.statements}
         media={content.media}
+        comments={content.comments}
+        commentQuota={content.commentQuota}
         pinProtected={result.access === "pin_required"}
         r2Configured={r2Configured}
       />

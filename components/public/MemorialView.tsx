@@ -1,21 +1,35 @@
+import { MemorialComments } from "@/components/public/MemorialComments";
 import { MemorialMediaItem } from "@/components/public/MemorialMediaItem";
 import type {
+  PublicCommentItem,
   PublicMediaMetaItem,
   PublicStatementItem,
 } from "@/lib/public-profile";
 
 type MemorialViewProps = {
   displayName: string;
+  qrId: string;
+  packageTier?: "A" | "B" | "C";
   statements: PublicStatementItem[];
   media: PublicMediaMetaItem[];
+  comments: PublicCommentItem[];
+  commentQuota: {
+    used: number;
+    max: number;
+    nextMaxWords: number | null;
+  };
   pinProtected: boolean;
   r2Configured: boolean;
 };
 
 export function MemorialView({
   displayName,
+  qrId,
+  packageTier = "A",
   statements,
   media,
+  comments,
+  commentQuota,
   pinProtected,
   r2Configured,
 }: MemorialViewProps) {
@@ -86,6 +100,18 @@ export function MemorialView({
           </ul>
         )}
       </section>
+
+      <MemorialComments
+        qrId={qrId}
+        packageTier={packageTier}
+        initialComments={comments.map((item) => ({
+          ...item,
+          createdAt: item.createdAt,
+        }))}
+        used={commentQuota.used}
+        max={commentQuota.max}
+        nextMaxWords={commentQuota.nextMaxWords}
+      />
     </div>
   );
 }

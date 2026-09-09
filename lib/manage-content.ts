@@ -27,8 +27,15 @@ export const MANAGE_CONTENT_FORBIDDEN_FIELDS = [
   "failedPinAttempts",
   "pinLockedUntil",
   "securityEvents",
-  "comments",
 ] as const;
+
+export const MANAGE_COMMENT_SELECT = {
+  id: true,
+  body: true,
+  wordCount: true,
+  status: true,
+  createdAt: true,
+} as const;
 
 export type ManageOwnerContent = {
   profile: {
@@ -52,6 +59,13 @@ export type ManageOwnerContent = {
     durationSeconds: number | null;
     originalName: string | null;
     sortOrder: number;
+    createdAt: Date;
+  }>;
+  comments: Array<{
+    id: string;
+    body: string;
+    wordCount: number;
+    status: "VISIBLE" | "HIDDEN";
     createdAt: Date;
   }>;
 };
@@ -86,7 +100,7 @@ export async function loadManageOwnerContent(
     return null;
   }
 
-  const [statements, media] = await Promise.all([
+  const [statements, media, comments] = await Promise.all([
     prisma.statement.findMany({
       where: { profileId: profile.id },
       orderBy: { sortOrder: "asc" },
@@ -96,6 +110,11 @@ export async function loadManageOwnerContent(
       where: { profileId: profile.id },
       orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
       select: MANAGE_MEDIA_SELECT,
+    }),
+    prisma.comment.findMany({
+      where: { profileId: profile.id },
+      orderBy: { createdAt: "asc" },
+      select: MANAGE_COMMENT_SELECT,
     }),
   ]);
 
@@ -109,5 +128,6 @@ export async function loadManageOwnerContent(
     },
     statements,
     media,
+    comments,
   };
 }

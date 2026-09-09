@@ -27,6 +27,7 @@ export function ManageGateCard({
   if (result.status === "ready" && hasManageSession) {
     const statements = ownerContent?.statements ?? [];
     const media = ownerContent?.media ?? [];
+    const comments = ownerContent?.comments ?? [];
 
     return (
       <ManageDashboard
@@ -49,6 +50,13 @@ export function ManageGateCard({
           sizeBytes: item.sizeBytes,
           originalName: item.originalName,
           durationSeconds: item.durationSeconds,
+        }))}
+        initialComments={comments.map((item) => ({
+          id: item.id,
+          body: item.body,
+          wordCount: item.wordCount,
+          status: item.status,
+          createdAt: item.createdAt,
         }))}
       />
     );

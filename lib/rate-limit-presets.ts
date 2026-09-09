@@ -10,6 +10,8 @@ export const RATE_LIMIT_PRESETS = {
   publicPinIp: { windowMs: 15 * 60 * 1000, max: 10 },
   /** Extra soft cap per profile (DB still enforces 5 fails → lock). */
   publicPinProfile: { windowMs: 15 * 60 * 1000, max: 20 },
+  /** Soft throttle for QR memorial comments. */
+  publicCommentIp: { windowMs: 15 * 60 * 1000, max: 20 },
   /** Family setup APIs + setup-token media upload. */
   setupIp: { windowMs: 15 * 60 * 1000, max: 30 },
   /** Owner manage APIs after PIN session (statements / media / settings). */

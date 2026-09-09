@@ -25,9 +25,10 @@ test.describe("Sohona public site smoke", () => {
 
     await page.goto("/packages");
     await expect(
-      page.getByRole("heading", { name: /simple offerings/i }),
+      page.getByRole("heading", { name: /three packages/i }),
     ).toBeVisible();
-    await expect(page.getByText("Remembrance")).toBeVisible();
+    await expect(page.getByText("Package A")).toBeVisible();
+    await expect(page.getByText("25 years").first()).toBeVisible();
 
     await page.goto("/contact");
     await expect(

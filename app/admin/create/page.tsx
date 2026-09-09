@@ -9,6 +9,11 @@ import {
   Loader2,
 } from "lucide-react";
 import { ProfileQrCard } from "@/components/admin/ProfileQrCard";
+import {
+  PACKAGE_CATALOG,
+  PACKAGE_TIERS,
+  type PackageTierId,
+} from "@/lib/packages";
 import { cn } from "@/lib/utils";
 
 type CreateState =
@@ -19,16 +24,16 @@ type CreateState =
       setupUrl: string;
       profileId: string;
       publicUrl: string;
+      packageTier: PackageTierId;
     }
   | { status: "error"; message: string };
 
 type ApiSuccess = {
-  profile?: { id?: string; qrId?: string };
+  profile?: { id?: string; qrId?: string; packageTier?: string };
   setup?: { url?: string };
   setupUrl?: string;
   profileId?: string;
   publicUrl?: string;
-  success?: boolean;
   error?: string;
   message?: string;
   issues?: Array<{ message: string }>;
@@ -36,24 +41,34 @@ type ApiSuccess = {
 
 function extractSuccess(
   data: ApiSuccess,
-): { setupUrl: string; profileId: string; publicUrl: string } | null {
+): {
+  setupUrl: string;
+  profileId: string;
+  publicUrl: string;
+  packageTier: PackageTierId;
+} | null {
   const setupUrl = data.setup?.url ?? data.setupUrl;
   const profileId = data.profile?.id ?? data.profileId;
   const publicUrl = data.publicUrl;
-  if (!setupUrl || !profileId || !publicUrl) return null;
-  return { setupUrl, profileId, publicUrl };
+  const rawTier = data.profile?.packageTier;
+  const packageTier =
+    rawTier === "A" || rawTier === "B" || rawTier === "C" ? rawTier : null;
+  if (!setupUrl || !profileId || !publicUrl || !packageTier) return null;
+  return { setupUrl, profileId, publicUrl, packageTier };
 }
 
 export default function CreateProfilePage() {
   const nameId = useId();
   const errorId = useId();
   const [name, setName] = useState("");
+  const [packageTier, setPackageTier] = useState<PackageTierId>("A");
   const [fieldError, setFieldError] = useState<string | null>(null);
   const [state, setState] = useState<CreateState>({ status: "idle" });
   const [copied, setCopied] = useState(false);
 
   function resetForm() {
     setName("");
+    setPackageTier("A");
     setFieldError(null);
     setCopied(false);
     setState({ status: "idle" });
@@ -79,7 +94,7 @@ export default function CreateProfilePage() {
       const response = await fetch("/api/admin/profiles", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ displayName: trimmed }),
+        body: JSON.stringify({ displayName: trimmed, packageTier }),
       });
 
       const data = (await response.json().catch(() => ({}))) as ApiSuccess;
@@ -112,6 +127,7 @@ export default function CreateProfilePage() {
         setupUrl: success.setupUrl,
         profileId: success.profileId,
         publicUrl: success.publicUrl,
+        packageTier: success.packageTier,
       });
     } catch {
       setState({
@@ -128,11 +144,14 @@ export default function CreateProfilePage() {
       window.setTimeout(() => setCopied(false), 2000);
     } catch {
       setCopied(false);
-      window.alert("Could not copy automatically. Please select and copy the link manually.");
+      window.alert(
+        "Could not copy automatically. Please select and copy the link manually.",
+      );
     }
   }
 
   if (state.status === "success") {
+    const pkg = PACKAGE_CATALOG[state.packageTier];
     return (
       <div className="space-y-6">
         <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
@@ -145,8 +164,8 @@ export default function CreateProfilePage() {
                 Profile Created Successfully
               </h1>
               <p className="mt-1 text-sm leading-6 text-zinc-600">
-                The memorial profile has been created. Share the secure setup
-                link with the family.
+                Package {pkg.tier} · {pkg.retentionYears} years. Share the
+                secure setup link with the family.
               </p>
             </div>
           </div>
@@ -190,7 +209,10 @@ export default function CreateProfilePage() {
             className="mt-6 flex gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-amber-950"
             role="status"
           >
-            <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" aria-hidden />
+            <AlertTriangle
+              className="mt-0.5 h-5 w-5 shrink-0 text-amber-600"
+              aria-hidden
+            />
             <p className="text-sm leading-6">
               Important: This setup link is for one-time use only. Please share
               it securely with the family. Once the family completes the setup,
@@ -220,6 +242,7 @@ export default function CreateProfilePage() {
   }
 
   const busy = state.status === "loading";
+  const selected = PACKAGE_CATALOG[packageTier];
 
   return (
     <div className="space-y-6">
@@ -228,8 +251,8 @@ export default function CreateProfilePage() {
           Create New Memorial Profile
         </h1>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-600">
-          Enter the person&apos;s full name. The family will complete private
-          details later using a secure one-time setup link.
+          Enter the person&apos;s full name and choose package A, B, or C.
+          Content limits are the same; retention years differ.
         </p>
       </div>
 
@@ -276,6 +299,58 @@ export default function CreateProfilePage() {
             </p>
           ) : null}
         </div>
+
+        <fieldset className="mt-8" disabled={busy}>
+          <legend className="text-sm font-medium text-zinc-900">Package</legend>
+          <p className="mt-1 text-sm text-zinc-600">
+            Same media and word limits on every package. Years = how long the
+            memorial is designed to be kept.
+          </p>
+          <div className="mt-4 grid gap-3 sm:grid-cols-3">
+            {PACKAGE_TIERS.map((tier) => {
+              const pkg = PACKAGE_CATALOG[tier];
+              const active = packageTier === tier;
+              return (
+                <label
+                  key={tier}
+                  className={cn(
+                    "cursor-pointer rounded-xl border px-4 py-3 transition",
+                    active
+                      ? "border-zinc-900 bg-zinc-900 text-white"
+                      : "border-zinc-200 bg-white text-zinc-800 hover:border-zinc-300",
+                    busy && "cursor-not-allowed opacity-70",
+                  )}
+                >
+                  <input
+                    type="radio"
+                    name="packageTier"
+                    value={tier}
+                    checked={active}
+                    onChange={() => setPackageTier(tier)}
+                    className="sr-only"
+                  />
+                  <span className="block text-sm font-semibold">
+                    Package {pkg.tier}
+                  </span>
+                  <span
+                    className={cn(
+                      "mt-1 block text-xs",
+                      active ? "text-zinc-300" : "text-zinc-500",
+                    )}
+                  >
+                    {pkg.retentionYears} years
+                  </span>
+                </label>
+              );
+            })}
+          </div>
+          <p className="mt-3 text-xs text-zinc-500">
+            Selected: {selected.label} · {selected.limits.maxImages} photos ·{" "}
+            {selected.limits.maxVideoSeconds}s video ·{" "}
+            {selected.limits.maxAudioSeconds}s audio ·{" "}
+            {selected.limits.maxStatementWords} words
+          </p>
+        </fieldset>
 
         {state.status === "error" ? (
           <p

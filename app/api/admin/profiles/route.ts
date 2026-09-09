@@ -28,7 +28,7 @@ export async function GET(request: Request) {
 
 /**
  * POST /api/admin/profiles
- * Admin creates a memorial profile (display name only).
+ * Admin creates a memorial profile (display name + package tier A/B/C).
  * Returns the one-time setup URL once — token is stored hashed only.
  */
 export async function POST(request: Request) {
@@ -62,6 +62,7 @@ export async function POST(request: Request) {
 
   const { APP_URL } = getServerEnv();
   const displayName = parsed.data.displayName;
+  const packageTier = parsed.data.packageTier;
   const setupToken = generateSetupToken();
   const setupTokenHash = hashToken(setupToken);
   const setupTokenExpiresAt = getSetupTokenExpiry();
@@ -77,7 +78,7 @@ export async function POST(request: Request) {
         setupTokenHash,
         setupTokenExpiresAt,
         isSetupComplete: false,
-        packageTier: "A",
+        packageTier,
         createdByAdminId: gate.session.user.id,
       },
       select: {
@@ -103,7 +104,7 @@ export async function POST(request: Request) {
           setupTokenHash,
           setupTokenExpiresAt,
           isSetupComplete: false,
-          packageTier: "A",
+          packageTier,
           createdByAdminId: gate.session.user.id,
         },
         select: {

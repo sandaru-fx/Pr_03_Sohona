@@ -8,6 +8,10 @@ import {
 } from "@/lib/admin-profiles";
 import { ProfileQrCard } from "@/components/admin/ProfileQrCard";
 import { SetupStatusBadge } from "@/components/admin/SetupStatusBadge";
+import {
+  formatPackageAdminLabel,
+  getPackageDefinition,
+} from "@/lib/packages";
 
 type ProfileDetailPageProps = {
   params: Promise<{ id: string }>;
@@ -36,6 +40,7 @@ export default async function AdminProfileDetailPage({
 
   const status = getSetupStatus(profile);
   const publicUrl = getPublicProfileUrl(profile.qrId);
+  const pkg = getPackageDefinition(profile.packageTier);
 
   return (
     <div className="space-y-6">
@@ -52,6 +57,9 @@ export default async function AdminProfileDetailPage({
             {profile.displayName}
           </h1>
           <SetupStatusBadge label={status.label} tone={status.tone} />
+          <span className="rounded-full bg-zinc-100 px-2.5 py-1 text-xs font-medium text-zinc-700">
+            {formatPackageAdminLabel(profile.packageTier)}
+          </span>
         </div>
         <p className="mt-2 text-sm text-zinc-600">
           Admin view only — private family content is never loaded here.
@@ -59,6 +67,27 @@ export default async function AdminProfileDetailPage({
       </div>
 
       <div className="grid gap-4 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:grid-cols-2 sm:p-8">
+        <div>
+          <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">
+            Package
+          </p>
+          <p className="mt-1 text-sm text-zinc-900">{pkg.label}</p>
+          <p className="mt-1 text-xs text-zinc-500">
+            {pkg.limits.maxImages} photos · {pkg.limits.maxVideoSeconds}s video ·{" "}
+            {pkg.limits.maxAudioSeconds}s audio · {pkg.limits.maxStatementWords}{" "}
+            words
+          </p>
+        </div>
+        <div>
+          <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">
+            Retention window
+          </p>
+          <p className="mt-1 text-sm text-zinc-900">
+            {profile.packageStartedAt
+              ? `${formatDateTime(profile.packageStartedAt)} → ${formatDateTime(profile.packageEndsAt)}`
+              : "Starts when family finishes setup"}
+          </p>
+        </div>
         <div>
           <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">
             QR ID

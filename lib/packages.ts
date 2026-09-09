@@ -76,6 +76,14 @@ export function getPackageDefinition(
   return PACKAGE_CATALOG[tier as PackageTierId];
 }
 
+/** Short admin UI label, e.g. "A · 25 years". */
+export function formatPackageAdminLabel(
+  tier: PackageTier | PackageTierId,
+): string {
+  const def = getPackageDefinition(tier);
+  return `${def.tier} · ${def.retentionYears} years`;
+}
+
 export function getPackageLimits(
   tier: PackageTier | PackageTierId,
 ): PackageLimits {

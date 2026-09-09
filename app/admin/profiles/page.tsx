@@ -4,6 +4,7 @@ import {
   getSetupStatus,
   listAdminProfiles,
 } from "@/lib/admin-profiles";
+import { formatPackageAdminLabel } from "@/lib/packages";
 import { SetupStatusBadge } from "@/components/admin/SetupStatusBadge";
 
 function formatDate(value: Date) {
@@ -25,8 +26,8 @@ export default async function AdminProfilesPage() {
             Profiles
           </h1>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-600">
-            Admin-safe overview only. Private family statements and media are
-            never shown here.
+            Admin-safe overview only. Private family statements, media, and
+            comments are never shown here.
           </p>
         </div>
         <Link
@@ -62,6 +63,7 @@ export default async function AdminProfilesPage() {
           <ul className="divide-y divide-zinc-200" role="list">
             {profiles.map((profile) => {
               const status = getSetupStatus(profile);
+              const packageLabel = formatPackageAdminLabel(profile.packageTier);
               return (
                 <li key={profile.id}>
                   <Link
@@ -77,6 +79,9 @@ export default async function AdminProfilesPage() {
                           label={status.label}
                           tone={status.tone}
                         />
+                        <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-700">
+                          {packageLabel}
+                        </span>
                       </div>
                       <p className="mt-1 truncate font-mono text-xs text-zinc-500">
                         qrId: {profile.qrId}

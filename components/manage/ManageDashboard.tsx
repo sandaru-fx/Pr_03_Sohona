@@ -12,7 +12,10 @@ import {
   Trash2,
   Upload,
 } from "lucide-react";
+import { readFileDurationSeconds } from "@/lib/browser-media-duration";
+import { getPackageLimits } from "@/lib/packages";
 import { cn } from "@/lib/utils";
+import { totalStatementWords } from "@/lib/word-count";
 
 type StatementDraft = { key: string; body: string };
 
@@ -22,12 +25,14 @@ type MediaItem = {
   originalName: string | null;
   sizeBytes: number;
   contentType: string;
+  durationSeconds?: number | null;
 };
 
 type ManageDashboardProps = {
   displayName: string;
   qrId: string;
   isPublicPinRequired: boolean;
+  packageTier: "A" | "B" | "C";
   r2Configured: boolean;
   initialStatements: Array<{ id: string; body: string }>;
   initialMedia: MediaItem[];
@@ -57,12 +62,14 @@ export function ManageDashboard({
   displayName,
   qrId,
   isPublicPinRequired,
+  packageTier,
   r2Configured,
   initialStatements,
   initialMedia,
 }: ManageDashboardProps) {
   const router = useRouter();
   const publicPath = `/p/${encodeURIComponent(qrId)}`;
+  const limits = getPackageLimits(packageTier);
 
   const [statements, setStatements] = useState<StatementDraft[]>(
     initialStatements.length > 0
@@ -82,6 +89,15 @@ export function ManageDashboard({
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const usedWords = useMemo(
+    () => totalStatementWords(statements.map((item) => ({ body: item.body }))),
+    [statements],
+  );
+  const photoCount = useMemo(
+    () => media.filter((item) => item.kind === "PHOTO").length,
+    [media],
+  );
+
   const accept = useMemo(() => {
     if (kind === "PHOTO") return "image/jpeg,image/png,image/webp";
     if (kind === "VIDEO") return "video/mp4,video/webm";
@@ -89,7 +105,11 @@ export function ManageDashboard({
   }, [kind]);
 
   const busy =
-    savingStatements || uploading || Boolean(deletingId) || togglingPin;
+    savingStatements ||
+    uploading ||
+    Boolean(deletingId) ||
+    togglingPin ||
+    loggingOut;
 
   async function saveStatements() {
     setError(null);
@@ -155,6 +175,28 @@ export function ManageDashboard({
     setUploading(true);
 
     try {
+      if (kind === "PHOTO" && photoCount >= limits.maxImages) {
+        setError(`This package allows at most ${limits.maxImages} images.`);
+        return;
+      }
+
+      let durationSeconds: number | undefined;
+      if (kind === "VIDEO" || kind === "VOICE") {
+        const duration = await readFileDurationSeconds(file);
+        const rounded = Math.ceil(duration);
+        const maxSeconds =
+          kind === "VIDEO" ? limits.maxVideoSeconds : limits.maxAudioSeconds;
+        if (rounded > maxSeconds) {
+          setError(
+            kind === "VIDEO"
+              ? `Video must be ${limits.maxVideoSeconds}s or less (about ${rounded}s).`
+              : `Audio must be ${limits.maxAudioSeconds}s or less (about ${rounded}s).`,
+          );
+          return;
+        }
+        durationSeconds = rounded;
+      }
+
       const presignResponse = await fetch("/api/manage/media/presign", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -204,6 +246,7 @@ export function ManageDashboard({
           sizeBytes: file.size,
           fileName: file.name,
           r2ObjectKey: presign.r2ObjectKey,
+          ...(durationSeconds !== undefined ? { durationSeconds } : {}),
         }),
       });
 
@@ -223,8 +266,10 @@ export function ManageDashboard({
       setMedia((current) => [...current, confirm.media as MediaItem]);
       setMessage(`Uploaded ${file.name}`);
       router.refresh();
-    } catch {
-      setError("Network error during upload.");
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Network error during upload.",
+      );
     } finally {
       setUploading(false);
     }
@@ -344,12 +389,27 @@ export function ManageDashboard({
         </dl>
 
         <p className="mt-4 text-xs text-zinc-500">
-          Session lasts about 4 hours on this device.
+          Session lasts about 4 hours on this device. Limits:{" "}
+          {limits.maxImages} photos · video ≤ {limits.maxVideoSeconds}s · audio ≤{" "}
+          {limits.maxAudioSeconds}s · statements ≤ {limits.maxStatementWords}{" "}
+          words.
         </p>
       </div>
 
       <section className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
-        <h2 className="text-sm font-medium text-zinc-900">Statements</h2>
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="text-sm font-medium text-zinc-900">Statements</h2>
+          <p
+            className={cn(
+              "text-xs tabular-nums",
+              usedWords > limits.maxStatementWords
+                ? "font-medium text-red-600"
+                : "text-zinc-500",
+            )}
+          >
+            {usedWords} / {limits.maxStatementWords} words
+          </p>
+        </div>
         <p className="mt-1 text-sm text-zinc-600">
           Edit messages for future visitors. Save when you are ready.
         </p>
@@ -429,11 +489,17 @@ export function ManageDashboard({
       </section>
 
       <section className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
-        <h2 className="text-sm font-medium text-zinc-900">
-          Photos, videos & voice
-        </h2>
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="text-sm font-medium text-zinc-900">
+            Photos, videos & voice
+          </h2>
+          <p className="text-xs tabular-nums text-zinc-500">
+            Photos {photoCount} / {limits.maxImages}
+          </p>
+        </div>
         <p className="mt-1 text-sm text-zinc-600">
-          Upload new files or remove ones that should no longer appear.
+          Upload new files or remove ones that should no longer appear. Video ≤{" "}
+          {limits.maxVideoSeconds}s, audio ≤ {limits.maxAudioSeconds}s.
         </p>
 
         {!r2Configured ? (

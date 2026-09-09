@@ -9,6 +9,7 @@ export type SetupGateProfile = {
   setupTokenExpiresAt: Date | null;
   setupUsedAt: Date | null;
   hasPin: boolean;
+  packageTier: "A" | "B" | "C";
 };
 
 export type SetupStatementItem = {
@@ -23,6 +24,7 @@ export type SetupMediaItem = {
   originalName: string | null;
   sizeBytes: number;
   contentType: string;
+  durationSeconds: number | null;
   createdAt: Date;
 };
 
@@ -67,6 +69,7 @@ export async function resolveSetupGate(
       setupUsedAt: true,
       setupTokenHash: true,
       hashedPin: true,
+      packageTier: true,
       statements: {
         orderBy: { sortOrder: "asc" },
         select: { id: true, body: true, sortOrder: true },
@@ -79,6 +82,7 @@ export async function resolveSetupGate(
           originalName: true,
           sizeBytes: true,
           contentType: true,
+          durationSeconds: true,
           createdAt: true,
         },
       },
@@ -101,6 +105,7 @@ export async function resolveSetupGate(
     setupTokenExpiresAt: profile.setupTokenExpiresAt,
     setupUsedAt: profile.setupUsedAt,
     hasPin: Boolean(profile.hashedPin),
+    packageTier: profile.packageTier,
   };
 
   if (profile.isSetupComplete) {

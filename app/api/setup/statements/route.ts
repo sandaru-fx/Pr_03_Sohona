@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { assertStatementWordLimit } from "@/lib/package-limits";
 import { prisma } from "@/lib/prisma";
 import { enforceIpRateLimit } from "@/lib/rate-limit-presets";
 import { authorizeSetupToken } from "@/lib/setup-auth";
@@ -63,6 +64,17 @@ export async function POST(request: Request) {
         error: "PinRequired",
         message: "Save a PIN before adding statements.",
       },
+      { status: 400 },
+    );
+  }
+
+  const wordLimit = assertStatementWordLimit(
+    auth.profile.packageTier,
+    parsed.data.statements,
+  );
+  if (!wordLimit.ok) {
+    return NextResponse.json(
+      { error: wordLimit.error, message: wordLimit.message },
       { status: 400 },
     );
   }

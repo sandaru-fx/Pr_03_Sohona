@@ -34,6 +34,7 @@ export function SetupGateCard({
         expiresLabel={formatExpiry(result.profile.setupTokenExpiresAt)}
         hasPin={result.profile.hasPin}
         r2Configured={r2Configured}
+        packageTier={result.profile.packageTier}
         initialStatements={result.statements}
         initialMedia={result.media.map((item) => ({
           id: item.id,
@@ -41,6 +42,7 @@ export function SetupGateCard({
           originalName: item.originalName,
           sizeBytes: item.sizeBytes,
           contentType: item.contentType,
+          durationSeconds: item.durationSeconds,
         }))}
       />
     );

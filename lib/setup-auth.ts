@@ -15,6 +15,7 @@ export type SetupAuthSuccess = {
     qrId: string;
     isSetupComplete: boolean;
     setupTokenExpiresAt: Date | null;
+    packageTier: "A" | "B" | "C";
   };
 };
 
@@ -91,6 +92,7 @@ export async function authorizeSetupToken(input: {
       isSetupComplete: true,
       setupTokenHash: true,
       setupTokenExpiresAt: true,
+      packageTier: true,
     },
   });
 
@@ -174,6 +176,7 @@ export async function authorizeSetupToken(input: {
       qrId: profile.qrId,
       isSetupComplete: profile.isSetupComplete,
       setupTokenExpiresAt: profile.setupTokenExpiresAt,
+      packageTier: profile.packageTier,
     },
   };
 }

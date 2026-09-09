@@ -2,6 +2,7 @@ import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { NextResponse } from "next/server";
 import { validateUploadRequest } from "@/lib/media-rules";
+import { assertMediaUploadAllowed } from "@/lib/package-limits";
 import { isR2Configured } from "@/lib/r2-config";
 import { getR2BucketName, getR2Client } from "@/lib/r2";
 import { buildR2ObjectKey } from "@/lib/r2-object-key";
@@ -83,6 +84,20 @@ export async function POST(request: Request) {
       { error: uploadCheck.error, message: uploadCheck.message },
       { status: 400 },
     );
+  }
+
+  if (uploadCheck.kind === "PHOTO") {
+    const photoLimit = await assertMediaUploadAllowed({
+      profileId: auth.profile.id,
+      tier: auth.profile.packageTier,
+      kind: "PHOTO",
+    });
+    if (!photoLimit.ok) {
+      return NextResponse.json(
+        { error: photoLimit.error, message: photoLimit.message },
+        { status: 400 },
+      );
+    }
   }
 
   const r2ObjectKey = buildR2ObjectKey({

@@ -36,6 +36,7 @@ export function ManageGateCard({
           ownerContent?.profile.isPublicPinRequired ??
           result.profile.isPublicPinRequired
         }
+        packageTier={ownerContent?.profile.packageTier ?? "A"}
         r2Configured={r2Configured}
         initialStatements={statements.map((item) => ({
           id: item.id,
@@ -47,6 +48,7 @@ export function ManageGateCard({
           contentType: item.contentType,
           sizeBytes: item.sizeBytes,
           originalName: item.originalName,
+          durationSeconds: item.durationSeconds,
         }))}
       />
     );

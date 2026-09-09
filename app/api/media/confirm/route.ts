@@ -2,6 +2,7 @@ import { HeadObjectCommand } from "@aws-sdk/client-s3";
 import { Prisma } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { validateUploadRequest } from "@/lib/media-rules";
+import { assertMediaUploadAllowed } from "@/lib/package-limits";
 import { prisma } from "@/lib/prisma";
 import { isR2Configured } from "@/lib/r2-config";
 import { getR2BucketName, getR2Client } from "@/lib/r2";
@@ -19,6 +20,7 @@ const mediaAssetSelect = {
   r2ObjectKey: true,
   contentType: true,
   sizeBytes: true,
+  durationSeconds: true,
   originalName: true,
   sortOrder: true,
   createdAt: true,
@@ -96,6 +98,24 @@ export async function POST(request: Request) {
     );
   }
 
+  const durationSeconds =
+    uploadCheck.kind === "PHOTO"
+      ? null
+      : Math.ceil(parsed.data.durationSeconds as number);
+
+  const limitCheck = await assertMediaUploadAllowed({
+    profileId: auth.profile.id,
+    tier: auth.profile.packageTier,
+    kind: uploadCheck.kind,
+    durationSeconds,
+  });
+  if (!limitCheck.ok) {
+    return NextResponse.json(
+      { error: limitCheck.error, message: limitCheck.message },
+      { status: 400 },
+    );
+  }
+
   const r2ObjectKey = parsed.data.r2ObjectKey.trim();
   if (
     !objectKeyBelongsToProfile(r2ObjectKey, auth.profile.id, uploadCheck.kind)
@@ -165,6 +185,7 @@ export async function POST(request: Request) {
         r2ObjectKey,
         contentType: uploadCheck.contentType,
         sizeBytes: uploadCheck.sizeBytes,
+        durationSeconds,
         originalName: uploadCheck.fileName,
         sortOrder: parsed.data.sortOrder ?? 0,
       },

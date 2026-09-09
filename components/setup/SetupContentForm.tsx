@@ -10,7 +10,10 @@ import {
   Trash2,
   Upload,
 } from "lucide-react";
+import { readFileDurationSeconds } from "@/lib/browser-media-duration";
+import { getPackageLimits } from "@/lib/packages";
 import { cn } from "@/lib/utils";
+import { totalStatementWords } from "@/lib/word-count";
 
 type StatementDraft = { key: string; body: string };
 
@@ -20,6 +23,7 @@ type MediaItem = {
   originalName: string | null;
   sizeBytes: number;
   contentType: string;
+  durationSeconds?: number | null;
 };
 
 type SetupCompleteResult = {
@@ -33,6 +37,7 @@ type SetupContentFormProps = {
   displayName: string;
   setupToken: string;
   r2Configured: boolean;
+  packageTier: "A" | "B" | "C";
   initialStatements: Array<{ id: string; body: string }>;
   initialMedia: MediaItem[];
   onComplete: (result: SetupCompleteResult) => void;
@@ -59,10 +64,12 @@ export function SetupContentForm({
   displayName,
   setupToken,
   r2Configured,
+  packageTier,
   initialStatements,
   initialMedia,
   onComplete,
 }: SetupContentFormProps) {
+  const limits = getPackageLimits(packageTier);
   const [statements, setStatements] = useState<StatementDraft[]>(
     initialStatements.length > 0
       ? initialStatements.map((item) => newDraft(item.body))
@@ -75,6 +82,15 @@ export function SetupContentForm({
   const [finishing, setFinishing] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const usedWords = useMemo(
+    () => totalStatementWords(statements.map((item) => ({ body: item.body }))),
+    [statements],
+  );
+  const photoCount = useMemo(
+    () => media.filter((item) => item.kind === "PHOTO").length,
+    [media],
+  );
 
   const accept = useMemo(() => {
     if (kind === "PHOTO") return "image/jpeg,image/png,image/webp";
@@ -195,6 +211,28 @@ export function SetupContentForm({
     setUploading(true);
 
     try {
+      if (kind === "PHOTO" && photoCount >= limits.maxImages) {
+        setError(`This package allows at most ${limits.maxImages} images.`);
+        return;
+      }
+
+      let durationSeconds: number | undefined;
+      if (kind === "VIDEO" || kind === "VOICE") {
+        const duration = await readFileDurationSeconds(file);
+        const rounded = Math.ceil(duration);
+        const maxSeconds =
+          kind === "VIDEO" ? limits.maxVideoSeconds : limits.maxAudioSeconds;
+        if (rounded > maxSeconds) {
+          setError(
+            kind === "VIDEO"
+              ? `Video must be ${limits.maxVideoSeconds}s or less (about ${rounded}s).`
+              : `Audio must be ${limits.maxAudioSeconds}s or less (about ${rounded}s).`,
+          );
+          return;
+        }
+        durationSeconds = rounded;
+      }
+
       const presignResponse = await fetch("/api/media/presign", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -248,6 +286,7 @@ export function SetupContentForm({
           sizeBytes: file.size,
           fileName: file.name,
           r2ObjectKey: presign.r2ObjectKey,
+          ...(durationSeconds !== undefined ? { durationSeconds } : {}),
         }),
       });
 
@@ -264,8 +303,10 @@ export function SetupContentForm({
 
       setMedia((current) => [...current, confirm.media as MediaItem]);
       setMessage(`Uploaded ${file.name}`);
-    } catch {
-      setError("Network error during upload.");
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Network error during upload.",
+      );
     } finally {
       setUploading(false);
     }
@@ -283,12 +324,29 @@ export function SetupContentForm({
           <span className="font-medium text-zinc-900">{displayName}</span>.
           You can save now and finish setup in the next step.
         </p>
+        <p className="mt-3 text-xs leading-5 text-zinc-500">
+          Package limits: {limits.maxImages} photos · video ≤{" "}
+          {limits.maxVideoSeconds}s · audio ≤ {limits.maxAudioSeconds}s ·
+          statements ≤ {limits.maxStatementWords} words total.
+        </p>
       </div>
 
       <section className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
-        <h2 className="text-sm font-medium text-zinc-900">Statements</h2>
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="text-sm font-medium text-zinc-900">Statements</h2>
+          <p
+            className={cn(
+              "text-xs tabular-nums",
+              usedWords > limits.maxStatementWords
+                ? "font-medium text-red-600"
+                : "text-zinc-500",
+            )}
+          >
+            {usedWords} / {limits.maxStatementWords} words
+          </p>
+        </div>
         <p className="mt-1 text-sm text-zinc-600">
-          Short messages or memories for future generations.
+          Sinhala or English. Word count is across all statements combined.
         </p>
 
         <div className="mt-5 space-y-3">
@@ -370,10 +428,17 @@ export function SetupContentForm({
       </section>
 
       <section className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
-        <h2 className="text-sm font-medium text-zinc-900">Photos, videos & voice</h2>
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="text-sm font-medium text-zinc-900">
+            Photos, videos & voice
+          </h2>
+          <p className="text-xs tabular-nums text-zinc-500">
+            Photos {photoCount} / {limits.maxImages}
+          </p>
+        </div>
         <p className="mt-1 text-sm text-zinc-600">
-          Files go to private storage. They are never shown publicly without
-          authorization later.
+          Files go to private storage. Video ≤ {limits.maxVideoSeconds}s, audio ≤{" "}
+          {limits.maxAudioSeconds}s.
         </p>
 
         {!r2Configured ? (

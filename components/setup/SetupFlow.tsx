@@ -12,6 +12,7 @@ type SetupFlowProps = {
   expiresLabel?: string | null;
   hasPin: boolean;
   r2Configured: boolean;
+  packageTier: "A" | "B" | "C";
   initialStatements: Array<{ id: string; body: string }>;
   initialMedia: Array<{
     id: string;
@@ -19,6 +20,7 @@ type SetupFlowProps = {
     originalName: string | null;
     sizeBytes: number;
     contentType: string;
+    durationSeconds?: number | null;
   }>;
 };
 
@@ -35,6 +37,7 @@ export function SetupFlow({
   expiresLabel,
   hasPin,
   r2Configured,
+  packageTier,
   initialStatements,
   initialMedia,
 }: SetupFlowProps) {
@@ -71,6 +74,7 @@ export function SetupFlow({
       displayName={displayName}
       setupToken={setupToken}
       r2Configured={r2Configured}
+      packageTier={packageTier}
       initialStatements={initialStatements}
       initialMedia={initialMedia}
       onComplete={setComplete}

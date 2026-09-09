@@ -12,6 +12,7 @@ export const MANAGE_MEDIA_SELECT = {
   kind: true,
   contentType: true,
   sizeBytes: true,
+  durationSeconds: true,
   originalName: true,
   sortOrder: true,
   createdAt: true,
@@ -35,6 +36,7 @@ export type ManageOwnerContent = {
     displayName: string;
     qrId: string;
     isPublicPinRequired: boolean;
+    packageTier: "A" | "B" | "C";
   };
   statements: Array<{
     id: string;
@@ -47,6 +49,7 @@ export type ManageOwnerContent = {
     kind: "PHOTO" | "VIDEO" | "VOICE";
     contentType: string;
     sizeBytes: number;
+    durationSeconds: number | null;
     originalName: string | null;
     sortOrder: number;
     createdAt: Date;
@@ -67,6 +70,7 @@ export async function loadManageOwnerContent(
       displayName: true,
       qrId: true,
       isPublicPinRequired: true,
+      packageTier: true,
       isSetupComplete: true,
       manageTokenHash: true,
       hashedPin: true,
@@ -101,6 +105,7 @@ export async function loadManageOwnerContent(
       displayName: profile.displayName,
       qrId: profile.qrId,
       isPublicPinRequired: profile.isPublicPinRequired,
+      packageTier: profile.packageTier,
     },
     statements,
     media,

@@ -101,8 +101,21 @@ function main() {
     sizeBytes: 2048,
     fileName: "voice.mp3",
     r2ObjectKey: "profiles/507f1f77bcf86cd799439011/VOICE/2026/09/x-voice.mp3",
+    durationSeconds: 45,
   });
   assert(confirmOk.success, "manage media confirm payload must pass");
+
+  const confirmMissingDuration = manageMediaConfirmSchema.safeParse({
+    kind: "VOICE",
+    contentType: "audio/mpeg",
+    sizeBytes: 2048,
+    fileName: "voice.mp3",
+    r2ObjectKey: "profiles/507f1f77bcf86cd799439011/VOICE/2026/09/x-voice.mp3",
+  });
+  assert(
+    !confirmMissingDuration.success,
+    "VOICE confirm without durationSeconds must fail",
+  );
 
   // --- Session cookie (separate from public view) ---
   assert(

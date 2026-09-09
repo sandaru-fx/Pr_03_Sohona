@@ -3,6 +3,7 @@ import {
   authorizeManageSession,
   manageAuthErrorResponse,
 } from "@/lib/manage-auth";
+import { assertStatementWordLimit } from "@/lib/package-limits";
 import { prisma } from "@/lib/prisma";
 import { enforceIpRateLimit } from "@/lib/rate-limit-presets";
 import { manageStatementsSchema } from "@/lib/validators/manage-statements";
@@ -41,6 +42,17 @@ export async function PUT(request: Request) {
           message: issue.message,
         })),
       },
+      { status: 400 },
+    );
+  }
+
+  const wordLimit = assertStatementWordLimit(
+    auth.profile.packageTier,
+    parsed.data.statements,
+  );
+  if (!wordLimit.ok) {
+    return NextResponse.json(
+      { error: wordLimit.error, message: wordLimit.message },
       { status: 400 },
     );
   }

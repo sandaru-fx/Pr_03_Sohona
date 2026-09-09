@@ -177,6 +177,8 @@ model MediaAsset {
   r2ObjectKey  String    @unique
   contentType  String
   sizeBytes    Int
+  /// Duration for VIDEO/VOICE (seconds, ceil). Null for PHOTO.
+  durationSeconds Int?
   originalName String?
   sortOrder    Int       @default(0)
 

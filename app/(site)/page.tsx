@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   PACKAGE_CATALOG,
@@ -10,29 +11,43 @@ export default function HomePage() {
 
   return (
     <main className="flex flex-1 flex-col">
-      {/* Hero */}
-      <section className="relative overflow-hidden border-b border-border">
+      {/* Hero — brand + one headline + CTAs over full-bleed image */}
+      <section className="relative min-h-[calc(100vh-5rem)] overflow-hidden border-b border-border">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/hero-memorial.jpg"
+            alt="Memorial book with lotus emblem beside a candle"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-[72%_center] brightness-[1.22] contrast-[1.06] sm:object-[68%_center]"
+          />
+        </div>
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(80%_60%_at_70%_0%,rgba(201,164,92,0.12),transparent_55%),radial-gradient(60%_50%_at_10%_90%,rgba(125,157,181,0.08),transparent_50%)]"
+          className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-[#0B0D0F]/82 via-[#0B0D0F]/28 to-transparent"
         />
-        <div className="relative mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-5xl flex-col justify-end px-6 pb-16 pt-24 sm:pb-24 sm:pt-28">
-          <p className="sohona-fade-up font-display text-6xl tracking-tight text-foreground sm:text-7xl md:text-8xl">
-            Sohona
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-2/5 bg-gradient-to-t from-[#0B0D0F]/70 to-transparent"
+        />
+
+        <div className="relative z-10 mx-auto flex min-h-[calc(100vh-5rem)] w-full max-w-5xl flex-col justify-end px-6 pb-20 pt-28 sm:pb-28 sm:pt-32">
+          <p className="sohona-fade-up font-sans text-5xl font-semibold tracking-tight text-[#F5F1E8] sm:text-6xl md:text-7xl">
+            Mathaka QR
           </p>
           <h1
-            className="sohona-fade-up mt-6 max-w-2xl font-display text-2xl leading-snug text-foreground sm:text-3xl"
+            className="sohona-fade-up mt-5 max-w-xl font-sans text-xl font-medium leading-snug tracking-tight text-[#F5F1E8] sm:mt-6 sm:text-2xl md:text-[1.75rem] md:leading-snug"
             style={{ animationDelay: "80ms" }}
           >
             Digital remembrance. Private by design.
           </h1>
           <p
-            className="sohona-fade-up mt-4 max-w-xl text-base leading-7 text-foreground-secondary"
+            className="sohona-fade-up mt-5 max-w-md font-sans text-base leading-7 text-gray-400 sm:text-[1.05rem] sm:leading-8"
             style={{ animationDelay: "140ms" }}
           >
-            A respectful digital place for temples and families to preserve
-            meaningful memories — while keeping private content under family
-            control.
+            A respectful digital place for temples and families — private
+            memories stay under family control.
           </p>
           <div
             className="sohona-fade-up mt-10 flex flex-wrap gap-3"
@@ -40,13 +55,13 @@ export default function HomePage() {
           >
             <Link
               href="/contact"
-              className="inline-flex h-12 items-center justify-center rounded-xl bg-gold px-6 text-sm font-medium text-background transition hover:bg-gold-hover"
+              className="inline-flex h-12 min-h-12 items-center justify-center rounded-xl bg-gold px-7 font-sans text-sm font-medium text-[#0B0D0F] transition-opacity duration-300 hover:opacity-90"
             >
               Create a Memorial
             </Link>
             <Link
               href="/about"
-              className="inline-flex h-12 items-center justify-center rounded-xl border border-border bg-surface px-6 text-sm font-medium text-foreground transition hover:border-gold/40"
+              className="inline-flex h-12 min-h-12 items-center justify-center rounded-xl border border-[#2A2E33] bg-[#181C20]/75 px-7 font-sans text-sm font-medium text-[#F5F1E8] backdrop-blur-sm transition duration-300 hover:border-gold/40"
             >
               Learn More
             </Link>
@@ -56,12 +71,14 @@ export default function HomePage() {
 
       {/* How it works */}
       <section className="border-b border-border bg-background-secondary">
-        <div className="mx-auto max-w-5xl px-6 py-16 sm:py-20">
-          <p className="text-sm tracking-wide text-gold">How Sohona works</p>
-          <h2 className="mt-3 font-display text-3xl text-foreground sm:text-4xl">
+        <div className="mx-auto max-w-5xl px-6 py-24 sm:py-28">
+          <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
+            How Mathaka QR works
+          </p>
+          <h2 className="mt-4 max-w-xl font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-4xl">
             Three quiet steps
           </h2>
-          <ol className="mt-10 grid gap-8 sm:grid-cols-3">
+          <ol className="mt-14 grid gap-12 sm:grid-cols-3 sm:gap-10">
             {[
               {
                 title: "Temple creates the memorial",
@@ -76,14 +93,14 @@ export default function HomePage() {
                 body: "A unique QR opens a calm memorial page. Optional PIN keeps the most private moments protected.",
               },
             ].map((item, index) => (
-              <li key={item.title}>
-                <p className="text-xs text-foreground-muted">
+              <li key={item.title} className="sohona-fade-up">
+                <p className="font-sans text-sm tabular-nums text-gold/80">
                   {String(index + 1).padStart(2, "0")}
                 </p>
-                <h3 className="mt-3 font-display text-xl text-foreground">
+                <h3 className="mt-4 font-sans text-lg font-medium leading-snug text-[#F5F1E8] sm:text-xl">
                   {item.title}
                 </h3>
-                <p className="mt-3 text-sm leading-6 text-foreground-secondary">
+                <p className="mt-3 text-[0.95rem] leading-7 text-gray-400">
                   {item.body}
                 </p>
               </li>
@@ -94,12 +111,14 @@ export default function HomePage() {
 
       {/* Privacy */}
       <section className="border-b border-border">
-        <div className="mx-auto max-w-5xl px-6 py-16 sm:py-20">
-          <p className="text-sm tracking-wide text-gold">Privacy promise</p>
-          <h2 className="mt-3 max-w-2xl font-display text-3xl text-foreground sm:text-4xl">
+        <div className="mx-auto max-w-5xl px-6 py-24 sm:py-28">
+          <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
+            Privacy promise
+          </p>
+          <h2 className="mt-4 max-w-2xl font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-4xl sm:leading-tight">
             Your memories remain private to your family.
           </h2>
-          <p className="mt-5 max-w-2xl text-base leading-7 text-foreground-secondary">
+          <p className="mt-6 max-w-xl text-base leading-8 text-gray-400 sm:text-lg">
             Temple administrators manage profiles, packages, and QR codes only.
             They cannot open statements, photos, videos, audio, or visitor
             comments. Privacy is not a setting — it is the product.
@@ -109,31 +128,34 @@ export default function HomePage() {
 
       {/* Packages preview */}
       <section className="border-b border-border bg-background-secondary">
-        <div className="mx-auto max-w-5xl px-6 py-16 sm:py-20">
-          <p className="text-sm tracking-wide text-gold">Packages</p>
-          <h2 className="mt-3 font-display text-3xl text-foreground sm:text-4xl">
+        <div className="mx-auto max-w-5xl px-6 py-24 sm:py-28">
+          <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
+            Packages
+          </p>
+          <h2 className="mt-4 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-4xl">
             Same care. Different years.
           </h2>
-          <p className="mt-4 max-w-2xl text-base leading-7 text-foreground-secondary">
+          <p className="mt-5 max-w-xl text-base leading-8 text-gray-400">
             Content limits are identical. What changes is how long the memorial
             is designed to be kept. Retention begins when family setup is
             completed.
           </p>
-          <ul className="mt-10 grid gap-4 sm:grid-cols-3">
+          <ul className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-[#2A2E33] bg-[#2A2E33] sm:grid-cols-3">
             {PACKAGE_TIERS.map((tier) => {
               const item = PACKAGE_CATALOG[tier];
               return (
                 <li
                   key={item.tier}
-                  className="rounded-2xl border border-border bg-surface p-6"
+                  className="bg-[#181C20] px-6 py-8 sm:px-8 sm:py-10"
                 >
-                  <p className="text-sm text-foreground-muted">
-                    Package {item.tier}
+                  <p className="text-sm text-gray-500">Package {item.tier}</p>
+                  <p className="mt-3 font-sans text-4xl font-medium tracking-tight text-[#F5F1E8]">
+                    {item.retentionYears}
+                    <span className="ml-1 text-lg font-normal text-gray-400">
+                      years
+                    </span>
                   </p>
-                  <p className="mt-2 font-display text-3xl text-foreground">
-                    {item.retentionYears} years
-                  </p>
-                  <p className="mt-3 text-sm leading-6 text-foreground-secondary">
+                  <p className="mt-4 text-sm leading-7 text-gray-400">
                     Up to {limits.maxImages} photos · video ≤{" "}
                     {limits.maxVideoSeconds}s · statements ≤{" "}
                     {limits.maxStatementWords} words
@@ -144,60 +166,78 @@ export default function HomePage() {
           </ul>
           <Link
             href="/packages"
-            className="mt-8 inline-flex text-sm font-medium text-gold transition hover:text-gold-hover"
+            className="mt-10 inline-flex text-sm font-medium text-gold transition-opacity duration-300 hover:opacity-80"
           >
-            Compare packages
+            Compare packages →
           </Link>
         </div>
       </section>
 
       {/* Memorial preview */}
       <section className="border-b border-border">
-        <div className="mx-auto max-w-5xl px-6 py-16 sm:py-20">
-          <p className="text-sm tracking-wide text-gold">Memorial experience</p>
-          <h2 className="mt-3 font-display text-3xl text-foreground sm:text-4xl">
+        <div className="mx-auto max-w-5xl px-6 py-24 sm:py-28">
+          <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
+            Memorial experience
+          </p>
+          <h2 className="mt-4 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-4xl">
             A quiet space to remember
           </h2>
-          <div className="mt-10 rounded-2xl border border-border bg-surface p-8 sm:p-10">
-            <p className="text-xs tracking-wide text-foreground-muted">
-              Preview
-            </p>
-            <p className="mt-4 font-display text-4xl text-foreground sm:text-5xl">
-              In loving memory
-            </p>
-            <p className="mt-4 max-w-lg text-sm leading-7 text-foreground-secondary">
-              Statements, photographs, and voice — arranged with space to
-              breathe. Visitors leave respectful messages. No likes. No noise.
-            </p>
+          <div className="relative mt-14 overflow-hidden rounded-2xl border border-[#2A2E33]">
+            <div
+              aria-hidden
+              className="absolute inset-0 bg-[radial-gradient(70%_80%_at_80%_20%,rgba(201,164,92,0.12),transparent_55%)]"
+            />
+            <div className="relative px-8 py-14 sm:px-14 sm:py-20">
+              <p className="text-xs uppercase tracking-[0.18em] text-gray-500">
+                Preview
+              </p>
+              <p className="mt-6 font-sans text-4xl font-medium tracking-tight text-[#F5F1E8] sm:text-5xl">
+                In loving memory
+              </p>
+              <p className="mt-5 max-w-md text-base leading-8 text-gray-400">
+                Statements, photographs, and voice — arranged with space to
+                breathe. Visitors leave respectful messages. No likes. No noise.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* About + Contact CTA */}
+      {/* About + Contact */}
       <section className="bg-background-secondary">
-        <div className="mx-auto grid max-w-5xl gap-10 px-6 py-16 sm:grid-cols-2 sm:py-20">
+        <div className="mx-auto grid max-w-5xl gap-16 px-6 py-24 sm:grid-cols-2 sm:gap-12 sm:py-28">
           <div>
-            <h2 className="font-display text-3xl text-foreground">About</h2>
-            <p className="mt-4 text-base leading-7 text-foreground-secondary">
-              Built for temples that need a dignified way to support families —
-              without turning remembrance into a social feed.
+            <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
+              About
+            </p>
+            <h2 className="mt-4 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8]">
+              Built for temples
+            </h2>
+            <p className="mt-5 text-base leading-8 text-gray-400">
+              A dignified way to support families — without turning remembrance
+              into a social feed.
             </p>
             <Link
               href="/about"
-              className="mt-6 inline-flex text-sm font-medium text-gold transition hover:text-gold-hover"
+              className="mt-8 inline-flex text-sm font-medium text-gold transition-opacity duration-300 hover:opacity-80"
             >
-              Read more
+              Read more →
             </Link>
           </div>
           <div>
-            <h2 className="font-display text-3xl text-foreground">Contact</h2>
-            <p className="mt-4 text-base leading-7 text-foreground-secondary">
+            <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
+              Contact
+            </p>
+            <h2 className="mt-4 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8]">
+              Begin with a conversation
+            </h2>
+            <p className="mt-5 text-base leading-8 text-gray-400">
               Speak with your temple about starting a memorial for someone you
               love.
             </p>
             <Link
               href="/contact"
-              className="mt-6 inline-flex h-11 items-center rounded-xl bg-gold px-5 text-sm font-medium text-background transition hover:bg-gold-hover"
+              className="mt-8 inline-flex h-12 min-h-12 items-center rounded-xl bg-gold px-6 text-sm font-medium text-[#0B0D0F] transition-opacity duration-300 hover:opacity-90"
             >
               Contact the temple
             </Link>

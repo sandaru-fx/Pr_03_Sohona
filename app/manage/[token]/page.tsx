@@ -16,13 +16,13 @@ export async function generateMetadata({ params }: ManagePageProps) {
 
   if (result.status === "ready") {
     return {
-      title: `Manage · ${result.profile.displayName} · Sohona`,
+      title: `Manage · ${result.profile.displayName} · Mathaka QR`,
       robots: { index: false, follow: false },
     };
   }
 
   return {
-    title: "Manage memorial · Sohona",
+    title: "Manage memorial · Mathaka QR",
     robots: { index: false, follow: false },
   };
 }

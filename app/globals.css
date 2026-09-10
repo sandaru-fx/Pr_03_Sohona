@@ -1,24 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  /* Backgrounds */
+  /* Quiet-luxury forced dark palette */
   --background: #0b0d0f;
   --background-secondary: #121518;
   --surface: #181c20;
   --surface-elevated: #1d2227;
 
-  /* Text */
+  /* Soft off-white primary text — never pure #FFFFFF */
   --foreground: #f5f1e8;
-  --foreground-secondary: #a9a59c;
-  --foreground-muted: #77756f;
+  /* Muted secondary: gray-400 / gray-500 */
+  --foreground-secondary: #9ca3af;
+  --foreground-muted: #6b7280;
 
-  /* Brand gold (use sparingly ~5%) */
+  /* Accent gold — use sparingly (~5%) */
   --gold: #c9a45c;
-  --gold-hover: #e0bd73;
+  --gold-hover: #d4b36e;
   --gold-subtle: rgba(201, 164, 92, 0.1);
 
-  /* Borders */
-  --border: #292d31;
+  /* Subtle borders (no heavy shadows) */
+  --border: #2a2e33;
   --border-subtle: rgba(255, 255, 255, 0.08);
 
   /* Semantic */
@@ -27,8 +28,8 @@
   --warning: #d2a85a;
   --info: #7d9db5;
 
-  /* Focus */
-  --ring: rgba(201, 164, 92, 0.45);
+  /* Premium gold focus (ring-1 weight) */
+  --ring: #c9a45c;
 }
 
 @theme inline {
@@ -48,9 +49,12 @@
   --color-error: var(--error);
   --color-warning: var(--warning);
   --color-info: var(--info);
-  --font-sans: var(--font-dm-sans);
-  --font-display: var(--font-playfair);
-  --font-mono: var(--font-geist-mono);
+
+  /* Single UI font: DM Sans */
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
 html {
@@ -58,29 +62,32 @@ html {
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  background-color: #0b0d0f;
+  color: #f5f1e8;
+  font-family: var(--font-sans);
 }
 
-.font-display {
-  font-family: var(--font-playfair), ui-serif, Georgia, serif;
+/* Kill default blue rings; components apply gold ring-1 */
+:focus {
+  outline: none;
 }
 
-/* Calm focus ring for accessibility */
 :focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 1px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.sohona-focus:focus-visible {
+  outline: 1px solid var(--gold);
   outline-offset: 2px;
 }
 
 @keyframes sohona-fade-up {
   from {
     opacity: 0;
-    transform: translateY(10px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -95,11 +102,10 @@ body {
 }
 
 .sohona-fade-up {
-  animation: sohona-fade-up 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: sohona-fade-up 300ms ease-out both;
 }
 
 .sohona-skeleton {
   animation: sohona-pulse 1.4s ease-in-out infinite;
   background: var(--surface-elevated);
 }
-

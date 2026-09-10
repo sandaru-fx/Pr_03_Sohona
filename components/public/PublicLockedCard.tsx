@@ -24,7 +24,7 @@ export function PublicLockedCard({
       <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-warning/10 text-warning">
         <ShieldAlert className="h-6 w-6" aria-hidden />
       </div>
-      <p className="mt-5 text-sm tracking-wide text-foreground-muted">Sohona</p>
+      <p className="mt-5 text-sm tracking-wide text-foreground-muted">Mathaka QR</p>
       <h1 className="mt-2 font-display text-3xl text-foreground">
         Please wait a moment
       </h1>

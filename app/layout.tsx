@@ -1,17 +1,10 @@
 import type { Metadata } from "next";
-import { DM_Sans, Geist_Mono, Playfair_Display } from "next/font/google";
+import { DM_Sans, Geist_Mono } from "next/font/google";
 import { getServerEnv } from "@/lib/env";
 import "./globals.css";
 
 // Fail fast on boot if Phase 2 required env is missing/invalid
 getServerEnv();
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-playfair",
-  display: "swap",
-});
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -26,7 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sohona",
+  title: "Mathaka QR",
   description:
     "A respectful digital place to remember, while keeping family memories private.",
 };
@@ -35,9 +28,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${dmSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${dmSans.variable} ${geistMono.variable} h-full`}
     >
-      <body className="flex min-h-full flex-col bg-background text-foreground">
+      <body className="flex min-h-full flex-col bg-[#0B0D0F] font-sans text-[#F5F1E8] antialiased">
         {children}
       </body>
     </html>

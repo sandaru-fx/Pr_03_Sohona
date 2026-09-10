@@ -82,7 +82,7 @@ export function ManagePinForm({
       <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-elevated text-foreground-secondary">
         <KeyRound className="h-6 w-6" aria-hidden />
       </div>
-      <p className="mt-5 text-sm tracking-wide text-foreground-muted">Sohona</p>
+      <p className="mt-5 text-sm tracking-wide text-foreground-muted">Mathaka QR</p>
       <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
         Enter PIN to manage
       </h1>

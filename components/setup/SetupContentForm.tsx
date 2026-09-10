@@ -315,7 +315,7 @@ export function SetupContentForm({
   return (
     <div className="w-full max-w-2xl space-y-6">
       <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8">
-        <p className="text-sm tracking-wide text-foreground-muted">Sohona</p>
+        <p className="text-sm tracking-wide text-foreground-muted">Mathaka QR</p>
         <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
           Add memories
         </h1>

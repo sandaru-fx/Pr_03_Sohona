@@ -19,13 +19,13 @@ export async function generateMetadata({ params }: PublicProfilePageProps) {
 
   if (result.status === "ready") {
     return {
-      title: `${result.profile.displayName} · Sohona`,
+      title: `${result.profile.displayName} · Mathaka QR`,
       robots: { index: false, follow: false },
     };
   }
 
   return {
-    title: "Memorial · Sohona",
+    title: "Memorial · Mathaka QR",
     robots: { index: false, follow: false },
   };
 }

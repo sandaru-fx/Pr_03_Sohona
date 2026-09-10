@@ -2,29 +2,54 @@ import Link from "next/link";
 
 export function SiteFooter() {
   return (
-    <footer className="relative z-10 mt-auto border-t border-border bg-background-secondary">
-      <div className="mx-auto flex max-w-5xl flex-col gap-6 px-6 py-12 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="font-display text-2xl text-foreground">Sohona</p>
-          <p className="mt-2 max-w-sm text-sm leading-6 text-foreground-secondary">
-            Remember. Preserve. Protect. Share. Respect. — private by design.
-          </p>
+    <footer className="relative z-10 mt-auto border-t border-[#2A2E33] bg-background-secondary">
+      <div className="mx-auto flex max-w-5xl flex-col gap-10 px-6 py-14 sm:py-16">
+        <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="font-sans text-2xl font-medium tracking-tight text-[#F5F1E8] sm:text-3xl">
+              Mathaka QR
+            </p>
+            <p className="mt-3 max-w-sm text-sm leading-7 text-gray-400">
+              Remember. Preserve. Protect. Share. Respect. — private by design.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-x-6 gap-y-3 text-base text-gray-400">
+            <Link
+              href="/about"
+              className="transition-opacity duration-300 hover:text-gold"
+            >
+              About
+            </Link>
+            <Link
+              href="/packages"
+              className="transition-opacity duration-300 hover:text-gold"
+            >
+              Packages
+            </Link>
+            <Link
+              href="/contact"
+              className="transition-opacity duration-300 hover:text-gold"
+            >
+              Contact
+            </Link>
+            <Link
+              href="/family"
+              className="transition-opacity duration-300 hover:text-gold"
+            >
+              Family access
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-foreground-secondary">
-          <Link href="/about" className="transition hover:text-gold">
-            About
-          </Link>
-          <Link href="/packages" className="transition hover:text-gold">
-            Packages
-          </Link>
-          <Link href="/contact" className="transition hover:text-gold">
-            Contact
-          </Link>
-          <Link href="/family" className="transition hover:text-gold">
-            Family access
-          </Link>
-          <Link href="/login" className="transition hover:text-gold">
-            Temple admin
+
+        <div className="flex flex-col gap-4 border-t border-[#2A2E33] pt-8 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm leading-7 text-gray-500">
+            Temple staff manage memorials from the admin panel.
+          </p>
+          <Link
+            href="/login"
+            className="inline-flex h-12 min-h-12 items-center justify-center rounded-xl border border-[#2A2E33] bg-[#181C20] px-6 font-sans text-sm font-medium text-[#F5F1E8] transition duration-300 hover:border-gold/40 hover:text-gold focus:outline-none focus-visible:ring-1 focus-visible:ring-[#C9A45C]"
+          >
+            Admin login
           </Link>
         </div>
       </div>

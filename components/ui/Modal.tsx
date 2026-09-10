@@ -60,7 +60,7 @@ export function Modal({
           <div>
             <h2
               id="sohona-modal-title"
-              className="font-display text-xl text-foreground"
+              className="font-sans text-xl tracking-tight text-[#F5F1E8]"
             >
               {title}
             </h2>

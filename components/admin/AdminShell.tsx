@@ -41,7 +41,7 @@ export function AdminShell({
           </button>
           <div>
             <p className="text-sm font-semibold text-foreground">
-              Sohona Admin
+              Mathaka QR Admin
             </p>
           </div>
         </header>

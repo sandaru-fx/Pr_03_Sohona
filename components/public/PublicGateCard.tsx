@@ -70,7 +70,7 @@ export function PublicGateCard({
       >
         <Icon className="h-6 w-6" aria-hidden />
       </div>
-      <p className="mt-5 text-sm tracking-wide text-foreground-muted">Sohona</p>
+      <p className="mt-5 text-sm tracking-wide text-foreground-muted">Mathaka QR</p>
       <h1 className="mt-2 font-display text-3xl text-foreground">{title}</h1>
       <p className="mt-3 text-sm leading-6 text-foreground-secondary">
         {result.message}

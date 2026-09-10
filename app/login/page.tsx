@@ -48,7 +48,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   return (
     <main className="flex min-h-full flex-1 flex-col items-center justify-center bg-background-secondary px-6 py-16 text-foreground">
       <div className="w-full max-w-md">
-        <p className="text-sm tracking-wide text-foreground-muted">Sohona</p>
+        <p className="text-sm tracking-wide text-foreground-muted">Mathaka QR</p>
         <h1 className="mt-2 font-display text-3xl tracking-tight">
           Admin sign in
         </h1>

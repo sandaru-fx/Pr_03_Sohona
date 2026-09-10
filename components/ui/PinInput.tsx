@@ -80,7 +80,10 @@ export function PinInput({
             refs.current[focusIndex]?.focus();
           }}
           className={cn(
-            "h-12 w-11 rounded-xl border border-border bg-surface text-center text-lg tracking-widest text-foreground transition focus-visible:border-gold/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] disabled:opacity-60 sm:h-14 sm:w-12",
+            "h-12 min-h-11 w-11 min-w-11 rounded-xl border border-[#2A2E33] bg-[#181C20] text-center font-sans text-lg tracking-widest text-[#F5F1E8] shadow-none transition-opacity duration-300",
+            "focus:outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#C9A45C]",
+            "disabled:cursor-not-allowed disabled:opacity-60",
+            "sm:h-14 sm:w-12",
           )}
         />
       ))}

@@ -57,7 +57,7 @@ export function Sidebar({
       >
         <div className="flex h-16 items-center justify-between border-b border-border px-5">
           <div>
-            <p className="font-display text-lg text-foreground">Sohona</p>
+            <p className="font-display text-lg text-foreground">Mathaka QR</p>
             <p className="text-xs text-foreground-muted">Temple Admin</p>
           </div>
           <button

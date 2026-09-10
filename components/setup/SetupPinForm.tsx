@@ -97,7 +97,7 @@ export function SetupPinForm({
         <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-success/10 text-success">
           <CheckCircle2 className="h-6 w-6" aria-hidden />
         </div>
-        <p className="mt-5 text-sm tracking-wide text-foreground-muted">Sohona</p>
+        <p className="mt-5 text-sm tracking-wide text-foreground-muted">Mathaka QR</p>
         <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
           PIN saved
         </h1>
@@ -115,7 +115,7 @@ export function SetupPinForm({
 
   return (
     <div className="w-full max-w-lg rounded-2xl border border-border bg-surface p-8 shadow-sm">
-      <p className="text-sm tracking-wide text-foreground-muted">Sohona</p>
+      <p className="text-sm tracking-wide text-foreground-muted">Mathaka QR</p>
       <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
         Create your security PIN
       </h1>

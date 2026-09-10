@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 
 export function generateMetadata() {
   return {
-    title: "Family setup · Sohona",
+    title: "Family setup · Mathaka QR",
     robots: {
       index: false,
       follow: false,

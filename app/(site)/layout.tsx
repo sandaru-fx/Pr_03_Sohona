@@ -4,8 +4,8 @@ import { SiteChrome } from "@/components/site/SiteChrome";
 
 export const metadata: Metadata = {
   title: {
-    default: "Sohona",
-    template: "%s · Sohona",
+    default: "Mathaka QR",
+    template: "%s · Mathaka QR",
   },
   description:
     "A respectful digital place to remember, while keeping family memories private.",

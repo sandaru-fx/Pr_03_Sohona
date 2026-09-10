@@ -9,32 +9,34 @@ import {
 export const metadata: Metadata = {
   title: "Packages",
   description:
-    "Sohona memorial packages A, B, and C — same content limits, 25 / 50 / 100 year retention.",
+    "Mathaka QR memorial packages A, B, and C — same content limits, 25 / 50 / 100 year retention.",
 };
 
 export default function PackagesPage() {
   const limits = SHARED_PACKAGE_LIMITS;
 
   return (
-    <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-16 sm:py-20">
-      <p className="text-sm tracking-wide text-gold">Packages</p>
-      <h1 className="mt-3 font-display text-4xl tracking-tight text-foreground sm:text-5xl">
+    <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-20 sm:py-28">
+      <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
+        Packages
+      </p>
+      <h1 className="mt-4 font-sans text-4xl font-medium tracking-tight text-[#F5F1E8] sm:text-5xl sm:leading-tight">
         Three packages. Same privacy. Different years.
       </h1>
-      <p className="mt-6 text-base leading-7 text-foreground-secondary">
+      <p className="mt-8 text-lg leading-8 text-gray-400">
         Every package includes the same memorial content limits. What changes is
         how long the memorial is designed to be kept. Pricing is arranged with
         your temple — not sold as a public checkout.
       </p>
-      <p className="mt-4 text-sm leading-6 text-foreground-muted">
+      <p className="mt-4 text-sm leading-7 text-gray-500">
         Your retention period begins when family setup is completed.
       </p>
 
-      <section className="mt-12 border-t border-border pt-8">
-        <h2 className="font-display text-2xl text-foreground">
+      <section className="mt-16 border-t border-[#2A2E33] pt-12">
+        <h2 className="font-sans text-2xl font-medium tracking-tight text-[#F5F1E8]">
           Shared content limits
         </h2>
-        <ul className="mt-4 space-y-2 text-base leading-7 text-foreground-secondary">
+        <ul className="mt-8 space-y-3 text-base leading-8 text-gray-400">
           <li>Video up to {limits.maxVideoSeconds / 60} minute</li>
           <li>Audio / voice up to {limits.maxAudioSeconds / 60} minutes</li>
           <li>Up to {limits.maxImages} images</li>
@@ -52,25 +54,25 @@ export default function PackagesPage() {
         </ul>
       </section>
 
-      <ol className="mt-14 space-y-8">
+      <ol className="mt-16 space-y-4">
         {PACKAGE_TIERS.map((tier, index) => {
           const item = PACKAGE_CATALOG[tier];
           return (
             <li
               key={item.tier}
-              className="rounded-2xl border border-border bg-surface p-6 sm:p-8"
+              className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 sm:px-8 sm:py-10"
             >
-              <p className="text-sm text-foreground-muted">
+              <p className="text-sm tabular-nums text-gold/80">
                 {String(index + 1).padStart(2, "0")}
               </p>
-              <h2 className="mt-2 font-display text-3xl text-foreground">
+              <h2 className="mt-3 font-sans text-2xl font-medium tracking-tight text-[#F5F1E8] sm:text-3xl">
                 Package {item.tier}
               </h2>
-              <p className="mt-3 max-w-xl text-base leading-7 text-foreground-secondary">
+              <p className="mt-4 max-w-xl text-base leading-8 text-gray-400">
                 Designed for{" "}
-                <strong className="font-medium text-foreground">
+                <span className="font-medium text-[#F5F1E8]">
                   {item.retentionYears} years
-                </strong>{" "}
+                </span>{" "}
                 of remembrance — same media and word limits as the other
                 packages.
               </p>
@@ -79,11 +81,11 @@ export default function PackagesPage() {
         })}
       </ol>
 
-      <p className="mt-14 text-base leading-7 text-foreground-secondary">
+      <p className="mt-16 text-base leading-8 text-gray-400">
         Ready to discuss what fits your temple?{" "}
         <Link
           href="/contact"
-          className="font-medium text-gold underline-offset-2 hover:underline"
+          className="font-medium text-gold transition-opacity duration-300 hover:opacity-80"
         >
           Contact us
         </Link>

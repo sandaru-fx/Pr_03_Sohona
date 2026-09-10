@@ -32,7 +32,7 @@ export function SetupSuccessCard({
       <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-success/10 text-success">
         <CheckCircle2 className="h-6 w-6" aria-hidden />
       </div>
-      <p className="mt-5 text-sm tracking-wide text-foreground-muted">Sohona</p>
+      <p className="mt-5 text-sm tracking-wide text-foreground-muted">Mathaka QR</p>
       <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
         Setup complete
       </h1>

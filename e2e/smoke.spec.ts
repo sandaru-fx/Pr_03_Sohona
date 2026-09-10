@@ -1,9 +1,9 @@
 import { expect, test } from "@playwright/test";
 
-test.describe("Sohona public site smoke", () => {
-  test("home shows Sohona brand and primary CTAs", async ({ page }) => {
+test.describe("Mathaka QR public site smoke", () => {
+  test("home shows Mathaka QR brand and primary CTAs", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByText("Sohona").first()).toBeVisible();
+    await expect(page.getByText("Mathaka QR").first()).toBeVisible();
     await expect(
       page.getByRole("heading", {
         name: /digital remembrance\. private by design/i,

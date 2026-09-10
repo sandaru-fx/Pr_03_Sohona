@@ -89,7 +89,7 @@ export function ManageGateCard({
       >
         <SearchX className="h-6 w-6" aria-hidden />
       </div>
-      <p className="mt-5 text-sm tracking-wide text-foreground-muted">Sohona</p>
+      <p className="mt-5 text-sm tracking-wide text-foreground-muted">Mathaka QR</p>
       <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
         Manage link unavailable
       </h1>

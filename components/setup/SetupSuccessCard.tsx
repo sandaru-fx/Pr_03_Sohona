@@ -28,46 +28,48 @@ export function SetupSuccessCard({
   }
 
   return (
-    <div className="w-full max-w-lg rounded-2xl border border-border bg-surface p-8 shadow-sm">
-      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-success/10 text-success">
+    <div className="w-full max-w-2xl rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-10 sm:px-8 sm:py-12">
+      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-success/10 text-success">
         <CheckCircle2 className="h-6 w-6" aria-hidden />
       </div>
-      <p className="mt-5 text-sm tracking-wide text-foreground-muted">Mathaka QR</p>
-      <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
+      <p className="mt-8 text-xs font-medium uppercase tracking-[0.18em] text-gold">
+        Mathaka QR
+      </p>
+      <h1 className="mt-4 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-4xl">
         Setup complete
       </h1>
-      <p className="mt-3 text-sm leading-6 text-foreground-secondary">
+      <p className="mt-4 max-w-xl text-base leading-7 text-gray-400">
         The memorial for{" "}
-        <span className="font-medium text-foreground">{displayName}</span> is
+        <span className="font-medium text-[#F5F1E8]">{displayName}</span> is
         ready. The one-time setup link is now locked and cannot be reused.
       </p>
 
-      <ul className="mt-6 space-y-2 rounded-xl border border-border bg-background-secondary px-4 py-3 text-sm text-foreground-secondary">
+      <ul className="mt-8 space-y-3 rounded-xl border border-[#2A2E33] bg-[#0B0D0F]/50 px-5 py-4 text-sm leading-7 text-gray-400">
         <li>PIN is saved (required for future edits)</li>
         <li>Setup link is permanently invalidated</li>
         <li>Temple admin still cannot see private memories</li>
       </ul>
 
-      <div className="mt-8 space-y-3">
-        <p className="text-sm font-medium text-foreground">Private manage link</p>
-        <p className="text-sm leading-6 text-foreground-secondary">
-          Save this link somewhere safe. It is shown only once. Your PIN is still
-          required whenever you edit.
+      <div className="mt-10 space-y-3">
+        <p className="text-sm font-medium text-[#F5F1E8]">Private manage link</p>
+        <p className="text-sm leading-7 text-gray-400">
+          Save this link somewhere safe. It is shown only once. Your PIN is
+          still required whenever you edit.
         </p>
-        <div className="flex gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row">
           <input
             readOnly
             value={manageUrl}
             aria-label="Private manage link"
-            className="h-11 w-full rounded-xl border border-border bg-background-secondary px-3.5 font-mono text-xs text-foreground"
+            className="h-12 w-full rounded-xl border border-[#2A2E33] bg-[#0B0D0F] px-3.5 font-mono text-xs text-[#F5F1E8] focus:outline-none focus-visible:ring-1 focus-visible:ring-[#C9A45C]"
           />
           <button
             type="button"
             onClick={() => void copyManageUrl()}
             aria-label={copied ? "Copied manage link" : "Copy manage link"}
             className={cn(
-              "inline-flex h-11 shrink-0 items-center gap-2 rounded-xl px-4 text-sm font-medium text-background transition",
-              copied ? "bg-success" : "bg-gold hover:bg-gold-hover",
+              "inline-flex h-12 min-h-12 shrink-0 items-center justify-center gap-2 rounded-xl px-5 text-sm font-medium text-[#0B0D0F] transition-opacity duration-300",
+              copied ? "bg-success" : "bg-gold hover:opacity-90",
             )}
           >
             {copied ? (
@@ -79,23 +81,23 @@ export function SetupSuccessCard({
           </button>
         </div>
         <p className="rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-warning">
-          If you leave this page without copying, the manage link cannot be shown
-          again from here.
+          If you leave this page without copying, the manage link cannot be
+          shown again from here.
         </p>
       </div>
 
-      <div className="mt-8 border-t border-border pt-6">
-        <p className="text-sm font-medium text-foreground">Public QR page</p>
+      <div className="mt-10 border-t border-[#2A2E33] pt-8">
+        <p className="text-sm font-medium text-[#F5F1E8]">Public QR page</p>
         <a
           href={publicUrl}
           target="_blank"
           rel="noreferrer"
-          className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-foreground underline-offset-4 hover:underline"
+          className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-gold transition-opacity duration-300 hover:opacity-80"
         >
           Open public link
           <ExternalLink className="h-4 w-4" aria-hidden />
         </a>
-        <p className="mt-2 break-all font-mono text-xs text-foreground-muted">
+        <p className="mt-2 break-all font-mono text-xs text-gray-500">
           {publicUrl}
         </p>
       </div>

@@ -51,14 +51,16 @@ export function Sidebar({
       <aside
         id="admin-sidebar"
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-border bg-surface transition-transform duration-200 lg:static lg:z-auto lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-[#2A2E33] bg-[#181C20] transition-transform duration-200 lg:static lg:z-auto lg:translate-x-0",
           mobileOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
         <div className="flex h-16 items-center justify-between border-b border-border px-5">
           <div>
-            <p className="font-display text-lg text-foreground">Mathaka QR</p>
-            <p className="text-xs text-foreground-muted">Temple Admin</p>
+            <p className="font-sans text-lg font-medium tracking-tight text-[#F5F1E8]">
+              Mathaka QR
+            </p>
+            <p className="text-xs text-gray-500">Temple Admin</p>
           </div>
           <button
             type="button"

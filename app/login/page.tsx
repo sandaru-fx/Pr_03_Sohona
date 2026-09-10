@@ -46,13 +46,19 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const allowlistSet = Boolean(process.env.ADMIN_EMAIL_ALLOWLIST?.trim());
 
   return (
-    <main className="flex min-h-full flex-1 flex-col items-center justify-center bg-background-secondary px-6 py-16 text-foreground">
-      <div className="w-full max-w-md">
-        <p className="text-sm tracking-wide text-foreground-muted">Mathaka QR</p>
-        <h1 className="mt-2 font-display text-3xl tracking-tight">
+    <main className="relative flex min-h-full flex-1 flex-col items-center justify-center overflow-hidden bg-[#0B0D0F] px-6 py-16 text-[#F5F1E8]">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_45%_at_50%_0%,rgba(201,164,92,0.1),transparent_55%)]"
+      />
+      <div className="relative w-full max-w-md rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-10 sm:px-8 sm:py-12">
+        <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
+          Mathaka QR
+        </p>
+        <h1 className="mt-4 font-sans text-3xl font-medium tracking-tight sm:text-4xl">
           Admin sign in
         </h1>
-        <p className="mt-3 text-sm leading-6 text-foreground-secondary">
+        <p className="mt-4 text-base leading-7 text-gray-400">
           Temple staff only. Sign in with a Google account on the admin
           allow-list.
         </p>
@@ -87,14 +93,17 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           <button
             type="submit"
             disabled={!ready}
-            className="flex h-12 w-full items-center justify-center rounded-xl bg-gold px-5 text-sm font-medium text-background transition hover:bg-gold-hover disabled:cursor-not-allowed disabled:bg-foreground-muted"
+            className="flex h-12 min-h-12 w-full items-center justify-center rounded-xl bg-gold px-5 text-sm font-medium text-[#0B0D0F] transition-opacity duration-300 hover:opacity-90 disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-[#0B0D0F]/70"
           >
             Continue with Google
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-foreground-muted">
-          <Link href="/" className="underline underline-offset-4 hover:text-foreground">
+        <p className="mt-8 text-center text-sm text-gray-500">
+          <Link
+            href="/"
+            className="text-gold transition-opacity duration-300 hover:opacity-80"
+          >
             Back to home
           </Link>
         </p>

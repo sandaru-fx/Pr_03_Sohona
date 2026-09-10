@@ -22,17 +22,17 @@ export default async function AdminProfilesPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="font-display text-2xl tracking-tight text-foreground sm:text-3xl">
+          <h1 className="font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-4xl">
             Memorials
           </h1>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-foreground-secondary">
+          <p className="mt-3 max-w-2xl text-base leading-7 text-gray-400">
             Admin-safe overview only. Private family statements, media, and
             comments are never shown here.
           </p>
         </div>
         <Link
           href="/admin/create"
-          className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-gold px-5 text-sm font-medium text-background transition hover:bg-gold-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2"
+          className="inline-flex h-12 min-h-12 items-center justify-center gap-2 rounded-xl bg-gold px-5 text-sm font-medium text-[#0B0D0F] transition-opacity duration-300 hover:opacity-90 focus:outline-none focus-visible:ring-1 focus-visible:ring-[#C9A45C]"
         >
           <PlusCircle className="h-4 w-4" aria-hidden />
           Create Memorial

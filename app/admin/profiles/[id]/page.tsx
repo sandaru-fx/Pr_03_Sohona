@@ -53,7 +53,7 @@ export default async function AdminProfileDetailPage({
           Back to memorials
         </Link>
         <div className="mt-4 flex flex-wrap items-center gap-3">
-          <h1 className="font-display text-2xl tracking-tight text-foreground sm:text-3xl">
+          <h1 className="font-sans text-2xl font-medium tracking-tight text-[#F5F1E8] sm:text-3xl">
             {profile.displayName}
           </h1>
           <SetupStatusBadge label={status.label} tone={status.tone} />

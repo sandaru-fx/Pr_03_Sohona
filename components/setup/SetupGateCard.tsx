@@ -70,26 +70,30 @@ export function SetupGateCard({
         : "Setup link unavailable";
 
   return (
-    <div className="w-full max-w-lg rounded-2xl border border-border bg-surface p-8 shadow-sm">
+    <div className="w-full max-w-md rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-10 sm:px-8 sm:py-12">
       <div
         className={cn(
-          "flex h-12 w-12 items-center justify-center rounded-2xl",
+          "mx-auto flex h-14 w-14 items-center justify-center rounded-2xl",
           tone === "amber" && "bg-warning/10 text-warning",
-          tone === "zinc" && "bg-surface-elevated text-foreground-secondary",
+          tone === "zinc" && "bg-[#0B0D0F] text-gray-400",
           tone === "red" && "bg-error/10 text-error",
         )}
       >
         <Icon className="h-6 w-6" aria-hidden />
       </div>
-      <p className="mt-5 text-sm tracking-wide text-foreground-muted">Mathaka QR</p>
-      <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
+      <p className="mt-8 text-center text-xs font-medium uppercase tracking-[0.18em] text-gold">
+        Mathaka QR
+      </p>
+      <h1 className="mt-4 text-center font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-4xl">
         {title}
       </h1>
-      <p className="mt-3 text-sm leading-6 text-foreground-secondary">{result.message}</p>
+      <p className="mx-auto mt-4 max-w-sm text-center text-base leading-7 text-gray-400">
+        {result.message}
+      </p>
       {result.profile?.displayName ? (
-        <p className="mt-4 text-sm text-foreground-muted">
+        <p className="mt-6 text-center text-sm text-gray-500">
           Profile:{" "}
-          <span className="font-medium text-foreground">
+          <span className="font-medium text-[#F5F1E8]">
             {result.profile.displayName}
           </span>
         </p>

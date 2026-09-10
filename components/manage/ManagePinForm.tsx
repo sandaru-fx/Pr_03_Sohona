@@ -78,15 +78,15 @@ export function ManagePinForm({
   }
 
   return (
-    <div className="w-full max-w-lg rounded-2xl border border-border bg-surface p-8 shadow-sm">
+    <div className="w-full max-w-lg rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-10 sm:px-8 sm:py-12 shadow-none">
       <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-elevated text-foreground-secondary">
         <KeyRound className="h-6 w-6" aria-hidden />
       </div>
-      <p className="mt-5 text-sm tracking-wide text-foreground-muted">Mathaka QR</p>
-      <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
+      <p className="mt-5 text-xs font-medium uppercase tracking-[0.18em] text-gold">Mathaka QR</p>
+      <h1 className="mt-2 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8]">
         Enter PIN to manage
       </h1>
-      <p className="mt-3 text-sm leading-6 text-foreground-secondary">
+      <p className="mt-3 text-base leading-7 text-gray-400">
         Private owner access for{" "}
         <span className="font-medium text-foreground">{displayName}</span>. The
         manage link alone is never enough — enter your 6-digit memorial PIN.
@@ -114,10 +114,10 @@ export function ManagePinForm({
             aria-invalid={Boolean(fieldError)}
             aria-describedby={fieldError ? errorId : undefined}
             className={cn(
-              "mt-2 h-11 w-full rounded-xl border bg-surface px-3.5 font-mono text-sm tracking-widest text-foreground shadow-sm outline-none transition",
-              "focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2",
+              "mt-2 h-11 w-full rounded-xl border bg-surface px-3.5 font-mono text-sm tracking-widest text-foreground shadow-none outline-none transition",
+              "focus:outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#C9A45C]",
               "disabled:cursor-not-allowed disabled:bg-background-secondary",
-              fieldError ? "border-error" : "border-border",
+              fieldError ? "border-error" : "border-[#2A2E33]",
             )}
           />
         </div>
@@ -142,7 +142,7 @@ export function ManagePinForm({
           disabled={submitting}
           className={cn(
             "inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl px-5 text-sm font-medium text-background transition",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2",
+            "focus-visible:outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#C9A45C]",
             submitting
               ? "cursor-not-allowed bg-foreground-muted"
               : "bg-gold hover:bg-gold-hover",

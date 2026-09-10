@@ -46,14 +46,20 @@ export default async function ManagePage({ params }: ManagePageProps) {
       : null;
 
   return (
-    <main className="flex min-h-full flex-1 flex-col items-center bg-background px-6 py-12 text-foreground sm:py-16">
-      <ManageGateCard
-        result={result}
-        manageToken={manageToken}
-        hasManageSession={hasManageSession}
-        ownerContent={ownerContent}
-        r2Configured={isR2Configured()}
+    <main className="relative flex min-h-full flex-1 flex-col items-center overflow-hidden bg-[#0B0D0F] px-5 py-12 text-[#F5F1E8] sm:px-6 sm:py-16">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_45%_at_50%_0%,rgba(201,164,92,0.06),transparent_55%)]"
       />
+      <div className="relative w-full max-w-2xl">
+        <ManageGateCard
+          result={result}
+          manageToken={manageToken}
+          hasManageSession={hasManageSession}
+          ownerContent={ownerContent}
+          r2Configured={isR2Configured()}
+        />
+      </div>
     </main>
   );
 }

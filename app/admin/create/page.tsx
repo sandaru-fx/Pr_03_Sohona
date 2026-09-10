@@ -173,7 +173,7 @@ export default function CreateProfilePage() {
               <CheckCircle2 className="h-6 w-6" aria-hidden />
             </div>
             <div>
-              <h1 className="font-display text-3xl text-foreground">
+              <h1 className="font-sans text-3xl font-medium tracking-tight text-[#F5F1E8]">
                 Memorial ready
               </h1>
               <p className="mt-1 text-sm leading-6 text-foreground-secondary">
@@ -252,7 +252,7 @@ export default function CreateProfilePage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-3xl text-foreground">
+        <h1 className="font-sans text-3xl font-medium tracking-tight text-[#F5F1E8]">
           Create Memorial
         </h1>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-foreground-secondary">

@@ -81,7 +81,7 @@ export function ManageGateCard({
   }
 
   return (
-    <div className="w-full max-w-lg rounded-2xl border border-border bg-surface p-8 shadow-sm">
+    <div className="w-full max-w-lg rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-10 sm:px-8 sm:py-12 shadow-none">
       <div
         className={cn(
           "flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-elevated text-foreground-secondary",
@@ -89,11 +89,11 @@ export function ManageGateCard({
       >
         <SearchX className="h-6 w-6" aria-hidden />
       </div>
-      <p className="mt-5 text-sm tracking-wide text-foreground-muted">Mathaka QR</p>
-      <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
+      <p className="mt-5 text-xs font-medium uppercase tracking-[0.18em] text-gold">Mathaka QR</p>
+      <h1 className="mt-2 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8]">
         Manage link unavailable
       </h1>
-      <p className="mt-3 text-sm leading-6 text-foreground-secondary">{result.message}</p>
+      <p className="mt-3 text-base leading-7 text-gray-400">{result.message}</p>
     </div>
   );
 }

@@ -5,22 +5,22 @@ import Link from "next/link";
  */
 export default function AdminSettingsPage() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
-        <h1 className="font-display text-3xl tracking-tight text-foreground">
+        <h1 className="font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-4xl">
           Settings
         </h1>
-        <p className="mt-2 max-w-2xl text-sm leading-6 text-foreground-secondary">
+        <p className="mt-3 max-w-2xl text-base leading-7 text-gray-400">
           Admin settings will be available in a later phase.
         </p>
       </div>
 
-      <div className="rounded-2xl border border-border bg-surface p-6 sm:p-8">
-        <p className="text-sm text-foreground-secondary">
+      <div className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 sm:px-8">
+        <p className="text-base leading-7 text-gray-400">
           Nothing to configure here yet.{" "}
           <Link
             href="/admin/create"
-            className="font-medium text-gold underline-offset-4 hover:underline"
+            className="font-medium text-gold transition-opacity duration-300 hover:opacity-80"
           >
             Create a memorial
           </Link>{" "}

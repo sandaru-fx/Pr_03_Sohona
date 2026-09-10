@@ -314,12 +314,12 @@ export function SetupContentForm({
 
   return (
     <div className="w-full max-w-2xl space-y-6">
-      <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8">
-        <p className="text-sm tracking-wide text-foreground-muted">Mathaka QR</p>
-        <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
+      <div className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 shadow-none sm:px-8 sm:py-10">
+        <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">Mathaka QR</p>
+        <h1 className="mt-2 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8]">
           Add memories
         </h1>
-        <p className="mt-3 text-sm leading-6 text-foreground-secondary">
+        <p className="mt-3 text-base leading-7 text-gray-400">
           Add statements and media for{" "}
           <span className="font-medium text-foreground">{displayName}</span>.
           You can save now and finish setup in the next step.
@@ -331,7 +331,7 @@ export function SetupContentForm({
         </p>
       </div>
 
-      <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+      <section className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 shadow-none sm:px-8 sm:py-10">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="text-sm font-medium text-foreground">Statements</h2>
           <p
@@ -369,7 +369,7 @@ export function SetupContentForm({
                   );
                 }}
                 placeholder="Write a memory or message..."
-                className="min-h-24 w-full rounded-xl border border-border bg-surface px-3.5 py-3 text-sm text-foreground shadow-sm outline-none transition focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 disabled:bg-background-secondary"
+                className="min-h-24 w-full rounded-xl border border-[#2A2E33] bg-surface px-3.5 py-3 text-sm text-foreground shadow-none outline-none transition focus:outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#C9A45C] disabled:bg-background-secondary"
               />
               <button
                 type="button"
@@ -384,7 +384,7 @@ export function SetupContentForm({
                       : current.filter((row) => row.key !== item.key),
                   )
                 }
-                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border text-foreground-muted transition hover:bg-background-secondary disabled:opacity-40"
+                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#2A2E33] text-foreground-muted transition hover:bg-background-secondary disabled:opacity-40"
               >
                 <Trash2 className="h-4 w-4" aria-hidden />
               </button>
@@ -399,7 +399,7 @@ export function SetupContentForm({
             disabled={
               savingStatements || finishing || statements.length >= 30
             }
-            className="inline-flex h-10 items-center gap-2 rounded-xl border border-border bg-surface px-4 text-sm font-medium text-foreground transition hover:bg-background-secondary"
+            className="inline-flex h-10 items-center gap-2 rounded-xl border border-[#2A2E33] bg-surface px-4 text-sm font-medium text-foreground transition hover:bg-background-secondary"
           >
             <Plus className="h-4 w-4" aria-hidden />
             Add statement
@@ -427,7 +427,7 @@ export function SetupContentForm({
         </div>
       </section>
 
-      <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+      <section className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 shadow-none sm:px-8 sm:py-10">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="text-sm font-medium text-foreground">
             Photos, videos & voice
@@ -464,7 +464,7 @@ export function SetupContentForm({
                     "inline-flex h-10 items-center gap-2 rounded-xl border px-4 text-sm font-medium transition",
                     kind === value
                       ? "border-gold bg-gold text-background"
-                      : "border-border bg-surface text-foreground hover:bg-background-secondary",
+                      : "border-[#2A2E33] bg-surface text-foreground hover:bg-background-secondary",
                   )}
                 >
                   <Icon className="h-4 w-4" aria-hidden />
@@ -490,7 +490,7 @@ export function SetupContentForm({
           </div>
         )}
 
-        <ul className="mt-6 divide-y divide-border rounded-xl border border-border">
+        <ul className="mt-6 divide-y divide-border rounded-xl border border-[#2A2E33]">
           {media.length === 0 ? (
             <li className="px-4 py-6 text-sm text-foreground-muted">No media uploaded yet.</li>
           ) : (
@@ -530,7 +530,7 @@ export function SetupContentForm({
         </p>
       ) : null}
 
-      <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+      <section className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 shadow-none sm:px-8 sm:py-10">
         <h2 className="text-sm font-medium text-foreground">Finish setup</h2>
         <p className="mt-1 text-sm text-foreground-secondary">
           This locks the setup link forever and shows your private manage link

@@ -408,12 +408,12 @@ export function ManageDashboard({
 
   return (
     <div className="w-full max-w-2xl space-y-6">
-      <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8">
-        <p className="text-sm tracking-wide text-foreground-muted">Mathaka QR</p>
-        <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
+      <div className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 shadow-none sm:px-8 sm:py-10">
+        <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">Mathaka QR</p>
+        <h1 className="mt-2 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8]">
           Manage memorial
         </h1>
-        <p className="mt-3 text-sm leading-6 text-foreground-secondary">
+        <p className="mt-3 text-base leading-7 text-gray-400">
           Private owner access for{" "}
           <span className="font-medium text-foreground">{displayName}</span>.
           Name is set by the temple and stays read-only here.
@@ -448,7 +448,7 @@ export function ManageDashboard({
         </p>
       </div>
 
-      <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+      <section className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 shadow-none sm:px-8 sm:py-10">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="text-sm font-medium text-foreground">Statements</h2>
           <p
@@ -486,7 +486,7 @@ export function ManageDashboard({
                   );
                 }}
                 placeholder="Write a memory or message..."
-                className="min-h-24 w-full rounded-xl border border-border bg-surface px-3.5 py-3 text-sm text-foreground shadow-sm outline-none transition focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 disabled:bg-background-secondary"
+                className="min-h-24 w-full rounded-xl border border-[#2A2E33] bg-surface px-3.5 py-3 text-sm text-foreground shadow-none outline-none transition focus:outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#C9A45C] disabled:bg-background-secondary"
               />
               <button
                 type="button"
@@ -499,7 +499,7 @@ export function ManageDashboard({
                       : current.filter((row) => row.key !== item.key),
                   )
                 }
-                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border text-foreground-muted transition hover:bg-background-secondary disabled:opacity-40"
+                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#2A2E33] text-foreground-muted transition hover:bg-background-secondary disabled:opacity-40"
               >
                 <Trash2 className="h-4 w-4" aria-hidden />
               </button>
@@ -512,7 +512,7 @@ export function ManageDashboard({
             type="button"
             onClick={() => setStatements((current) => [...current, newDraft()])}
             disabled={busy || statements.length >= 30}
-            className="inline-flex h-10 items-center gap-2 rounded-xl border border-border bg-surface px-4 text-sm font-medium text-foreground transition hover:bg-background-secondary disabled:opacity-40"
+            className="inline-flex h-10 items-center gap-2 rounded-xl border border-[#2A2E33] bg-surface px-4 text-sm font-medium text-foreground transition hover:bg-background-secondary disabled:opacity-40"
           >
             <Plus className="h-4 w-4" aria-hidden />
             Add statement
@@ -540,7 +540,7 @@ export function ManageDashboard({
         </div>
       </section>
 
-      <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+      <section className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 shadow-none sm:px-8 sm:py-10">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="text-sm font-medium text-foreground">
             Photos, videos & voice
@@ -578,7 +578,7 @@ export function ManageDashboard({
                     "inline-flex h-10 items-center gap-2 rounded-xl border px-4 text-sm font-medium transition",
                     kind === value
                       ? "border-gold bg-gold text-background"
-                      : "border-border bg-surface text-foreground hover:bg-background-secondary",
+                      : "border-[#2A2E33] bg-surface text-foreground hover:bg-background-secondary",
                   )}
                 >
                   <Icon className="h-4 w-4" aria-hidden />
@@ -611,7 +611,7 @@ export function ManageDashboard({
           </div>
         )}
 
-        <ul className="mt-6 divide-y divide-border rounded-xl border border-border">
+        <ul className="mt-6 divide-y divide-border rounded-xl border border-[#2A2E33]">
           {media.length === 0 ? (
             <li className="px-4 py-6 text-sm text-foreground-muted">
               No media on this memorial yet.
@@ -641,7 +641,7 @@ export function ManageDashboard({
                       label: item.originalName ?? item.kind,
                     })
                   }
-                  className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-xl border border-border text-foreground-muted transition hover:bg-error/10 hover:text-error disabled:opacity-40"
+                  className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-xl border border-[#2A2E33] text-foreground-muted transition hover:bg-error/10 hover:text-error disabled:opacity-40"
                 >
                   {deletingId === item.id ? (
                     <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
@@ -655,7 +655,7 @@ export function ManageDashboard({
         </ul>
       </section>
 
-      <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+      <section className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 shadow-none sm:px-8 sm:py-10">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="text-sm font-medium text-foreground">QR comments</h2>
           <p className="text-xs tabular-nums text-foreground-muted">
@@ -667,7 +667,7 @@ export function ManageDashboard({
           them. You can remove any comment here.
         </p>
 
-        <ul className="mt-5 divide-y divide-border rounded-xl border border-border">
+        <ul className="mt-5 divide-y divide-border rounded-xl border border-[#2A2E33]">
           {comments.length === 0 ? (
             <li className="px-4 py-6 text-sm text-foreground-muted">
               No comments on this memorial yet.
@@ -692,7 +692,7 @@ export function ManageDashboard({
                   onClick={() =>
                     setConfirmDelete({ type: "comment", id: item.id })
                   }
-                  className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-xl border border-border text-foreground-muted transition hover:bg-error/10 hover:text-error disabled:opacity-40"
+                  className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-xl border border-[#2A2E33] text-foreground-muted transition hover:bg-error/10 hover:text-error disabled:opacity-40"
                 >
                   {deletingCommentId === item.id ? (
                     <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
@@ -706,7 +706,7 @@ export function ManageDashboard({
         </ul>
       </section>
 
-      <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+      <section className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 shadow-none sm:px-8 sm:py-10">
         <h2 className="text-sm font-medium text-foreground">Public access</h2>
         <div className="mt-4 flex items-start justify-between gap-4">
           <div>
@@ -726,7 +726,7 @@ export function ManageDashboard({
             onClick={() => void onTogglePublicPin()}
             className={cn(
               "relative mt-0.5 h-7 w-12 shrink-0 rounded-full transition",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2",
+              "focus-visible:outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#C9A45C]",
               publicPinRequired ? "bg-gold" : "bg-border",
               busy && "opacity-70",
             )}
@@ -758,7 +758,7 @@ export function ManageDashboard({
         </p>
       ) : null}
 
-      <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+      <section className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 shadow-none sm:px-8 sm:py-10">
         <h2 className="text-sm font-medium text-foreground">Session</h2>
         <p className="mt-1 text-sm text-foreground-secondary">
           End the manage session on this device when you are done.
@@ -768,8 +768,8 @@ export function ManageDashboard({
           onClick={() => void onLogout()}
           disabled={loggingOut || busy}
           className={cn(
-            "mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-border bg-surface px-5 text-sm font-medium text-foreground transition sm:w-auto",
-            "hover:bg-background-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2",
+            "mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-[#2A2E33] bg-surface px-5 text-sm font-medium text-foreground transition sm:w-auto",
+            "hover:bg-background-secondary focus-visible:outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#C9A45C]",
             (loggingOut || busy) && "cursor-not-allowed opacity-70",
           )}
         >

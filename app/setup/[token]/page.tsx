@@ -27,12 +27,18 @@ export default async function SetupPage({ params }: SetupPageProps) {
   const result = await resolveSetupGate(setupToken);
 
   return (
-    <main className="flex min-h-full flex-1 flex-col items-center justify-center bg-background px-6 py-16 text-foreground">
-      <SetupGateCard
-        result={result}
-        setupToken={setupToken}
-        r2Configured={isR2Configured()}
+    <main className="relative flex min-h-full flex-1 flex-col items-center justify-center overflow-hidden bg-[#0B0D0F] px-5 py-16 text-[#F5F1E8] sm:px-6">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_45%_at_50%_0%,rgba(201,164,92,0.08),transparent_55%)]"
       />
+      <div className="relative w-full max-w-2xl">
+        <SetupGateCard
+          result={result}
+          setupToken={setupToken}
+          r2Configured={isR2Configured()}
+        />
+      </div>
     </main>
   );
 }

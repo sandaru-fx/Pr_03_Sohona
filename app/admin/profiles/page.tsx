@@ -22,45 +22,44 @@ export default async function AdminProfilesPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
-            Profiles
+          <h1 className="font-display text-2xl tracking-tight text-foreground sm:text-3xl">
+            Memorials
           </h1>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-600">
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-foreground-secondary">
             Admin-safe overview only. Private family statements, media, and
             comments are never shown here.
           </p>
         </div>
         <Link
           href="/admin/create"
-          className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-zinc-900 px-5 text-sm font-medium text-white transition hover:bg-zinc-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2"
+          className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-gold px-5 text-sm font-medium text-background transition hover:bg-gold-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2"
         >
           <PlusCircle className="h-4 w-4" aria-hidden />
-          Create Profile
+          Create Memorial
         </Link>
       </div>
 
-      <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
+      <div className="overflow-hidden rounded-2xl border border-border bg-surface shadow-sm">
         {profiles.length === 0 ? (
           <div className="flex flex-col items-center justify-center px-6 py-16 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-500">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-elevated text-foreground-muted">
               <Users className="h-5 w-5" aria-hidden />
             </div>
-            <p className="mt-4 text-sm font-medium text-zinc-900">
-              No profiles yet
+            <p className="mt-4 text-sm font-medium text-foreground">
+              No memorials yet
             </p>
-            <p className="mt-1 max-w-sm text-sm text-zinc-600">
-              Create the first memorial profile to generate a setup link and QR
-              code.
+            <p className="mt-1 max-w-sm text-sm text-foreground-secondary">
+              Create the first memorial to generate a setup link and QR code.
             </p>
             <Link
               href="/admin/create"
-              className="mt-6 inline-flex h-11 items-center justify-center rounded-xl border border-zinc-300 bg-white px-5 text-sm font-medium text-zinc-800 transition hover:bg-zinc-50"
+              className="mt-6 inline-flex h-11 items-center justify-center rounded-xl border border-border bg-surface px-5 text-sm font-medium text-foreground transition hover:bg-background-secondary"
             >
-              Create Profile
+              Create Memorial
             </Link>
           </div>
         ) : (
-          <ul className="divide-y divide-zinc-200" role="list">
+          <ul className="divide-y divide-border" role="list">
             {profiles.map((profile) => {
               const status = getSetupStatus(profile);
               const packageLabel = formatPackageAdminLabel(profile.packageTier);
@@ -68,30 +67,30 @@ export default async function AdminProfilesPage() {
                 <li key={profile.id}>
                   <Link
                     href={`/admin/profiles/${profile.id}`}
-                    className="flex items-center gap-4 px-4 py-4 transition hover:bg-zinc-50 sm:px-6"
+                    className="flex items-center gap-4 px-4 py-4 transition hover:bg-background-secondary sm:px-6"
                   >
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <p className="truncate text-sm font-medium text-zinc-900">
+                        <p className="truncate text-sm font-medium text-foreground">
                           {profile.displayName}
                         </p>
                         <SetupStatusBadge
                           label={status.label}
                           tone={status.tone}
                         />
-                        <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-700">
+                        <span className="rounded-full bg-surface-elevated px-2 py-0.5 text-xs font-medium text-foreground-secondary">
                           {packageLabel}
                         </span>
                       </div>
-                      <p className="mt-1 truncate font-mono text-xs text-zinc-500">
+                      <p className="mt-1 truncate font-mono text-xs text-foreground-muted">
                         qrId: {profile.qrId}
                       </p>
-                      <p className="mt-1 text-xs text-zinc-500">
+                      <p className="mt-1 text-xs text-foreground-muted">
                         Created {formatDate(profile.createdAt)}
                       </p>
                     </div>
                     <ChevronRight
-                      className="h-4 w-4 shrink-0 text-zinc-400"
+                      className="h-4 w-4 shrink-0 text-foreground-muted"
                       aria-hidden
                     />
                   </Link>

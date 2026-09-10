@@ -1,14 +1,23 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { DM_Sans, Geist_Mono, Playfair_Display } from "next/font/google";
 import { getServerEnv } from "@/lib/env";
 import "./globals.css";
 
 // Fail fast on boot if Phase 2 required env is missing/invalid
 getServerEnv();
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const playfair = Playfair_Display({
   subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-playfair",
+  display: "swap",
+});
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-dm-sans",
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -18,16 +27,19 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Sohona",
-  description: "Secure digital legacy platform for temples and families",
+  description:
+    "A respectful digital place to remember, while keeping family memories private.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${playfair.variable} ${dmSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="flex min-h-full flex-col bg-background text-foreground">
+        {children}
+      </body>
     </html>
   );
 }

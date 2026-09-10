@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 type MemorialMediaItemProps = {
   item: PublicMediaMetaItem;
   enabled: boolean;
+  presentation?: "list" | "gallery";
 };
 
 function formatBytes(size: number) {
@@ -22,7 +23,11 @@ function MediaIcon({ kind }: { kind: PublicMediaMetaItem["kind"] }) {
   return <FileAudio className="h-4 w-4" aria-hidden />;
 }
 
-export function MemorialMediaItem({ item, enabled }: MemorialMediaItemProps) {
+export function MemorialMediaItem({
+  item,
+  enabled,
+  presentation = "list",
+}: MemorialMediaItemProps) {
   const rootRef = useRef<HTMLLIElement | null>(null);
   const [visible, setVisible] = useState(false);
   const [url, setUrl] = useState<string | null>(null);
@@ -54,12 +59,7 @@ export function MemorialMediaItem({ item, enabled }: MemorialMediaItemProps) {
     let cancelled = false;
 
     async function loadUrl(force = false) {
-      if (
-        !force &&
-        url &&
-        expiresAt &&
-        expiresAt - Date.now() > 15_000
-      ) {
+      if (!force && url && expiresAt && expiresAt - Date.now() > 15_000) {
         return;
       }
 
@@ -83,7 +83,7 @@ export function MemorialMediaItem({ item, enabled }: MemorialMediaItemProps) {
             setError(
               data.message ??
                 data.error ??
-                "Could not load this media file.",
+                "Something went wrong while loading this memory.",
             );
             setUrl(null);
           }
@@ -98,7 +98,7 @@ export function MemorialMediaItem({ item, enabled }: MemorialMediaItemProps) {
         }
       } catch {
         if (!cancelled) {
-          setError("Network error while loading media.");
+          setError("Something went wrong while loading this memory.");
           setUrl(null);
         }
       } finally {
@@ -111,7 +111,6 @@ export function MemorialMediaItem({ item, enabled }: MemorialMediaItemProps) {
     return () => {
       cancelled = true;
     };
-    // Intentionally re-run when item becomes visible / enabled.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enabled, visible, item.id]);
 
@@ -132,7 +131,11 @@ export function MemorialMediaItem({ item, enabled }: MemorialMediaItemProps) {
         error?: string;
       };
       if (!response.ok || !data.url) {
-        setError(data.message ?? data.error ?? "Could not load this media file.");
+        setError(
+          data.message ??
+            data.error ??
+            "Something went wrong while loading this memory.",
+        );
         return;
       }
       setUrl(data.url);
@@ -140,7 +143,7 @@ export function MemorialMediaItem({ item, enabled }: MemorialMediaItemProps) {
         Date.now() + Math.max(30, (data.expiresIn ?? 90) - 5) * 1000,
       );
     } catch {
-      setError("Network error while loading media.");
+      setError("Something went wrong while loading this memory.");
     } finally {
       setLoading(false);
     }
@@ -149,38 +152,43 @@ export function MemorialMediaItem({ item, enabled }: MemorialMediaItemProps) {
   return (
     <li
       ref={rootRef}
-      className="space-y-3 border-b border-zinc-200 px-4 py-4 last:border-b-0"
+      className={cn(
+        "space-y-3",
+        presentation === "list" &&
+          "border-b border-border px-4 py-4 last:border-b-0",
+        presentation === "gallery" &&
+          "overflow-hidden rounded-xl border border-border bg-background-secondary p-3",
+      )}
     >
       <div className="flex items-center gap-3 text-sm">
-        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-zinc-100 text-zinc-600">
+        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-surface-elevated text-foreground-secondary">
           <MediaIcon kind={item.kind} />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="truncate font-medium text-zinc-900">
+          <p className="truncate font-medium text-foreground">
             {item.originalName ?? item.kind}
           </p>
-          <p className="text-xs text-zinc-500">
+          <p className="text-xs text-foreground-muted">
             {item.kind} · {formatBytes(item.sizeBytes)}
           </p>
         </div>
       </div>
 
       {!enabled ? (
-        <p className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-950">
-          Media storage is not connected yet. File metadata is saved; playback
-          will work after R2 is configured.
+        <p className="rounded-xl border border-warning/30 bg-warning/10 px-3 py-2 text-sm text-warning">
+          Media storage is reconnecting. Playback will return shortly.
         </p>
       ) : null}
 
       {enabled && loading && !url ? (
-        <div className="flex h-40 items-center justify-center rounded-xl bg-zinc-50 text-sm text-zinc-500">
+        <div className="flex h-40 items-center justify-center rounded-xl bg-background-secondary text-sm text-foreground-muted">
           <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden />
           Loading secure preview…
         </div>
       ) : null}
 
       {enabled && error ? (
-        <div className="rounded-xl border border-red-200 bg-red-50 px-3 py-3 text-sm text-red-800">
+        <div className="rounded-xl border border-error/30 bg-error/10 px-3 py-3 text-sm text-error">
           <p>{error}</p>
           <button
             type="button"
@@ -193,7 +201,7 @@ export function MemorialMediaItem({ item, enabled }: MemorialMediaItemProps) {
       ) : null}
 
       {enabled && url ? (
-        <div className="overflow-hidden rounded-xl bg-zinc-50">
+        <div className="overflow-hidden rounded-xl bg-background">
           {item.kind === "PHOTO" ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -232,7 +240,7 @@ export function MemorialMediaItem({ item, enabled }: MemorialMediaItemProps) {
       ) : null}
 
       {enabled && !loading && !error && !url && visible ? (
-        <p className={cn("text-sm text-zinc-500")}>Waiting for media…</p>
+        <p className="text-sm text-foreground-muted">Waiting for media…</p>
       ) : null}
     </li>
   );

@@ -47,76 +47,76 @@ export default async function AdminProfileDetailPage({
       <div>
         <Link
           href="/admin/profiles"
-          className="inline-flex items-center gap-2 text-sm font-medium text-zinc-600 transition hover:text-zinc-900"
+          className="inline-flex items-center gap-2 text-sm font-medium text-foreground-secondary transition hover:text-gold"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden />
-          Back to profiles
+          Back to memorials
         </Link>
         <div className="mt-4 flex flex-wrap items-center gap-3">
-          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
+          <h1 className="font-display text-2xl tracking-tight text-foreground sm:text-3xl">
             {profile.displayName}
           </h1>
           <SetupStatusBadge label={status.label} tone={status.tone} />
-          <span className="rounded-full bg-zinc-100 px-2.5 py-1 text-xs font-medium text-zinc-700">
+          <span className="rounded-full bg-surface-elevated px-2.5 py-1 text-xs font-medium text-foreground-secondary">
             {formatPackageAdminLabel(profile.packageTier)}
           </span>
         </div>
-        <p className="mt-2 text-sm text-zinc-600">
+        <p className="mt-2 text-sm text-foreground-secondary">
           Admin view only — private family content is never loaded here.
         </p>
       </div>
 
-      <div className="grid gap-4 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:grid-cols-2 sm:p-8">
+      <div className="grid gap-4 rounded-2xl border border-border bg-surface p-6 shadow-sm sm:grid-cols-2 sm:p-8">
         <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">
+          <p className="text-xs font-medium uppercase tracking-wide text-foreground-muted">
             Package
           </p>
-          <p className="mt-1 text-sm text-zinc-900">{pkg.label}</p>
-          <p className="mt-1 text-xs text-zinc-500">
+          <p className="mt-1 text-sm text-foreground">{pkg.label}</p>
+          <p className="mt-1 text-xs text-foreground-muted">
             {pkg.limits.maxImages} photos · {pkg.limits.maxVideoSeconds}s video ·{" "}
             {pkg.limits.maxAudioSeconds}s audio · {pkg.limits.maxStatementWords}{" "}
             words
           </p>
         </div>
         <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">
+          <p className="text-xs font-medium uppercase tracking-wide text-foreground-muted">
             Retention window
           </p>
-          <p className="mt-1 text-sm text-zinc-900">
+          <p className="mt-1 text-sm text-foreground">
             {profile.packageStartedAt
               ? `${formatDateTime(profile.packageStartedAt)} → ${formatDateTime(profile.packageEndsAt)}`
               : "Starts when family finishes setup"}
           </p>
         </div>
         <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">
+          <p className="text-xs font-medium uppercase tracking-wide text-foreground-muted">
             QR ID
           </p>
-          <p className="mt-1 break-all font-mono text-sm text-zinc-900">
+          <p className="mt-1 break-all font-mono text-sm text-foreground">
             {profile.qrId}
           </p>
         </div>
         <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">
+          <p className="text-xs font-medium uppercase tracking-wide text-foreground-muted">
             Created
           </p>
-          <p className="mt-1 text-sm text-zinc-900">
+          <p className="mt-1 text-sm text-foreground">
             {formatDateTime(profile.createdAt)}
           </p>
         </div>
         <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">
+          <p className="text-xs font-medium uppercase tracking-wide text-foreground-muted">
             Setup link expires
           </p>
-          <p className="mt-1 text-sm text-zinc-900">
+          <p className="mt-1 text-sm text-foreground">
             {formatDateTime(profile.setupTokenExpiresAt)}
           </p>
         </div>
         <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">
+          <p className="text-xs font-medium uppercase tracking-wide text-foreground-muted">
             Setup used at
           </p>
-          <p className="mt-1 text-sm text-zinc-900">
+          <p className="mt-1 text-sm text-foreground">
             {formatDateTime(profile.setupUsedAt)}
           </p>
         </div>
@@ -124,10 +124,13 @@ export default async function AdminProfileDetailPage({
 
       {profile.isSetupComplete ? (
         <div
-          className="flex gap-3 rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-zinc-700"
+          className="flex gap-3 rounded-xl border border-border bg-surface-elevated px-4 py-3 text-foreground-secondary"
           role="status"
         >
-          <Info className="mt-0.5 h-5 w-5 shrink-0 text-zinc-500" aria-hidden />
+          <Info
+            className="mt-0.5 h-5 w-5 shrink-0 text-foreground-muted"
+            aria-hidden
+          />
           <p className="text-sm leading-6">
             Family setup is complete. The original one-time setup link is no
             longer valid and cannot be shown again from the admin panel.
@@ -135,10 +138,10 @@ export default async function AdminProfileDetailPage({
         </div>
       ) : status.tone === "expired" ? (
         <div
-          className="flex gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-amber-950"
+          className="flex gap-3 rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-foreground"
           role="status"
         >
-          <Info className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" aria-hidden />
+          <Info className="mt-0.5 h-5 w-5 shrink-0 text-warning" aria-hidden />
           <p className="text-sm leading-6">
             The setup link has expired. Regenerating setup links will be added
             in a later phase.
@@ -146,10 +149,10 @@ export default async function AdminProfileDetailPage({
         </div>
       ) : (
         <div
-          className="flex gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-amber-950"
+          className="flex gap-3 rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-foreground"
           role="status"
         >
-          <Info className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" aria-hidden />
+          <Info className="mt-0.5 h-5 w-5 shrink-0 text-warning" aria-hidden />
           <p className="text-sm leading-6">
             Waiting for the family to open the one-time setup link. That link
             was shown only at creation time and is not stored in plaintext here.

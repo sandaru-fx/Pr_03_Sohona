@@ -70,26 +70,26 @@ export function SetupGateCard({
         : "Setup link unavailable";
 
   return (
-    <div className="w-full max-w-lg rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm">
+    <div className="w-full max-w-lg rounded-2xl border border-border bg-surface p-8 shadow-sm">
       <div
         className={cn(
           "flex h-12 w-12 items-center justify-center rounded-2xl",
-          tone === "amber" && "bg-amber-50 text-amber-700",
-          tone === "zinc" && "bg-zinc-100 text-zinc-600",
-          tone === "red" && "bg-red-50 text-red-600",
+          tone === "amber" && "bg-warning/10 text-warning",
+          tone === "zinc" && "bg-surface-elevated text-foreground-secondary",
+          tone === "red" && "bg-error/10 text-error",
         )}
       >
         <Icon className="h-6 w-6" aria-hidden />
       </div>
-      <p className="mt-5 text-sm tracking-wide text-zinc-500">Sohona</p>
-      <h1 className="mt-2 text-2xl font-semibold tracking-tight text-zinc-900">
+      <p className="mt-5 text-sm tracking-wide text-foreground-muted">Sohona</p>
+      <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
         {title}
       </h1>
-      <p className="mt-3 text-sm leading-6 text-zinc-600">{result.message}</p>
+      <p className="mt-3 text-sm leading-6 text-foreground-secondary">{result.message}</p>
       {result.profile?.displayName ? (
-        <p className="mt-4 text-sm text-zinc-500">
+        <p className="mt-4 text-sm text-foreground-muted">
           Profile:{" "}
-          <span className="font-medium text-zinc-800">
+          <span className="font-medium text-foreground">
             {result.profile.displayName}
           </span>
         </p>

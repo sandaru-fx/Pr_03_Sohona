@@ -2,6 +2,7 @@ import { Clock3, SearchX } from "lucide-react";
 import { MemorialView } from "@/components/public/MemorialView";
 import { PublicLockedCard } from "@/components/public/PublicLockedCard";
 import { PublicPinForm } from "@/components/public/PublicPinForm";
+import { Card } from "@/components/ui/Card";
 import type {
   PublicMemorialContent,
   PublicProfileGateResult,
@@ -59,29 +60,29 @@ export function PublicGateCard({
     result.status === "not_ready" ? "Memorial not ready" : "Memorial not found";
 
   return (
-    <div className="w-full max-w-lg rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm">
+    <Card className="w-full max-w-lg">
       <div
         className={cn(
           "flex h-12 w-12 items-center justify-center rounded-2xl",
-          tone === "amber" && "bg-amber-50 text-amber-700",
-          tone === "zinc" && "bg-zinc-100 text-zinc-600",
+          tone === "amber" && "bg-warning/10 text-warning",
+          tone === "zinc" && "bg-surface-elevated text-foreground-secondary",
         )}
       >
         <Icon className="h-6 w-6" aria-hidden />
       </div>
-      <p className="mt-5 text-sm tracking-wide text-zinc-500">Sohona</p>
-      <h1 className="mt-2 text-2xl font-semibold tracking-tight text-zinc-900">
-        {title}
-      </h1>
-      <p className="mt-3 text-sm leading-6 text-zinc-600">{result.message}</p>
+      <p className="mt-5 text-sm tracking-wide text-foreground-muted">Sohona</p>
+      <h1 className="mt-2 font-display text-3xl text-foreground">{title}</h1>
+      <p className="mt-3 text-sm leading-6 text-foreground-secondary">
+        {result.message}
+      </p>
       {result.status === "not_ready" ? (
-        <p className="mt-4 text-sm text-zinc-500">
+        <p className="mt-4 text-sm text-foreground-muted">
           Profile:{" "}
-          <span className="font-medium text-zinc-800">
+          <span className="font-medium text-foreground">
             {result.profile.displayName}
           </span>
         </p>
       ) : null}
-    </div>
+    </Card>
   );
 }

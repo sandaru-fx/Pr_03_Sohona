@@ -2,6 +2,11 @@
 
 import { useMemo, useState, type FormEvent } from "react";
 import { Loader2, MessageCircle } from "lucide-react";
+import { Alert } from "@/components/ui/Alert";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { Textarea } from "@/components/ui/Textarea";
 import { getCommentMaxWordsForIndex } from "@/lib/packages";
 import { cn } from "@/lib/utils";
 import { countWords } from "@/lib/word-count";
@@ -32,9 +37,6 @@ function formatCommentDate(value: string | Date) {
   }).format(date);
 }
 
-/**
- * QR memorial comment list + form (public page only).
- */
 export function MemorialComments({
   qrId,
   packageTier = "A",
@@ -94,7 +96,10 @@ export function MemorialComments({
         return;
       }
 
-      setComments((current) => [...current, data.comment as MemorialCommentItem]);
+      setComments((current) => [
+        ...current,
+        data.comment as MemorialCommentItem,
+      ]);
       const nextUsed = used + 1;
       setUsed(nextUsed);
       setNextMaxWords(
@@ -103,45 +108,48 @@ export function MemorialComments({
           : getCommentMaxWordsForIndex(packageTier, nextUsed + 1),
       );
       setBody("");
-      setMessage("Comment posted.");
+      setMessage("Thank you. Your message was added.");
     } catch {
-      setError("Network error. Check your connection and try again.");
+      setError("Something went wrong. Check your connection and try again.");
     } finally {
       setSubmitting(false);
     }
   }
 
   return (
-    <section className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
+    <Card>
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="inline-flex items-center gap-2 text-sm font-medium text-zinc-900">
-          <MessageCircle className="h-4 w-4" aria-hidden />
-          Comments
+        <h2 className="inline-flex items-center gap-2 font-display text-2xl text-foreground">
+          <MessageCircle className="h-5 w-5 text-gold" aria-hidden />
+          Messages of remembrance
         </h2>
-        <p className="text-xs tabular-nums text-zinc-500">
+        <p className="text-xs tabular-nums text-foreground-muted">
           {used} / {max}
         </p>
       </div>
-      <p className="mt-1 text-sm text-zinc-600">
+      <p className="mt-2 text-sm leading-6 text-foreground-secondary">
         Leave a respectful message. First 5 comments: up to 100 words each; next
         5: up to 150 words each.
       </p>
 
       {comments.length === 0 ? (
-        <p className="mt-5 text-sm text-zinc-500">No comments yet.</p>
+        <EmptyState
+          className="mt-5"
+          title="No messages yet."
+          description="Be the first to leave a quiet note of remembrance."
+        />
       ) : (
-        <ul className="mt-5 space-y-4">
+        <ul className="mt-6 space-y-4">
           {comments.map((item) => (
             <li
               key={item.id}
-              className="rounded-xl border border-zinc-100 bg-zinc-50 px-4 py-3"
+              className="rounded-xl border border-border bg-background-secondary px-4 py-3"
             >
-              <p className="text-sm leading-6 text-zinc-800 whitespace-pre-wrap">
+              <p className="whitespace-pre-wrap text-sm leading-6 text-foreground">
                 {item.body}
               </p>
-              <p className="mt-2 text-xs text-zinc-500">
+              <p className="mt-2 text-xs text-foreground-muted">
                 {formatCommentDate(item.createdAt)}
-                {item.wordCount > 0 ? ` · ${item.wordCount} words` : null}
               </p>
             </li>
           ))}
@@ -149,46 +157,42 @@ export function MemorialComments({
       )}
 
       {full ? (
-        <p className="mt-5 text-sm text-zinc-500">
+        <p className="mt-5 text-sm text-foreground-muted">
           This memorial has reached its comment limit.
         </p>
       ) : (
-        <form onSubmit={(event) => void onSubmit(event)} className="mt-5 space-y-3">
+        <form
+          onSubmit={(event) => void onSubmit(event)}
+          className="mt-6 space-y-3"
+        >
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <label
               htmlFor="memorial-comment"
-              className="text-sm font-medium text-zinc-800"
+              className="text-sm font-medium text-foreground"
             >
               Your message
             </label>
             <p
               className={cn(
                 "text-xs tabular-nums",
-                overWords ? "font-medium text-red-600" : "text-zinc-500",
+                overWords ? "font-medium text-error" : "text-foreground-muted",
               )}
             >
               {wordCount}
               {nextMaxWords !== null ? ` / ${nextMaxWords}` : ""} words
             </p>
           </div>
-          <textarea
+          <Textarea
             id="memorial-comment"
             value={body}
             rows={4}
             disabled={submitting}
             onChange={(event) => setBody(event.target.value)}
             placeholder="Write in Sinhala or English..."
-            className="min-h-24 w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-3 text-sm text-zinc-900 shadow-sm outline-none transition focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2 disabled:bg-zinc-50"
           />
-          <button
+          <Button
             type="submit"
             disabled={submitting || overWords || wordCount < 1}
-            className={cn(
-              "inline-flex h-11 items-center gap-2 rounded-xl px-5 text-sm font-medium text-white transition",
-              submitting || overWords || wordCount < 1
-                ? "cursor-not-allowed bg-zinc-400"
-                : "bg-zinc-900 hover:bg-zinc-800",
-            )}
           >
             {submitting ? (
               <>
@@ -196,22 +200,22 @@ export function MemorialComments({
                 Posting…
               </>
             ) : (
-              "Post comment"
+              "Post message"
             )}
-          </button>
+          </Button>
         </form>
       )}
 
       {error ? (
-        <p className="mt-4 text-sm text-red-600" role="alert">
+        <Alert tone="error" className="mt-4" role="alert">
           {error}
-        </p>
+        </Alert>
       ) : null}
       {message ? (
-        <p className="mt-4 text-sm text-emerald-700" role="status">
+        <Alert tone="success" className="mt-4" role="status">
           {message}
-        </p>
+        </Alert>
       ) : null}
-    </section>
+    </Card>
   );
 }

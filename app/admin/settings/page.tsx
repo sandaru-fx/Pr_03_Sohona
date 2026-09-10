@@ -1,28 +1,28 @@
 import Link from "next/link";
 
 /**
- * Settings placeholder — Phase 3.2 nav target only.
+ * Settings placeholder — visually on-system; configuration later.
  */
 export default function AdminSettingsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
+        <h1 className="font-display text-3xl tracking-tight text-foreground">
           Settings
         </h1>
-        <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-600">
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-foreground-secondary">
           Admin settings will be available in a later phase.
         </p>
       </div>
 
-      <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
-        <p className="text-sm text-zinc-600">
+      <div className="rounded-2xl border border-border bg-surface p-6 sm:p-8">
+        <p className="text-sm text-foreground-secondary">
           Nothing to configure here yet.{" "}
           <Link
             href="/admin/create"
-            className="font-medium text-zinc-900 underline underline-offset-4"
+            className="font-medium text-gold underline-offset-4 hover:underline"
           >
-            Create a profile
+            Create a memorial
           </Link>{" "}
           to continue.
         </p>

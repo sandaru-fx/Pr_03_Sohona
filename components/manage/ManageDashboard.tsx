@@ -16,6 +16,7 @@ import { readFileDurationSeconds } from "@/lib/browser-media-duration";
 import { getPackageLimits } from "@/lib/packages";
 import { cn } from "@/lib/utils";
 import { totalStatementWords } from "@/lib/word-count";
+import { Modal } from "@/components/ui/Modal";
 
 type StatementDraft = { key: string; body: string };
 
@@ -102,6 +103,11 @@ export function ManageDashboard({
   const [loggingOut, setLoggingOut] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState<
+    | { type: "media"; id: string; label: string }
+    | { type: "comment"; id: string }
+    | null
+  >(null);
 
   const usedWords = useMemo(
     () => totalStatementWords(statements.map((item) => ({ body: item.body }))),
@@ -402,21 +408,21 @@ export function ManageDashboard({
 
   return (
     <div className="w-full max-w-2xl space-y-6">
-      <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
-        <p className="text-sm tracking-wide text-zinc-500">Sohona</p>
-        <h1 className="mt-2 text-2xl font-semibold tracking-tight text-zinc-900">
+      <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+        <p className="text-sm tracking-wide text-foreground-muted">Sohona</p>
+        <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
           Manage memorial
         </h1>
-        <p className="mt-3 text-sm leading-6 text-zinc-600">
+        <p className="mt-3 text-sm leading-6 text-foreground-secondary">
           Private owner access for{" "}
-          <span className="font-medium text-zinc-900">{displayName}</span>.
+          <span className="font-medium text-foreground">{displayName}</span>.
           Name is set by the temple and stays read-only here.
         </p>
 
-        <dl className="mt-5 space-y-2 text-sm text-zinc-600">
+        <dl className="mt-5 space-y-2 text-sm text-foreground-secondary">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <dt>Memorial name</dt>
-            <dd className="font-medium text-zinc-900">{displayName}</dd>
+            <dd className="font-medium text-foreground">{displayName}</dd>
           </div>
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <dt>Public page</dt>
@@ -425,7 +431,7 @@ export function ManageDashboard({
                 href={publicPath}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 font-medium text-zinc-900 underline-offset-2 hover:underline"
+                className="inline-flex items-center gap-1.5 font-medium text-foreground underline-offset-2 hover:underline"
               >
                 Open QR page
                 <ExternalLink className="h-3.5 w-3.5" aria-hidden />
@@ -434,7 +440,7 @@ export function ManageDashboard({
           </div>
         </dl>
 
-        <p className="mt-4 text-xs text-zinc-500">
+        <p className="mt-4 text-xs text-foreground-muted">
           Session lasts about 4 hours on this device. Limits:{" "}
           {limits.maxImages} photos · video ≤ {limits.maxVideoSeconds}s · audio ≤{" "}
           {limits.maxAudioSeconds}s · statements ≤ {limits.maxStatementWords}{" "}
@@ -442,21 +448,21 @@ export function ManageDashboard({
         </p>
       </div>
 
-      <section className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
+      <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h2 className="text-sm font-medium text-zinc-900">Statements</h2>
+          <h2 className="text-sm font-medium text-foreground">Statements</h2>
           <p
             className={cn(
               "text-xs tabular-nums",
               usedWords > limits.maxStatementWords
-                ? "font-medium text-red-600"
-                : "text-zinc-500",
+                ? "font-medium text-error"
+                : "text-foreground-muted",
             )}
           >
             {usedWords} / {limits.maxStatementWords} words
           </p>
         </div>
-        <p className="mt-1 text-sm text-zinc-600">
+        <p className="mt-1 text-sm text-foreground-secondary">
           Edit messages for future visitors. Save when you are ready.
         </p>
 
@@ -480,7 +486,7 @@ export function ManageDashboard({
                   );
                 }}
                 placeholder="Write a memory or message..."
-                className="min-h-24 w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-3 text-sm text-zinc-900 shadow-sm outline-none transition focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2 disabled:bg-zinc-50"
+                className="min-h-24 w-full rounded-xl border border-border bg-surface px-3.5 py-3 text-sm text-foreground shadow-sm outline-none transition focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 disabled:bg-background-secondary"
               />
               <button
                 type="button"
@@ -493,7 +499,7 @@ export function ManageDashboard({
                       : current.filter((row) => row.key !== item.key),
                   )
                 }
-                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-zinc-200 text-zinc-500 transition hover:bg-zinc-50 disabled:opacity-40"
+                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border text-foreground-muted transition hover:bg-background-secondary disabled:opacity-40"
               >
                 <Trash2 className="h-4 w-4" aria-hidden />
               </button>
@@ -506,7 +512,7 @@ export function ManageDashboard({
             type="button"
             onClick={() => setStatements((current) => [...current, newDraft()])}
             disabled={busy || statements.length >= 30}
-            className="inline-flex h-10 items-center gap-2 rounded-xl border border-zinc-300 bg-white px-4 text-sm font-medium text-zinc-800 transition hover:bg-zinc-50 disabled:opacity-40"
+            className="inline-flex h-10 items-center gap-2 rounded-xl border border-border bg-surface px-4 text-sm font-medium text-foreground transition hover:bg-background-secondary disabled:opacity-40"
           >
             <Plus className="h-4 w-4" aria-hidden />
             Add statement
@@ -516,10 +522,10 @@ export function ManageDashboard({
             onClick={() => void saveStatements()}
             disabled={busy}
             className={cn(
-              "inline-flex h-10 items-center gap-2 rounded-xl px-4 text-sm font-medium text-white transition",
+              "inline-flex h-10 items-center gap-2 rounded-xl px-4 text-sm font-medium text-background transition",
               busy
-                ? "cursor-not-allowed bg-zinc-400"
-                : "bg-zinc-900 hover:bg-zinc-800",
+                ? "cursor-not-allowed bg-foreground-muted"
+                : "bg-gold hover:bg-gold-hover",
             )}
           >
             {savingStatements ? (
@@ -534,22 +540,22 @@ export function ManageDashboard({
         </div>
       </section>
 
-      <section className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
+      <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h2 className="text-sm font-medium text-zinc-900">
+          <h2 className="text-sm font-medium text-foreground">
             Photos, videos & voice
           </h2>
-          <p className="text-xs tabular-nums text-zinc-500">
+          <p className="text-xs tabular-nums text-foreground-muted">
             Photos {photoCount} / {limits.maxImages}
           </p>
         </div>
-        <p className="mt-1 text-sm text-zinc-600">
+        <p className="mt-1 text-sm text-foreground-secondary">
           Upload new files or remove ones that should no longer appear. Video ≤{" "}
           {limits.maxVideoSeconds}s, audio ≤ {limits.maxAudioSeconds}s.
         </p>
 
         {!r2Configured ? (
-          <div className="mt-5 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
+          <div className="mt-5 rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-warning">
             Media storage (Cloudflare R2) is not connected yet. Statements still
             work; uploads need R2.
           </div>
@@ -571,8 +577,8 @@ export function ManageDashboard({
                   className={cn(
                     "inline-flex h-10 items-center gap-2 rounded-xl border px-4 text-sm font-medium transition",
                     kind === value
-                      ? "border-zinc-900 bg-zinc-900 text-white"
-                      : "border-zinc-300 bg-white text-zinc-800 hover:bg-zinc-50",
+                      ? "border-gold bg-gold text-background"
+                      : "border-border bg-surface text-foreground hover:bg-background-secondary",
                   )}
                 >
                   <Icon className="h-4 w-4" aria-hidden />
@@ -583,10 +589,10 @@ export function ManageDashboard({
 
             <label
               className={cn(
-                "inline-flex h-11 items-center gap-2 rounded-xl px-5 text-sm font-medium text-white transition",
+                "inline-flex h-11 items-center gap-2 rounded-xl px-5 text-sm font-medium text-background transition",
                 busy
-                  ? "cursor-not-allowed bg-zinc-400"
-                  : "cursor-pointer bg-zinc-900 hover:bg-zinc-800",
+                  ? "cursor-not-allowed bg-foreground-muted"
+                  : "cursor-pointer bg-gold hover:bg-gold-hover",
               )}
             >
               <Upload className="h-4 w-4" aria-hidden />
@@ -605,9 +611,9 @@ export function ManageDashboard({
           </div>
         )}
 
-        <ul className="mt-6 divide-y divide-zinc-200 rounded-xl border border-zinc-200">
+        <ul className="mt-6 divide-y divide-border rounded-xl border border-border">
           {media.length === 0 ? (
-            <li className="px-4 py-6 text-sm text-zinc-500">
+            <li className="px-4 py-6 text-sm text-foreground-muted">
               No media on this memorial yet.
             </li>
           ) : (
@@ -617,10 +623,10 @@ export function ManageDashboard({
                 className="flex items-center justify-between gap-3 px-4 py-3 text-sm"
               >
                 <div className="min-w-0">
-                  <p className="truncate font-medium text-zinc-900">
+                  <p className="truncate font-medium text-foreground">
                     {item.originalName ?? item.kind}
                   </p>
-                  <p className="text-xs text-zinc-500">
+                  <p className="text-xs text-foreground-muted">
                     {item.kind} · {formatBytes(item.sizeBytes)}
                   </p>
                 </div>
@@ -628,8 +634,14 @@ export function ManageDashboard({
                   type="button"
                   aria-label={`Delete ${item.originalName ?? item.kind}`}
                   disabled={busy}
-                  onClick={() => void onDeleteMedia(item.id)}
-                  className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-zinc-200 text-zinc-500 transition hover:bg-red-50 hover:text-red-700 disabled:opacity-40"
+                  onClick={() =>
+                    setConfirmDelete({
+                      type: "media",
+                      id: item.id,
+                      label: item.originalName ?? item.kind,
+                    })
+                  }
+                  className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-xl border border-border text-foreground-muted transition hover:bg-error/10 hover:text-error disabled:opacity-40"
                 >
                   {deletingId === item.id ? (
                     <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
@@ -643,21 +655,21 @@ export function ManageDashboard({
         </ul>
       </section>
 
-      <section className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
+      <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h2 className="text-sm font-medium text-zinc-900">QR comments</h2>
-          <p className="text-xs tabular-nums text-zinc-500">
+          <h2 className="text-sm font-medium text-foreground">QR comments</h2>
+          <p className="text-xs tabular-nums text-foreground-muted">
             {comments.length} / {limits.maxComments}
           </p>
         </div>
-        <p className="mt-1 text-sm text-zinc-600">
+        <p className="mt-1 text-sm text-foreground-secondary">
           Visitors leave these on the public QR page. Temple admin never sees
           them. You can remove any comment here.
         </p>
 
-        <ul className="mt-5 divide-y divide-zinc-200 rounded-xl border border-zinc-200">
+        <ul className="mt-5 divide-y divide-border rounded-xl border border-border">
           {comments.length === 0 ? (
-            <li className="px-4 py-6 text-sm text-zinc-500">
+            <li className="px-4 py-6 text-sm text-foreground-muted">
               No comments on this memorial yet.
             </li>
           ) : (
@@ -667,8 +679,8 @@ export function ManageDashboard({
                 className="flex items-start justify-between gap-3 px-4 py-3 text-sm"
               >
                 <div className="min-w-0">
-                  <p className="whitespace-pre-wrap text-zinc-800">{item.body}</p>
-                  <p className="mt-1 text-xs text-zinc-500">
+                  <p className="whitespace-pre-wrap text-foreground">{item.body}</p>
+                  <p className="mt-1 text-xs text-foreground-muted">
                     {item.wordCount} words
                     {item.status === "HIDDEN" ? " · hidden" : null}
                   </p>
@@ -677,8 +689,10 @@ export function ManageDashboard({
                   type="button"
                   aria-label="Delete comment"
                   disabled={busy}
-                  onClick={() => void onDeleteComment(item.id)}
-                  className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-zinc-200 text-zinc-500 transition hover:bg-red-50 hover:text-red-700 disabled:opacity-40"
+                  onClick={() =>
+                    setConfirmDelete({ type: "comment", id: item.id })
+                  }
+                  className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-xl border border-border text-foreground-muted transition hover:bg-error/10 hover:text-error disabled:opacity-40"
                 >
                   {deletingCommentId === item.id ? (
                     <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
@@ -692,14 +706,14 @@ export function ManageDashboard({
         </ul>
       </section>
 
-      <section className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
-        <h2 className="text-sm font-medium text-zinc-900">Public access</h2>
+      <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+        <h2 className="text-sm font-medium text-foreground">Public access</h2>
         <div className="mt-4 flex items-start justify-between gap-4">
           <div>
-            <p className="text-sm font-medium text-zinc-900">
+            <p className="text-sm font-medium text-foreground">
               Require PIN for public QR view
             </p>
-            <p className="mt-1 text-sm leading-5 text-zinc-600">
+            <p className="mt-1 text-sm leading-5 text-foreground-secondary">
               Manage access always needs your PIN. This only affects visitors who
               scan the QR.
             </p>
@@ -712,14 +726,14 @@ export function ManageDashboard({
             onClick={() => void onTogglePublicPin()}
             className={cn(
               "relative mt-0.5 h-7 w-12 shrink-0 rounded-full transition",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2",
-              publicPinRequired ? "bg-zinc-900" : "bg-zinc-300",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2",
+              publicPinRequired ? "bg-gold" : "bg-border",
               busy && "opacity-70",
             )}
           >
             <span
               className={cn(
-                "absolute top-0.5 left-0.5 h-6 w-6 rounded-full bg-white transition",
+                "absolute top-0.5 left-0.5 h-6 w-6 rounded-full bg-surface transition",
                 publicPinRequired && "translate-x-5",
               )}
             />
@@ -729,7 +743,7 @@ export function ManageDashboard({
 
       {error ? (
         <p
-          className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+          className="rounded-xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error"
           role="alert"
         >
           {error}
@@ -737,16 +751,16 @@ export function ManageDashboard({
       ) : null}
       {message ? (
         <p
-          className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900"
+          className="rounded-xl border border-success/30 bg-success/10 px-4 py-3 text-sm text-success"
           role="status"
         >
           {message}
         </p>
       ) : null}
 
-      <section className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
-        <h2 className="text-sm font-medium text-zinc-900">Session</h2>
-        <p className="mt-1 text-sm text-zinc-600">
+      <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+        <h2 className="text-sm font-medium text-foreground">Session</h2>
+        <p className="mt-1 text-sm text-foreground-secondary">
           End the manage session on this device when you are done.
         </p>
         <button
@@ -754,8 +768,8 @@ export function ManageDashboard({
           onClick={() => void onLogout()}
           disabled={loggingOut || busy}
           className={cn(
-            "mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-zinc-200 bg-white px-5 text-sm font-medium text-zinc-800 transition sm:w-auto",
-            "hover:bg-zinc-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2",
+            "mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-border bg-surface px-5 text-sm font-medium text-foreground transition sm:w-auto",
+            "hover:bg-background-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2",
             (loggingOut || busy) && "cursor-not-allowed opacity-70",
           )}
         >
@@ -769,6 +783,36 @@ export function ManageDashboard({
           )}
         </button>
       </section>
+
+      <Modal
+        open={Boolean(confirmDelete)}
+        title={
+          confirmDelete?.type === "media"
+            ? "Remove this media?"
+            : "Remove this comment?"
+        }
+        description={
+          confirmDelete?.type === "media"
+            ? `“${confirmDelete.label}” will be permanently removed from this memorial.`
+            : "This visitor comment will be permanently removed from the public page."
+        }
+        confirmLabel="Remove"
+        confirmVariant="danger"
+        busy={Boolean(deletingId) || Boolean(deletingCommentId)}
+        onClose={() => {
+          if (!deletingId && !deletingCommentId) setConfirmDelete(null);
+        }}
+        onConfirm={() => {
+          if (!confirmDelete) return;
+          const pending = confirmDelete;
+          setConfirmDelete(null);
+          if (pending.type === "media") {
+            void onDeleteMedia(pending.id);
+          } else {
+            void onDeleteComment(pending.id);
+          }
+        }}
+      />
     </div>
   );
 }

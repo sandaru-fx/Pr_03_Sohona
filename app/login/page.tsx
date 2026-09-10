@@ -46,20 +46,20 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const allowlistSet = Boolean(process.env.ADMIN_EMAIL_ALLOWLIST?.trim());
 
   return (
-    <main className="flex min-h-full flex-1 flex-col items-center justify-center bg-zinc-50 px-6 py-16 text-zinc-900">
+    <main className="flex min-h-full flex-1 flex-col items-center justify-center bg-background-secondary px-6 py-16 text-foreground">
       <div className="w-full max-w-md">
-        <p className="text-sm tracking-wide text-zinc-500">Sohona</p>
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight">
+        <p className="text-sm tracking-wide text-foreground-muted">Sohona</p>
+        <h1 className="mt-2 font-display text-3xl tracking-tight">
           Admin sign in
         </h1>
-        <p className="mt-3 text-sm leading-6 text-zinc-600">
+        <p className="mt-3 text-sm leading-6 text-foreground-secondary">
           Temple staff only. Sign in with a Google account on the admin
           allow-list.
         </p>
 
         {message ? (
           <p
-            className="mt-6 border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+            className="mt-6 rounded-xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error"
             role="alert"
           >
             {message}
@@ -67,7 +67,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
         ) : null}
 
         {!ready ? (
-          <p className="mt-6 border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          <p className="mt-6 rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-warning">
             Google OAuth is not configured yet. Set{" "}
             <code className="font-mono text-xs">AUTH_GOOGLE_ID</code> and{" "}
             <code className="font-mono text-xs">AUTH_GOOGLE_SECRET</code> in{" "}
@@ -76,7 +76,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
         ) : null}
 
         {!allowlistSet ? (
-          <p className="mt-4 border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          <p className="mt-4 rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-warning">
             Admin allow-list is empty. Set{" "}
             <code className="font-mono text-xs">ADMIN_EMAIL_ALLOWLIST</code> or
             nobody can sign in.
@@ -87,14 +87,14 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           <button
             type="submit"
             disabled={!ready}
-            className="flex h-12 w-full items-center justify-center bg-zinc-900 px-5 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-zinc-400"
+            className="flex h-12 w-full items-center justify-center rounded-xl bg-gold px-5 text-sm font-medium text-background transition hover:bg-gold-hover disabled:cursor-not-allowed disabled:bg-foreground-muted"
           >
             Continue with Google
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-zinc-500">
-          <Link href="/" className="underline underline-offset-4 hover:text-zinc-800">
+        <p className="mt-6 text-center text-sm text-foreground-muted">
+          <Link href="/" className="underline underline-offset-4 hover:text-foreground">
             Back to home
           </Link>
         </p>

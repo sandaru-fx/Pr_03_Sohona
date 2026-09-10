@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   Home,
   LogOut,
+  Package,
   PlusCircle,
   Settings,
   Users,
@@ -15,8 +16,9 @@ import { signOutAdmin } from "@/app/admin/actions";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: Home, exact: true },
-  { href: "/admin/profiles", label: "Profiles", icon: Users },
-  { href: "/admin/create", label: "Create Profile", icon: PlusCircle },
+  { href: "/admin/profiles", label: "Memorials", icon: Users },
+  { href: "/admin/create", label: "Create Memorial", icon: PlusCircle },
+  { href: "/packages", label: "Packages", icon: Package },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ] as const;
 
@@ -39,7 +41,7 @@ export function Sidebar({
     <>
       <div
         className={cn(
-          "fixed inset-0 z-40 bg-zinc-950/40 transition-opacity lg:hidden",
+          "fixed inset-0 z-40 bg-background/70 transition-opacity lg:hidden",
           mobileOpen ? "opacity-100" : "pointer-events-none opacity-0",
         )}
         onClick={onClose}
@@ -49,21 +51,19 @@ export function Sidebar({
       <aside
         id="admin-sidebar"
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-zinc-200 bg-white transition-transform duration-200 lg:static lg:z-auto lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-border bg-surface transition-transform duration-200 lg:static lg:z-auto lg:translate-x-0",
           mobileOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
-        <div className="flex h-16 items-center justify-between border-b border-zinc-200 px-5">
+        <div className="flex h-16 items-center justify-between border-b border-border px-5">
           <div>
-            <p className="text-sm font-semibold tracking-tight text-zinc-900">
-              Sohona
-            </p>
-            <p className="text-xs text-zinc-500">Temple Admin</p>
+            <p className="font-display text-lg text-foreground">Sohona</p>
+            <p className="text-xs text-foreground-muted">Temple Admin</p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg p-2 text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 lg:hidden"
+            className="rounded-lg p-2 text-foreground-muted transition hover:bg-surface-elevated hover:text-foreground lg:hidden"
             aria-label="Close navigation menu"
           >
             <X className="h-5 w-5" />
@@ -84,10 +84,9 @@ export function Sidebar({
                 onClick={onClose}
                 className={cn(
                   "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2",
                   active
-                    ? "bg-zinc-900 text-white shadow-sm"
-                    : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900",
+                    ? "bg-gold-subtle text-gold"
+                    : "text-foreground-secondary hover:bg-background-secondary hover:text-foreground",
                 )}
                 aria-current={active ? "page" : undefined}
               >
@@ -98,20 +97,22 @@ export function Sidebar({
           })}
         </nav>
 
-        <div className="border-t border-zinc-200 p-4">
-          <div className="mb-3 rounded-xl bg-zinc-50 px-3 py-2.5">
-            <p className="truncate text-sm font-medium text-zinc-900">
+        <div className="border-t border-border p-4">
+          <div className="mb-3 rounded-xl border border-border bg-background-secondary px-3 py-2.5">
+            <p className="truncate text-sm font-medium text-foreground">
               {userName ?? "Admin"}
             </p>
             {userEmail ? (
-              <p className="truncate text-xs text-zinc-500">{userEmail}</p>
+              <p className="truncate text-xs text-foreground-muted">
+                {userEmail}
+              </p>
             ) : null}
           </div>
 
           <form action={signOutAdmin}>
             <button
               type="submit"
-              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2"
+              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground-secondary transition hover:bg-background-secondary hover:text-foreground"
             >
               <LogOut className="h-4 w-4 shrink-0" aria-hidden />
               Sign Out

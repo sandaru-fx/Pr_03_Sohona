@@ -78,23 +78,23 @@ export function ManagePinForm({
   }
 
   return (
-    <div className="w-full max-w-lg rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm">
-      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-700">
+    <div className="w-full max-w-lg rounded-2xl border border-border bg-surface p-8 shadow-sm">
+      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-elevated text-foreground-secondary">
         <KeyRound className="h-6 w-6" aria-hidden />
       </div>
-      <p className="mt-5 text-sm tracking-wide text-zinc-500">Sohona</p>
-      <h1 className="mt-2 text-2xl font-semibold tracking-tight text-zinc-900">
+      <p className="mt-5 text-sm tracking-wide text-foreground-muted">Sohona</p>
+      <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
         Enter PIN to manage
       </h1>
-      <p className="mt-3 text-sm leading-6 text-zinc-600">
+      <p className="mt-3 text-sm leading-6 text-foreground-secondary">
         Private owner access for{" "}
-        <span className="font-medium text-zinc-900">{displayName}</span>. The
+        <span className="font-medium text-foreground">{displayName}</span>. The
         manage link alone is never enough — enter your 6-digit memorial PIN.
       </p>
 
       <form className="mt-8 space-y-5" onSubmit={onSubmit} noValidate>
         <div>
-          <label htmlFor={pinId} className="block text-sm font-medium text-zinc-900">
+          <label htmlFor={pinId} className="block text-sm font-medium text-foreground">
             PIN
           </label>
           <input
@@ -114,23 +114,23 @@ export function ManagePinForm({
             aria-invalid={Boolean(fieldError)}
             aria-describedby={fieldError ? errorId : undefined}
             className={cn(
-              "mt-2 h-11 w-full rounded-xl border bg-white px-3.5 font-mono text-sm tracking-widest text-zinc-900 shadow-sm outline-none transition",
-              "focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2",
-              "disabled:cursor-not-allowed disabled:bg-zinc-50",
-              fieldError ? "border-red-300" : "border-zinc-200",
+              "mt-2 h-11 w-full rounded-xl border bg-surface px-3.5 font-mono text-sm tracking-widest text-foreground shadow-sm outline-none transition",
+              "focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2",
+              "disabled:cursor-not-allowed disabled:bg-background-secondary",
+              fieldError ? "border-error" : "border-border",
             )}
           />
         </div>
 
         {fieldError ? (
-          <p id={errorId} className="text-sm text-red-600" role="alert">
+          <p id={errorId} className="text-sm text-error" role="alert">
             {fieldError}
           </p>
         ) : null}
 
         {apiError ? (
           <p
-            className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+            className="rounded-xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error"
             role="alert"
           >
             {apiError}
@@ -141,11 +141,11 @@ export function ManagePinForm({
           type="submit"
           disabled={submitting}
           className={cn(
-            "inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl px-5 text-sm font-medium text-white transition",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2",
+            "inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl px-5 text-sm font-medium text-background transition",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2",
             submitting
-              ? "cursor-not-allowed bg-zinc-400"
-              : "bg-zinc-900 hover:bg-zinc-800",
+              ? "cursor-not-allowed bg-foreground-muted"
+              : "bg-gold hover:bg-gold-hover",
           )}
         >
           {submitting ? (

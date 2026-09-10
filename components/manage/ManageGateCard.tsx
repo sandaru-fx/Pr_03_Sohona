@@ -81,19 +81,19 @@ export function ManageGateCard({
   }
 
   return (
-    <div className="w-full max-w-lg rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm">
+    <div className="w-full max-w-lg rounded-2xl border border-border bg-surface p-8 shadow-sm">
       <div
         className={cn(
-          "flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-600",
+          "flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-elevated text-foreground-secondary",
         )}
       >
         <SearchX className="h-6 w-6" aria-hidden />
       </div>
-      <p className="mt-5 text-sm tracking-wide text-zinc-500">Sohona</p>
-      <h1 className="mt-2 text-2xl font-semibold tracking-tight text-zinc-900">
+      <p className="mt-5 text-sm tracking-wide text-foreground-muted">Sohona</p>
+      <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
         Manage link unavailable
       </h1>
-      <p className="mt-3 text-sm leading-6 text-zinc-600">{result.message}</p>
+      <p className="mt-3 text-sm leading-6 text-foreground-secondary">{result.message}</p>
     </div>
   );
 }

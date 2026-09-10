@@ -51,7 +51,7 @@ export default async function PublicProfilePage({
       : null;
 
   return (
-    <main className="flex min-h-full flex-1 flex-col items-center justify-center bg-zinc-50 px-6 py-16 text-zinc-900">
+    <main className="flex min-h-full flex-1 flex-col items-center justify-center bg-background px-6 py-16 text-foreground">
       <PublicGateCard
         result={result}
         content={content}

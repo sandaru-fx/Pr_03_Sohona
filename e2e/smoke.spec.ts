@@ -6,14 +6,14 @@ test.describe("Sohona public site smoke", () => {
     await expect(page.getByText("Sohona").first()).toBeVisible();
     await expect(
       page.getByRole("heading", {
-        name: /quiet digital memorial/i,
+        name: /digital remembrance\. private by design/i,
       }),
     ).toBeVisible();
     await expect(
-      page.getByRole("link", { name: /learn about sohona/i }),
+      page.getByRole("link", { name: /create a memorial/i }),
     ).toBeVisible();
     await expect(
-      page.getByRole("link", { name: /contact the temple/i }),
+      page.getByRole("link", { name: /learn more/i }).first(),
     ).toBeVisible();
   });
 
@@ -31,7 +31,9 @@ test.describe("Sohona public site smoke", () => {
     await expect(page.getByText("25 years").first()).toBeVisible();
     await expect(page.getByText(/QR comments/i)).toBeVisible();
     await expect(
-      page.getByText(/Temple admin never sees private statements, media, or comments/i),
+      page.getByText(
+        /Temple admin never sees private statements, media, or comments/i,
+      ),
     ).toBeVisible();
     await expect(page.getByText("Package C")).toBeVisible();
     await expect(page.getByText("100 years").first()).toBeVisible();
@@ -44,13 +46,17 @@ test.describe("Sohona public site smoke", () => {
 
   test("site nav reaches about and temple admin login", async ({ page }) => {
     await page.goto("/");
-    await page.getByRole("navigation", { name: "Primary" }).getByRole("link", {
-      name: "About",
-    }).click();
+    await page
+      .getByRole("navigation", { name: "Primary" })
+      .getByRole("link", { name: "About" })
+      .click();
     await expect(page).toHaveURL(/\/about$/);
 
     await page.goto("/contact");
-    await page.getByRole("link", { name: /temple admin|sign in here/i }).first().click();
+    await page
+      .getByRole("link", { name: /temple admin|sign in here/i })
+      .first()
+      .click();
     await expect(page).toHaveURL(/\/login/);
   });
 });

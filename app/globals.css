@@ -1,35 +1,82 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Backgrounds */
+  --background: #0b0d0f;
+  --background-secondary: #121518;
+  --surface: #181c20;
+  --surface-elevated: #1d2227;
+
+  /* Text */
+  --foreground: #f5f1e8;
+  --foreground-secondary: #a9a59c;
+  --foreground-muted: #77756f;
+
+  /* Brand gold (use sparingly ~5%) */
+  --gold: #c9a45c;
+  --gold-hover: #e0bd73;
+  --gold-subtle: rgba(201, 164, 92, 0.1);
+
+  /* Borders */
+  --border: #292d31;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+
+  /* Semantic */
+  --success: #6faf8f;
+  --error: #c97878;
+  --warning: #d2a85a;
+  --info: #7d9db5;
+
+  /* Focus */
+  --ring: rgba(201, 164, 92, 0.45);
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-background-secondary: var(--background-secondary);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-foreground-secondary: var(--foreground-secondary);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-gold: var(--gold);
+  --color-gold-hover: var(--gold-hover);
+  --color-gold-subtle: var(--gold-subtle);
+  --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
+  --color-success: var(--success);
+  --color-error: var(--error);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --font-sans: var(--font-dm-sans);
+  --font-display: var(--font-playfair);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  color-scheme: dark;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
-/* Day 9.5 — light public marketing motion + atmosphere */
-@keyframes site-fade-up {
+.font-display {
+  font-family: var(--font-playfair), ui-serif, Georgia, serif;
+}
+
+/* Calm focus ring for accessibility */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+@keyframes sohona-fade-up {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -37,32 +84,22 @@ body {
   }
 }
 
-@keyframes site-mist-drift {
+@keyframes sohona-pulse {
   0%,
   100% {
-    transform: translate3d(0, 0, 0) scale(1);
-    opacity: 0.9;
+    opacity: 0.45;
   }
   50% {
-    transform: translate3d(1.5%, -1%, 0) scale(1.03);
-    opacity: 1;
+    opacity: 0.85;
   }
 }
 
-.site-fade-up {
-  animation: site-fade-up 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+.sohona-fade-up {
+  animation: sohona-fade-up 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.site-hero-plane {
-  background:
-    radial-gradient(120% 80% at 70% 15%, #d5e0d8 0%, transparent 55%),
-    radial-gradient(90% 70% at 12% 85%, #c5d2c8 0%, transparent 50%),
-    linear-gradient(165deg, #f4f7f4 0%, #e4ebe5 48%, #d7e0d9 100%);
-  animation: site-mist-drift 18s ease-in-out infinite;
+.sohona-skeleton {
+  animation: sohona-pulse 1.4s ease-in-out infinite;
+  background: var(--surface-elevated);
 }
 
-.site-hero-mist {
-  background:
-    linear-gradient(to top, rgba(28, 46, 36, 0.12), transparent 70%),
-    radial-gradient(60% 80% at 50% 100%, rgba(47, 90, 67, 0.18), transparent 70%);
-}

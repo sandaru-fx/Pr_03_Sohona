@@ -314,38 +314,38 @@ export function SetupContentForm({
 
   return (
     <div className="w-full max-w-2xl space-y-6">
-      <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
-        <p className="text-sm tracking-wide text-zinc-500">Sohona</p>
-        <h1 className="mt-2 text-2xl font-semibold tracking-tight text-zinc-900">
+      <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+        <p className="text-sm tracking-wide text-foreground-muted">Sohona</p>
+        <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
           Add memories
         </h1>
-        <p className="mt-3 text-sm leading-6 text-zinc-600">
+        <p className="mt-3 text-sm leading-6 text-foreground-secondary">
           Add statements and media for{" "}
-          <span className="font-medium text-zinc-900">{displayName}</span>.
+          <span className="font-medium text-foreground">{displayName}</span>.
           You can save now and finish setup in the next step.
         </p>
-        <p className="mt-3 text-xs leading-5 text-zinc-500">
+        <p className="mt-3 text-xs leading-5 text-foreground-muted">
           Package limits: {limits.maxImages} photos · video ≤{" "}
           {limits.maxVideoSeconds}s · audio ≤ {limits.maxAudioSeconds}s ·
           statements ≤ {limits.maxStatementWords} words total.
         </p>
       </div>
 
-      <section className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
+      <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h2 className="text-sm font-medium text-zinc-900">Statements</h2>
+          <h2 className="text-sm font-medium text-foreground">Statements</h2>
           <p
             className={cn(
               "text-xs tabular-nums",
               usedWords > limits.maxStatementWords
-                ? "font-medium text-red-600"
-                : "text-zinc-500",
+                ? "font-medium text-error"
+                : "text-foreground-muted",
             )}
           >
             {usedWords} / {limits.maxStatementWords} words
           </p>
         </div>
-        <p className="mt-1 text-sm text-zinc-600">
+        <p className="mt-1 text-sm text-foreground-secondary">
           Sinhala or English. Word count is across all statements combined.
         </p>
 
@@ -369,7 +369,7 @@ export function SetupContentForm({
                   );
                 }}
                 placeholder="Write a memory or message..."
-                className="min-h-24 w-full rounded-xl border border-zinc-200 bg-white px-3.5 py-3 text-sm text-zinc-900 shadow-sm outline-none transition focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2 disabled:bg-zinc-50"
+                className="min-h-24 w-full rounded-xl border border-border bg-surface px-3.5 py-3 text-sm text-foreground shadow-sm outline-none transition focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 disabled:bg-background-secondary"
               />
               <button
                 type="button"
@@ -384,7 +384,7 @@ export function SetupContentForm({
                       : current.filter((row) => row.key !== item.key),
                   )
                 }
-                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-zinc-200 text-zinc-500 transition hover:bg-zinc-50 disabled:opacity-40"
+                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border text-foreground-muted transition hover:bg-background-secondary disabled:opacity-40"
               >
                 <Trash2 className="h-4 w-4" aria-hidden />
               </button>
@@ -399,7 +399,7 @@ export function SetupContentForm({
             disabled={
               savingStatements || finishing || statements.length >= 30
             }
-            className="inline-flex h-10 items-center gap-2 rounded-xl border border-zinc-300 bg-white px-4 text-sm font-medium text-zinc-800 transition hover:bg-zinc-50"
+            className="inline-flex h-10 items-center gap-2 rounded-xl border border-border bg-surface px-4 text-sm font-medium text-foreground transition hover:bg-background-secondary"
           >
             <Plus className="h-4 w-4" aria-hidden />
             Add statement
@@ -409,10 +409,10 @@ export function SetupContentForm({
             onClick={() => void saveStatements()}
             disabled={savingStatements || finishing}
             className={cn(
-              "inline-flex h-10 items-center gap-2 rounded-xl px-4 text-sm font-medium text-white transition",
+              "inline-flex h-10 items-center gap-2 rounded-xl px-4 text-sm font-medium text-background transition",
               savingStatements || finishing
-                ? "cursor-not-allowed bg-zinc-400"
-                : "bg-zinc-900 hover:bg-zinc-800",
+                ? "cursor-not-allowed bg-foreground-muted"
+                : "bg-gold hover:bg-gold-hover",
             )}
           >
             {savingStatements ? (
@@ -427,22 +427,22 @@ export function SetupContentForm({
         </div>
       </section>
 
-      <section className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
+      <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h2 className="text-sm font-medium text-zinc-900">
+          <h2 className="text-sm font-medium text-foreground">
             Photos, videos & voice
           </h2>
-          <p className="text-xs tabular-nums text-zinc-500">
+          <p className="text-xs tabular-nums text-foreground-muted">
             Photos {photoCount} / {limits.maxImages}
           </p>
         </div>
-        <p className="mt-1 text-sm text-zinc-600">
+        <p className="mt-1 text-sm text-foreground-secondary">
           Files go to private storage. Video ≤ {limits.maxVideoSeconds}s, audio ≤{" "}
           {limits.maxAudioSeconds}s.
         </p>
 
         {!r2Configured ? (
-          <div className="mt-5 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
+          <div className="mt-5 rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-warning">
             Media storage (Cloudflare R2) is not connected yet. You can continue
             with statements now and upload media after R2 is configured.
           </div>
@@ -463,8 +463,8 @@ export function SetupContentForm({
                   className={cn(
                     "inline-flex h-10 items-center gap-2 rounded-xl border px-4 text-sm font-medium transition",
                     kind === value
-                      ? "border-zinc-900 bg-zinc-900 text-white"
-                      : "border-zinc-300 bg-white text-zinc-800 hover:bg-zinc-50",
+                      ? "border-gold bg-gold text-background"
+                      : "border-border bg-surface text-foreground hover:bg-background-secondary",
                   )}
                 >
                   <Icon className="h-4 w-4" aria-hidden />
@@ -473,7 +473,7 @@ export function SetupContentForm({
               ))}
             </div>
 
-            <label className="inline-flex h-11 cursor-pointer items-center gap-2 rounded-xl bg-zinc-900 px-5 text-sm font-medium text-white transition hover:bg-zinc-800">
+            <label className="inline-flex h-11 cursor-pointer items-center gap-2 rounded-xl bg-gold px-5 text-sm font-medium text-background transition hover:bg-gold-hover">
               <Upload className="h-4 w-4" aria-hidden />
               {uploading ? "Uploading…" : `Upload ${kind.toLowerCase()}`}
               <input
@@ -490,9 +490,9 @@ export function SetupContentForm({
           </div>
         )}
 
-        <ul className="mt-6 divide-y divide-zinc-200 rounded-xl border border-zinc-200">
+        <ul className="mt-6 divide-y divide-border rounded-xl border border-border">
           {media.length === 0 ? (
-            <li className="px-4 py-6 text-sm text-zinc-500">No media uploaded yet.</li>
+            <li className="px-4 py-6 text-sm text-foreground-muted">No media uploaded yet.</li>
           ) : (
             media.map((item) => (
               <li
@@ -500,10 +500,10 @@ export function SetupContentForm({
                 className="flex items-center justify-between gap-3 px-4 py-3 text-sm"
               >
                 <div className="min-w-0">
-                  <p className="truncate font-medium text-zinc-900">
+                  <p className="truncate font-medium text-foreground">
                     {item.originalName ?? item.kind}
                   </p>
-                  <p className="text-xs text-zinc-500">
+                  <p className="text-xs text-foreground-muted">
                     {item.kind} · {formatBytes(item.sizeBytes)}
                   </p>
                 </div>
@@ -515,7 +515,7 @@ export function SetupContentForm({
 
       {error ? (
         <p
-          className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+          className="rounded-xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error"
           role="alert"
         >
           {error}
@@ -523,16 +523,16 @@ export function SetupContentForm({
       ) : null}
       {message ? (
         <p
-          className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900"
+          className="rounded-xl border border-success/30 bg-success/10 px-4 py-3 text-sm text-success"
           role="status"
         >
           {message}
         </p>
       ) : null}
 
-      <section className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
-        <h2 className="text-sm font-medium text-zinc-900">Finish setup</h2>
-        <p className="mt-1 text-sm text-zinc-600">
+      <section className="rounded-2xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+        <h2 className="text-sm font-medium text-foreground">Finish setup</h2>
+        <p className="mt-1 text-sm text-foreground-secondary">
           This locks the setup link forever and shows your private manage link
           once. You can finish with statements only — media can wait until
           storage is connected.
@@ -542,10 +542,10 @@ export function SetupContentForm({
           onClick={() => void finishSetup()}
           disabled={finishing || savingStatements || uploading}
           className={cn(
-            "mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl px-5 text-sm font-medium text-white transition sm:w-auto",
+            "mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl px-5 text-sm font-medium text-background transition sm:w-auto",
             finishing || savingStatements || uploading
-              ? "cursor-not-allowed bg-zinc-400"
-              : "bg-zinc-900 hover:bg-zinc-800",
+              ? "cursor-not-allowed bg-foreground-muted"
+              : "bg-gold hover:bg-gold-hover",
           )}
         >
           {finishing ? (

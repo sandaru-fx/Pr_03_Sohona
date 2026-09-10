@@ -46,7 +46,7 @@ export default async function ManagePage({ params }: ManagePageProps) {
       : null;
 
   return (
-    <main className="flex min-h-full flex-1 flex-col items-center bg-zinc-50 px-6 py-12 text-zinc-900 sm:py-16">
+    <main className="flex min-h-full flex-1 flex-col items-center bg-background px-6 py-12 text-foreground sm:py-16">
       <ManageGateCard
         result={result}
         manageToken={manageToken}

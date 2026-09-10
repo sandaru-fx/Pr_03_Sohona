@@ -1,5 +1,8 @@
 import { MemorialComments } from "@/components/public/MemorialComments";
 import { MemorialMediaItem } from "@/components/public/MemorialMediaItem";
+import { Alert } from "@/components/ui/Alert";
+import { Card } from "@/components/ui/Card";
+import { EmptyState } from "@/components/ui/EmptyState";
 import type {
   PublicCommentItem,
   PublicMediaMetaItem,
@@ -33,73 +36,100 @@ export function MemorialView({
   pinProtected,
   r2Configured,
 }: MemorialViewProps) {
+  const photos = media.filter((item) => item.kind === "PHOTO");
+  const videos = media.filter((item) => item.kind === "VIDEO");
+  const voices = media.filter((item) => item.kind === "VOICE");
+
   return (
-    <div className="w-full max-w-2xl space-y-6">
-      <header className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
-        <p className="text-sm tracking-wide text-zinc-500">Sohona</p>
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-zinc-900">
+    <div className="w-full max-w-2xl space-y-8">
+      <header className="rounded-2xl border border-border bg-surface px-6 py-10 text-center sm:px-10 sm:py-14">
+        <p className="text-sm tracking-wide text-gold">In remembrance</p>
+        <h1 className="mt-4 font-display text-4xl tracking-tight text-foreground sm:text-5xl">
           {displayName}
         </h1>
-        <p className="mt-3 text-sm leading-6 text-zinc-600">
-          A private memorial space. View only — editing is not available here.
+        <p className="mx-auto mt-4 max-w-md text-sm leading-6 text-foreground-secondary">
+          A quiet digital place to remember — preserved with care and privacy.
         </p>
         {pinProtected ? (
-          <p className="mt-4 text-xs text-zinc-500">
+          <p className="mt-5 text-xs text-foreground-muted">
             Unlocked with PIN for this device session.
           </p>
         ) : null}
       </header>
 
-      <section className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
-        <h2 className="text-sm font-medium text-zinc-900">Memories</h2>
+      <Card>
+        <h2 className="font-display text-2xl text-foreground">Memories</h2>
         {statements.length === 0 ? (
-          <p className="mt-4 text-sm text-zinc-500">
-            No statements have been added yet.
-          </p>
+          <EmptyState
+            className="mt-5"
+            title="No statements have been added yet."
+            description="When the family is ready, words of remembrance will appear here."
+          />
         ) : (
-          <ul className="mt-5 space-y-4">
+          <ul className="mt-6 space-y-5">
             {statements.map((item) => (
               <li
                 key={item.id}
-                className="border-l-2 border-zinc-200 pl-4 text-sm leading-7 text-zinc-800"
+                className="border-l border-gold/40 pl-4 text-sm leading-7 text-foreground-secondary"
               >
-                {item.body}
+                <span className="text-foreground">{item.body}</span>
               </li>
             ))}
           </ul>
         )}
-      </section>
+      </Card>
 
-      <section className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
-        <h2 className="text-sm font-medium text-zinc-900">
-          Photos, videos & voice
+      <Card>
+        <h2 className="font-display text-2xl text-foreground">
+          Photographs & media
         </h2>
-        <p className="mt-1 text-sm text-zinc-600">
+        <p className="mt-2 text-sm leading-6 text-foreground-secondary">
           Media opens through short-lived secure links. Nothing is stored as a
           permanent public URL.
         </p>
 
         {!r2Configured && media.length > 0 ? (
-          <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
-            Cloudflare R2 is not connected yet, so playback is paused. Metadata
+          <Alert tone="warning" className="mt-5">
+            Media playback is paused while storage is reconnecting. Metadata
             still shows what the family uploaded.
-          </div>
+          </Alert>
         ) : null}
 
         {media.length === 0 ? (
-          <p className="mt-5 text-sm text-zinc-500">No media uploaded yet.</p>
+          <EmptyState
+            className="mt-5"
+            title="No photographs have been added yet."
+            description="When memories are ready, photos, video, and voice will appear here."
+          />
         ) : (
-          <ul className="mt-5 overflow-hidden rounded-xl border border-zinc-200">
-            {media.map((item) => (
-              <MemorialMediaItem
-                key={item.id}
-                item={item}
-                enabled={r2Configured}
-              />
-            ))}
-          </ul>
+          <div className="mt-6 space-y-6">
+            {photos.length > 0 ? (
+              <ul className="grid gap-3 sm:grid-cols-2">
+                {photos.map((item) => (
+                  <MemorialMediaItem
+                    key={item.id}
+                    item={item}
+                    enabled={r2Configured}
+                    presentation="gallery"
+                  />
+                ))}
+              </ul>
+            ) : null}
+            {videos.length > 0 || voices.length > 0 ? (
+              <ul className="overflow-hidden rounded-xl border border-border">
+                {[...videos, ...voices].map((item) => (
+                  <MemorialMediaItem
+                    key={item.id}
+                    item={item}
+                    enabled={r2Configured}
+                    presentation="list"
+                  />
+                ))}
+              </ul>
+            ) : null}
+          </div>
         )}
-      </section>
+      </Card>
 
       <MemorialComments
         qrId={qrId}
@@ -112,6 +142,11 @@ export function MemorialView({
         max={commentQuota.max}
         nextMaxWords={commentQuota.nextMaxWords}
       />
+
+      <p className="px-1 text-center text-xs leading-5 text-foreground-muted">
+        Family memories are private. Temple administrators cannot view
+        statements, media, or comments.
+      </p>
     </div>
   );
 }

@@ -27,7 +27,7 @@ export default async function SetupPage({ params }: SetupPageProps) {
   const result = await resolveSetupGate(setupToken);
 
   return (
-    <main className="flex min-h-full flex-1 flex-col items-center justify-center bg-zinc-50 px-6 py-16 text-zinc-900">
+    <main className="flex min-h-full flex-1 flex-col items-center justify-center bg-background px-6 py-16 text-foreground">
       <SetupGateCard
         result={result}
         setupToken={setupToken}

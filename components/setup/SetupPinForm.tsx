@@ -93,17 +93,17 @@ export function SetupPinForm({
 
   if (saved) {
     return (
-      <div className="w-full max-w-lg rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm">
-        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
+      <div className="w-full max-w-lg rounded-2xl border border-border bg-surface p-8 shadow-sm">
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-success/10 text-success">
           <CheckCircle2 className="h-6 w-6" aria-hidden />
         </div>
-        <p className="mt-5 text-sm tracking-wide text-zinc-500">Sohona</p>
-        <h1 className="mt-2 text-2xl font-semibold tracking-tight text-zinc-900">
+        <p className="mt-5 text-sm tracking-wide text-foreground-muted">Sohona</p>
+        <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
           PIN saved
         </h1>
-        <p className="mt-3 text-sm leading-6 text-zinc-600">
+        <p className="mt-3 text-sm leading-6 text-foreground-secondary">
           A PIN is now set for{" "}
-          <span className="font-medium text-zinc-900">{displayName}</span>.
+          <span className="font-medium text-foreground">{displayName}</span>.
           This PIN is always required to edit the profile later.
           {isPublicPinRequired
             ? " Visitors who scan the QR will also need this PIN to view content."
@@ -114,24 +114,24 @@ export function SetupPinForm({
   }
 
   return (
-    <div className="w-full max-w-lg rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm">
-      <p className="text-sm tracking-wide text-zinc-500">Sohona</p>
-      <h1 className="mt-2 text-2xl font-semibold tracking-tight text-zinc-900">
+    <div className="w-full max-w-lg rounded-2xl border border-border bg-surface p-8 shadow-sm">
+      <p className="text-sm tracking-wide text-foreground-muted">Sohona</p>
+      <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
         Create your security PIN
       </h1>
-      <p className="mt-3 text-sm leading-6 text-zinc-600">
+      <p className="mt-3 text-sm leading-6 text-foreground-secondary">
         Setting up the memorial for{" "}
-        <span className="font-medium text-zinc-900">{displayName}</span>. Choose
+        <span className="font-medium text-foreground">{displayName}</span>. Choose
         a 6-digit PIN you can remember. You will need it to edit this profile
         later.
       </p>
       {expiresLabel ? (
-        <p className="mt-3 text-xs text-zinc-500">Link expires: {expiresLabel}</p>
+        <p className="mt-3 text-xs text-foreground-muted">Link expires: {expiresLabel}</p>
       ) : null}
 
       <form className="mt-8 space-y-5" onSubmit={onSubmit} noValidate>
         <div>
-          <label htmlFor={pinId} className="block text-sm font-medium text-zinc-900">
+          <label htmlFor={pinId} className="block text-sm font-medium text-foreground">
             PIN
           </label>
           <input
@@ -151,10 +151,10 @@ export function SetupPinForm({
             aria-invalid={Boolean(fieldError)}
             aria-describedby={fieldError ? errorId : undefined}
             className={cn(
-              "mt-2 h-11 w-full rounded-xl border bg-white px-3.5 font-mono text-sm tracking-widest text-zinc-900 shadow-sm outline-none transition",
-              "focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2",
-              "disabled:cursor-not-allowed disabled:bg-zinc-50",
-              fieldError ? "border-red-300" : "border-zinc-200",
+              "mt-2 h-11 w-full rounded-xl border bg-surface px-3.5 font-mono text-sm tracking-widest text-foreground shadow-sm outline-none transition",
+              "focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2",
+              "disabled:cursor-not-allowed disabled:bg-background-secondary",
+              fieldError ? "border-error" : "border-border",
             )}
           />
         </div>
@@ -162,7 +162,7 @@ export function SetupPinForm({
         <div>
           <label
             htmlFor={confirmId}
-            className="block text-sm font-medium text-zinc-900"
+            className="block text-sm font-medium text-foreground"
           >
             Confirm PIN
           </label>
@@ -181,23 +181,23 @@ export function SetupPinForm({
             }}
             placeholder="Repeat 6 digits"
             className={cn(
-              "mt-2 h-11 w-full rounded-xl border bg-white px-3.5 font-mono text-sm tracking-widest text-zinc-900 shadow-sm outline-none transition",
-              "focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2",
-              "disabled:cursor-not-allowed disabled:bg-zinc-50",
-              fieldError ? "border-red-300" : "border-zinc-200",
+              "mt-2 h-11 w-full rounded-xl border bg-surface px-3.5 font-mono text-sm tracking-widest text-foreground shadow-sm outline-none transition",
+              "focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2",
+              "disabled:cursor-not-allowed disabled:bg-background-secondary",
+              fieldError ? "border-error" : "border-border",
             )}
           />
         </div>
 
         {fieldError ? (
-          <p id={errorId} className="text-sm text-red-600" role="alert">
+          <p id={errorId} className="text-sm text-error" role="alert">
             {fieldError}
           </p>
         ) : null}
 
         <label
           htmlFor={toggleId}
-          className="flex cursor-pointer items-start gap-3 rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-3"
+          className="flex cursor-pointer items-start gap-3 rounded-xl border border-border bg-background-secondary px-4 py-3"
         >
           <input
             id={toggleId}
@@ -205,13 +205,13 @@ export function SetupPinForm({
             checked={isPublicPinRequired}
             disabled={submitting}
             onChange={(event) => setIsPublicPinRequired(event.target.checked)}
-            className="mt-1 h-4 w-4 rounded border-zinc-300 text-zinc-900 focus-visible:ring-zinc-900"
+            className="mt-1 h-4 w-4 rounded border-border text-foreground focus-visible:ring-gold"
           />
           <span>
-            <span className="block text-sm font-medium text-zinc-900">
+            <span className="block text-sm font-medium text-foreground">
               Require PIN to view profile via QR code
             </span>
-            <span className="mt-1 block text-sm leading-6 text-zinc-600">
+            <span className="mt-1 block text-sm leading-6 text-foreground-secondary">
               Optional. If off, future visitors can view memories without a PIN.
               Editing always requires this PIN.
             </span>
@@ -220,7 +220,7 @@ export function SetupPinForm({
 
         {apiError ? (
           <p
-            className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+            className="rounded-xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error"
             role="alert"
           >
             {apiError}
@@ -231,11 +231,11 @@ export function SetupPinForm({
           type="submit"
           disabled={submitting}
           className={cn(
-            "inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl px-5 text-sm font-medium text-white transition",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2",
+            "inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl px-5 text-sm font-medium text-background transition",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2",
             submitting
-              ? "cursor-not-allowed bg-zinc-400"
-              : "bg-zinc-900 hover:bg-zinc-800",
+              ? "cursor-not-allowed bg-foreground-muted"
+              : "bg-gold hover:bg-gold-hover",
           )}
         >
           {submitting ? (

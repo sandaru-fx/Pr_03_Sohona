@@ -1,9 +1,12 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, LockKeyhole } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Alert } from "@/components/ui/Alert";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { PinInput } from "@/components/ui/PinInput";
 
 type PublicPinFormProps = {
   qrId: string;
@@ -20,12 +23,12 @@ export function PublicPinForm({ qrId, displayName }: PublicPinFormProps) {
   const [apiError, setApiError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setApiError(null);
 
     if (!/^\d{6}$/.test(pin)) {
-      setFieldError("PIN must be exactly 6 digits.");
+      setFieldError("Enter all 6 digits to continue.");
       return;
     }
 
@@ -60,7 +63,7 @@ export function PublicPinForm({ qrId, displayName }: PublicPinFormProps) {
           (data.issues?.[0]?.message ??
             data.message ??
             data.error ??
-            "Incorrect PIN.") + extra,
+            "That PIN did not match.") + extra,
         );
         return;
       }
@@ -68,82 +71,64 @@ export function PublicPinForm({ qrId, displayName }: PublicPinFormProps) {
       setPin("");
       router.refresh();
     } catch {
-      setApiError("Network error. Check your connection and try again.");
+      setApiError("Something went wrong. Check your connection and try again.");
     } finally {
       setSubmitting(false);
     }
   }
 
   return (
-    <div className="w-full max-w-lg rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm">
-      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-700">
+    <Card className="w-full max-w-lg">
+      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gold-subtle text-gold">
         <LockKeyhole className="h-6 w-6" aria-hidden />
       </div>
-      <p className="mt-5 text-sm tracking-wide text-zinc-500">Sohona</p>
-      <h1 className="mt-2 text-2xl font-semibold tracking-tight text-zinc-900">
-        Enter PIN to view
+      <p className="mt-5 text-sm tracking-wide text-foreground-muted">Sohona</p>
+      <h1 className="mt-2 font-display text-3xl text-foreground">
+        Private Memories
       </h1>
-      <p className="mt-3 text-sm leading-6 text-zinc-600">
-        The memorial for{" "}
-        <span className="font-medium text-zinc-900">{displayName}</span> is
-        protected. Enter the 6-digit PIN shared by the family.
+      <p className="mt-3 text-sm leading-6 text-foreground-secondary">
+        This part of the memorial for{" "}
+        <span className="font-medium text-foreground">{displayName}</span> is
+        protected for family and invited viewers.
       </p>
 
       <form className="mt-8 space-y-5" onSubmit={onSubmit} noValidate>
         <div>
-          <label htmlFor={pinId} className="block text-sm font-medium text-zinc-900">
-            PIN
+          <label
+            htmlFor={pinId}
+            className="mb-3 block text-sm font-medium text-foreground"
+          >
+            Enter 6-digit PIN
           </label>
-          <input
+          <PinInput
             id={pinId}
-            name="pin"
-            type="password"
-            inputMode="numeric"
-            autoComplete="one-time-code"
-            maxLength={6}
-            disabled={submitting}
             value={pin}
-            onChange={(event) => {
-              setPin(event.target.value.replace(/\D/g, "").slice(0, 6));
+            onChange={(value) => {
+              setPin(value);
               if (fieldError) setFieldError(null);
             }}
-            placeholder="6 digits"
-            aria-invalid={Boolean(fieldError)}
-            aria-describedby={fieldError ? errorId : undefined}
-            className={cn(
-              "mt-2 h-11 w-full rounded-xl border bg-white px-3.5 font-mono text-sm tracking-widest text-zinc-900 shadow-sm outline-none transition",
-              "focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2",
-              "disabled:cursor-not-allowed disabled:bg-zinc-50",
-              fieldError ? "border-red-300" : "border-zinc-200",
-            )}
+            disabled={submitting}
+            ariaLabel="Memorial PIN"
           />
         </div>
 
         {fieldError ? (
-          <p id={errorId} className="text-sm text-red-600" role="alert">
+          <p id={errorId} className="text-sm text-error" role="alert">
             {fieldError}
           </p>
         ) : null}
 
         {apiError ? (
-          <p
-            className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
-            role="alert"
-          >
+          <Alert tone="error" role="alert">
             {apiError}
-          </p>
+          </Alert>
         ) : null}
 
-        <button
+        <Button
           type="submit"
+          className="w-full"
+          size="lg"
           disabled={submitting}
-          className={cn(
-            "inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl px-5 text-sm font-medium text-white transition",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2",
-            submitting
-              ? "cursor-not-allowed bg-zinc-400"
-              : "bg-zinc-900 hover:bg-zinc-800",
-          )}
         >
           {submitting ? (
             <>
@@ -151,10 +136,10 @@ export function PublicPinForm({ qrId, displayName }: PublicPinFormProps) {
               Checking…
             </>
           ) : (
-            "Unlock memorial"
+            "Continue"
           )}
-        </button>
+        </Button>
       </form>
-    </div>
+    </Card>
   );
 }

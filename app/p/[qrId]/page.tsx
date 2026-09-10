@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: PublicProfilePageProps) {
 }
 
 /**
- * Day 6–7 — public QR gate, PIN session, view-only memorial + secure media.
+ * Public QR gate, PIN session, view-only memorial + secure media.
  */
 export default async function PublicProfilePage({
   params,
@@ -50,13 +50,30 @@ export default async function PublicProfilePage({
       ? await loadPublicMemorialContent(result.profile.id)
       : null;
 
+  const isMemorial =
+    result.status === "ready" && content !== null;
+
   return (
-    <main className="flex min-h-full flex-1 flex-col items-center justify-center bg-background px-6 py-16 text-foreground">
-      <PublicGateCard
-        result={result}
-        content={content}
-        r2Configured={isR2Configured()}
-      />
+    <main
+      className={
+        isMemorial
+          ? "flex min-h-full flex-1 flex-col items-center bg-[#0B0D0F] px-5 py-12 text-[#F5F1E8] sm:px-6 sm:py-16"
+          : "relative flex min-h-full flex-1 flex-col items-center justify-center overflow-hidden bg-[#0B0D0F] px-5 py-16 text-[#F5F1E8] sm:px-6"
+      }
+    >
+      {!isMemorial ? (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_0%,rgba(201,164,92,0.08),transparent_55%)]"
+        />
+      ) : null}
+      <div className="relative w-full max-w-2xl">
+        <PublicGateCard
+          result={result}
+          content={content}
+          r2Configured={isR2Configured()}
+        />
+      </div>
     </main>
   );
 }

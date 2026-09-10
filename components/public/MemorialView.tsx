@@ -1,7 +1,6 @@
 import { MemorialComments } from "@/components/public/MemorialComments";
 import { MemorialMediaItem } from "@/components/public/MemorialMediaItem";
 import { Alert } from "@/components/ui/Alert";
-import { Card } from "@/components/ui/Card";
 import { EmptyState } from "@/components/ui/EmptyState";
 import type {
   PublicCommentItem,
@@ -41,55 +40,59 @@ export function MemorialView({
   const voices = media.filter((item) => item.kind === "VOICE");
 
   return (
-    <div className="w-full max-w-2xl space-y-8">
-      <header className="rounded-2xl border border-border bg-surface px-6 py-10 text-center sm:px-10 sm:py-14">
-        <p className="text-sm tracking-wide text-gold">In remembrance</p>
-        <h1 className="mt-4 font-display text-4xl tracking-tight text-foreground sm:text-5xl">
+    <div className="w-full max-w-2xl space-y-10 sm:space-y-12">
+      <header className="px-2 py-8 text-center sm:py-12">
+        <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
+          In remembrance
+        </p>
+        <h1 className="mt-5 font-sans text-4xl font-medium tracking-tight text-[#F5F1E8] sm:text-5xl sm:leading-tight">
           {displayName}
         </h1>
-        <p className="mx-auto mt-4 max-w-md text-sm leading-6 text-foreground-secondary">
+        <p className="mx-auto mt-5 max-w-md text-base leading-8 text-gray-400">
           A quiet digital place to remember — preserved with care and privacy.
         </p>
         {pinProtected ? (
-          <p className="mt-5 text-xs text-foreground-muted">
+          <p className="mt-6 text-xs text-gray-500">
             Unlocked with PIN for this device session.
           </p>
         ) : null}
       </header>
 
-      <Card>
-        <h2 className="font-display text-2xl text-foreground">Memories</h2>
+      <section className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 sm:px-8 sm:py-10">
+        <h2 className="font-sans text-2xl font-medium tracking-tight text-[#F5F1E8]">
+          Memories
+        </h2>
         {statements.length === 0 ? (
           <EmptyState
-            className="mt-5"
+            className="mt-6"
             title="No statements have been added yet."
             description="When the family is ready, words of remembrance will appear here."
           />
         ) : (
-          <ul className="mt-6 space-y-5">
+          <ul className="mt-8 space-y-6">
             {statements.map((item) => (
               <li
                 key={item.id}
-                className="border-l border-gold/40 pl-4 text-sm leading-7 text-foreground-secondary"
+                className="border-l border-gold/40 pl-5 text-base leading-8 text-[#F5F1E8]"
               >
-                <span className="text-foreground">{item.body}</span>
+                {item.body}
               </li>
             ))}
           </ul>
         )}
-      </Card>
+      </section>
 
-      <Card>
-        <h2 className="font-display text-2xl text-foreground">
+      <section className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 sm:px-8 sm:py-10">
+        <h2 className="font-sans text-2xl font-medium tracking-tight text-[#F5F1E8]">
           Photographs & media
         </h2>
-        <p className="mt-2 text-sm leading-6 text-foreground-secondary">
+        <p className="mt-3 text-sm leading-7 text-gray-400">
           Media opens through short-lived secure links. Nothing is stored as a
           permanent public URL.
         </p>
 
         {!r2Configured && media.length > 0 ? (
-          <Alert tone="warning" className="mt-5">
+          <Alert tone="warning" className="mt-6">
             Media playback is paused while storage is reconnecting. Metadata
             still shows what the family uploaded.
           </Alert>
@@ -97,14 +100,14 @@ export function MemorialView({
 
         {media.length === 0 ? (
           <EmptyState
-            className="mt-5"
+            className="mt-6"
             title="No photographs have been added yet."
             description="When memories are ready, photos, video, and voice will appear here."
           />
         ) : (
-          <div className="mt-6 space-y-6">
+          <div className="mt-8 space-y-6">
             {photos.length > 0 ? (
-              <ul className="grid gap-3 sm:grid-cols-2">
+              <ul className="grid gap-4 sm:grid-cols-2">
                 {photos.map((item) => (
                   <MemorialMediaItem
                     key={item.id}
@@ -116,7 +119,7 @@ export function MemorialView({
               </ul>
             ) : null}
             {videos.length > 0 || voices.length > 0 ? (
-              <ul className="overflow-hidden rounded-xl border border-border">
+              <ul className="overflow-hidden rounded-xl border border-[#2A2E33]">
                 {[...videos, ...voices].map((item) => (
                   <MemorialMediaItem
                     key={item.id}
@@ -129,7 +132,7 @@ export function MemorialView({
             ) : null}
           </div>
         )}
-      </Card>
+      </section>
 
       <MemorialComments
         qrId={qrId}
@@ -143,7 +146,7 @@ export function MemorialView({
         nextMaxWords={commentQuota.nextMaxWords}
       />
 
-      <p className="px-1 text-center text-xs leading-5 text-foreground-muted">
+      <p className="px-2 pb-4 text-center text-xs leading-6 text-gray-500">
         Family memories are private. Temple administrators cannot view
         statements, media, or comments.
       </p>

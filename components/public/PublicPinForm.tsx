@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { Loader2, LockKeyhole } from "lucide-react";
 import { Alert } from "@/components/ui/Alert";
 import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
 import { PinInput } from "@/components/ui/PinInput";
 
 type PublicPinFormProps = {
@@ -78,25 +77,28 @@ export function PublicPinForm({ qrId, displayName }: PublicPinFormProps) {
   }
 
   return (
-    <Card className="w-full max-w-lg">
-      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gold-subtle text-gold">
+    <div className="w-full max-w-md rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-10 sm:px-8 sm:py-12">
+      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gold-subtle text-gold">
         <LockKeyhole className="h-6 w-6" aria-hidden />
       </div>
-      <p className="mt-5 text-sm tracking-wide text-foreground-muted">Mathaka QR</p>
-      <h1 className="mt-2 font-display text-3xl text-foreground">
+
+      <p className="mt-8 text-center text-xs font-medium uppercase tracking-[0.18em] text-gold">
+        Mathaka QR
+      </p>
+      <h1 className="mt-4 text-center font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-4xl">
         Private Memories
       </h1>
-      <p className="mt-3 text-sm leading-6 text-foreground-secondary">
+      <p className="mx-auto mt-4 max-w-sm text-center text-base leading-7 text-gray-400">
         This part of the memorial for{" "}
-        <span className="font-medium text-foreground">{displayName}</span> is
+        <span className="font-medium text-[#F5F1E8]">{displayName}</span> is
         protected for family and invited viewers.
       </p>
 
-      <form className="mt-8 space-y-5" onSubmit={onSubmit} noValidate>
+      <form className="mt-10 space-y-6" onSubmit={onSubmit} noValidate>
         <div>
           <label
             htmlFor={pinId}
-            className="mb-3 block text-sm font-medium text-foreground"
+            className="mb-4 block text-center text-sm font-medium text-[#F5F1E8]"
           >
             Enter 6-digit PIN
           </label>
@@ -109,11 +111,16 @@ export function PublicPinForm({ qrId, displayName }: PublicPinFormProps) {
             }}
             disabled={submitting}
             ariaLabel="Memorial PIN"
+            autoFocus
           />
         </div>
 
         {fieldError ? (
-          <p id={errorId} className="text-sm text-error" role="alert">
+          <p
+            id={errorId}
+            className="text-center text-sm text-error"
+            role="alert"
+          >
             {fieldError}
           </p>
         ) : null}
@@ -140,6 +147,6 @@ export function PublicPinForm({ qrId, displayName }: PublicPinFormProps) {
           )}
         </Button>
       </form>
-    </Card>
+    </div>
   );
 }

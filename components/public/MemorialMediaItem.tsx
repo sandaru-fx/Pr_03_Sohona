@@ -155,20 +155,20 @@ export function MemorialMediaItem({
       className={cn(
         "space-y-3",
         presentation === "list" &&
-          "border-b border-border px-4 py-4 last:border-b-0",
+          "border-b border-[#2A2E33] px-4 py-5 last:border-b-0",
         presentation === "gallery" &&
-          "overflow-hidden rounded-xl border border-border bg-background-secondary p-3",
+          "overflow-hidden rounded-xl border border-[#2A2E33] bg-[#0B0D0F]/50 p-3",
       )}
     >
       <div className="flex items-center gap-3 text-sm">
-        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-surface-elevated text-foreground-secondary">
+        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#181C20] text-gray-400">
           <MediaIcon kind={item.kind} />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="truncate font-medium text-foreground">
+          <p className="truncate font-medium text-[#F5F1E8]">
             {item.originalName ?? item.kind}
           </p>
-          <p className="text-xs text-foreground-muted">
+          <p className="text-xs text-gray-500">
             {item.kind} · {formatBytes(item.sizeBytes)}
           </p>
         </div>
@@ -181,7 +181,7 @@ export function MemorialMediaItem({
       ) : null}
 
       {enabled && loading && !url ? (
-        <div className="flex h-40 items-center justify-center rounded-xl bg-background-secondary text-sm text-foreground-muted">
+        <div className="flex h-44 items-center justify-center rounded-xl bg-[#0B0D0F]/60 text-sm text-gray-500">
           <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden />
           Loading secure preview…
         </div>
@@ -201,7 +201,7 @@ export function MemorialMediaItem({
       ) : null}
 
       {enabled && url ? (
-        <div className="overflow-hidden rounded-xl bg-background">
+        <div className="overflow-hidden rounded-xl bg-[#0B0D0F]">
           {item.kind === "PHOTO" ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -240,7 +240,7 @@ export function MemorialMediaItem({
       ) : null}
 
       {enabled && !loading && !error && !url && visible ? (
-        <p className="text-sm text-foreground-muted">Waiting for media…</p>
+        <p className="text-sm text-gray-500">Waiting for media…</p>
       ) : null}
     </li>
   );

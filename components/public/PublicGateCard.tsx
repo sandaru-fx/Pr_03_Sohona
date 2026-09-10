@@ -2,7 +2,6 @@ import { Clock3, SearchX } from "lucide-react";
 import { MemorialView } from "@/components/public/MemorialView";
 import { PublicLockedCard } from "@/components/public/PublicLockedCard";
 import { PublicPinForm } from "@/components/public/PublicPinForm";
-import { Card } from "@/components/ui/Card";
 import type {
   PublicMemorialContent,
   PublicProfileGateResult,
@@ -60,29 +59,33 @@ export function PublicGateCard({
     result.status === "not_ready" ? "Memorial not ready" : "Memorial not found";
 
   return (
-    <Card className="w-full max-w-lg">
+    <div className="w-full max-w-md rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-10 sm:px-8 sm:py-12">
       <div
         className={cn(
-          "flex h-12 w-12 items-center justify-center rounded-2xl",
+          "mx-auto flex h-14 w-14 items-center justify-center rounded-2xl",
           tone === "amber" && "bg-warning/10 text-warning",
-          tone === "zinc" && "bg-surface-elevated text-foreground-secondary",
+          tone === "zinc" && "bg-[#0B0D0F] text-gray-400",
         )}
       >
         <Icon className="h-6 w-6" aria-hidden />
       </div>
-      <p className="mt-5 text-sm tracking-wide text-foreground-muted">Mathaka QR</p>
-      <h1 className="mt-2 font-display text-3xl text-foreground">{title}</h1>
-      <p className="mt-3 text-sm leading-6 text-foreground-secondary">
+      <p className="mt-8 text-center text-xs font-medium uppercase tracking-[0.18em] text-gold">
+        Mathaka QR
+      </p>
+      <h1 className="mt-4 text-center font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-4xl">
+        {title}
+      </h1>
+      <p className="mx-auto mt-4 max-w-sm text-center text-base leading-7 text-gray-400">
         {result.message}
       </p>
       {result.status === "not_ready" ? (
-        <p className="mt-4 text-sm text-foreground-muted">
+        <p className="mt-6 text-center text-sm text-gray-500">
           Profile:{" "}
-          <span className="font-medium text-foreground">
+          <span className="font-medium text-[#F5F1E8]">
             {result.profile.displayName}
           </span>
         </p>
       ) : null}
-    </Card>
+    </div>
   );
 }

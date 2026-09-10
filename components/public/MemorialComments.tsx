@@ -4,7 +4,6 @@ import { useMemo, useState, type FormEvent } from "react";
 import { Loader2, MessageCircle } from "lucide-react";
 import { Alert } from "@/components/ui/Alert";
 import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Textarea } from "@/components/ui/Textarea";
 import { getCommentMaxWordsForIndex } from "@/lib/packages";
@@ -117,38 +116,38 @@ export function MemorialComments({
   }
 
   return (
-    <Card>
+    <section className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 sm:px-8 sm:py-10">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="inline-flex items-center gap-2 font-display text-2xl text-foreground">
+        <h2 className="inline-flex items-center gap-2.5 font-sans text-2xl font-medium tracking-tight text-[#F5F1E8]">
           <MessageCircle className="h-5 w-5 text-gold" aria-hidden />
           Messages of remembrance
         </h2>
-        <p className="text-xs tabular-nums text-foreground-muted">
+        <p className="text-xs tabular-nums text-gray-500">
           {used} / {max}
         </p>
       </div>
-      <p className="mt-2 text-sm leading-6 text-foreground-secondary">
+      <p className="mt-3 text-sm leading-7 text-gray-400">
         Leave a respectful message. First 5 comments: up to 100 words each; next
         5: up to 150 words each.
       </p>
 
       {comments.length === 0 ? (
         <EmptyState
-          className="mt-5"
+          className="mt-6"
           title="No messages yet."
           description="Be the first to leave a quiet note of remembrance."
         />
       ) : (
-        <ul className="mt-6 space-y-4">
+        <ul className="mt-8 space-y-4">
           {comments.map((item) => (
             <li
               key={item.id}
-              className="rounded-xl border border-border bg-background-secondary px-4 py-3"
+              className="rounded-xl border border-[#2A2E33] bg-[#0B0D0F]/60 px-4 py-4 sm:px-5"
             >
-              <p className="whitespace-pre-wrap text-sm leading-6 text-foreground">
+              <p className="whitespace-pre-wrap text-sm leading-7 text-[#F5F1E8] sm:text-base sm:leading-8">
                 {item.body}
               </p>
-              <p className="mt-2 text-xs text-foreground-muted">
+              <p className="mt-3 text-xs text-gray-500">
                 {formatCommentDate(item.createdAt)}
               </p>
             </li>
@@ -157,25 +156,25 @@ export function MemorialComments({
       )}
 
       {full ? (
-        <p className="mt-5 text-sm text-foreground-muted">
+        <p className="mt-6 text-sm text-gray-500">
           This memorial has reached its comment limit.
         </p>
       ) : (
         <form
           onSubmit={(event) => void onSubmit(event)}
-          className="mt-6 space-y-3"
+          className="mt-8 space-y-4"
         >
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <label
               htmlFor="memorial-comment"
-              className="text-sm font-medium text-foreground"
+              className="text-sm font-medium text-[#F5F1E8]"
             >
               Your message
             </label>
             <p
               className={cn(
                 "text-xs tabular-nums",
-                overWords ? "font-medium text-error" : "text-foreground-muted",
+                overWords ? "font-medium text-error" : "text-gray-500",
               )}
             >
               {wordCount}
@@ -216,6 +215,6 @@ export function MemorialComments({
           {message}
         </Alert>
       ) : null}
-    </Card>
+    </section>
   );
 }

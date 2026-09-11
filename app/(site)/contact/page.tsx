@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -11,23 +12,24 @@ export default function ContactPage() {
     <main className="flex flex-1 flex-col">
       {/* Hero */}
       <section className="relative min-h-[min(70vh,38rem)] overflow-hidden border-b border-[#2A2E33] bg-[#0B0D0F] sm:min-h-[min(75vh,44rem)]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/contact-hero.jpg"
-          alt="Journal and coffee overlooking a sunrise valley"
-          className="absolute inset-0 z-0 h-full w-full object-cover object-[center_40%]"
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/contact-hero.jpg"
+            alt="Journal and coffee overlooking a sunrise valley"
+            fill
+            priority
+            quality={100}
+            sizes="100vw"
+            className="object-cover object-[center_40%] brightness-[1.25] contrast-[1.05]"
+          />
+        </div>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-full max-w-2xl bg-gradient-to-r from-[#0B0D0F]/65 via-[#0B0D0F]/25 to-transparent sm:w-[50%]"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-[#0B0D0F] via-[#0B0D0F]/70 to-[#0B0D0F]/15"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-full max-w-3xl bg-gradient-to-r from-[#0B0D0F]/90 to-transparent sm:w-[58%]"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-2/5 bg-gradient-to-t from-[#0B0D0F]/70 to-transparent"
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-28 bg-gradient-to-t from-[#0B0D0F]/35 to-transparent"
         />
 
         <div className="relative z-10 mx-auto flex min-h-[min(70vh,38rem)] w-full max-w-5xl flex-col justify-end px-6 pb-14 pt-28 sm:min-h-[min(75vh,44rem)] sm:pb-20 sm:pt-32">

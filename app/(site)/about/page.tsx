@@ -19,17 +19,18 @@ export default function AboutPage() {
             alt="A family standing together at sunset"
             fill
             priority
+            quality={100}
             sizes="100vw"
-            className="object-cover object-[center_35%]"
+            className="object-cover object-[center_35%] brightness-[1.2] contrast-[1.05]"
           />
         </div>
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-[#0B0D0F] via-[#0B0D0F]/55 to-[#0B0D0F]/25"
+          className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-[#0B0D0F]/55 via-[#0B0D0F]/20 to-transparent"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-[#0B0D0F]/70 via-[#0B0D0F]/25 to-transparent"
+          className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-full max-w-2xl bg-gradient-to-r from-[#0B0D0F]/55 via-[#0B0D0F]/20 to-transparent sm:w-[50%]"
         />
 
         <div className="relative z-10 mx-auto flex min-h-[min(72vh,40rem)] w-full max-w-5xl flex-col justify-end px-6 pb-14 pt-28 sm:min-h-[min(78vh,46rem)] sm:pb-20 sm:pt-32">

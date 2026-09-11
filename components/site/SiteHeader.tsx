@@ -10,7 +10,6 @@ const links = [
   { href: "/about", label: "About" },
   { href: "/packages", label: "Packages" },
   { href: "/contact", label: "Contact" },
-  { href: "/family", label: "Family" },
 ] as const;
 
 type SiteHeaderProps = {

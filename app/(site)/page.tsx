@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   PACKAGE_CATALOG,
@@ -12,28 +13,29 @@ export default function HomePage() {
     <main className="flex flex-1 flex-col">
       {/* Hero — brand + one headline + CTAs over full-bleed image */}
       <section className="relative min-h-[calc(100vh-5rem)] overflow-hidden border-b border-border bg-[#0B0D0F]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/hero-mathaka-plaque.jpg"
-          alt="Mathaka QR memorial plaque with candle and flowers"
-          className="absolute inset-0 z-0 h-full w-full object-cover object-center"
-        />
-        {/* Strong left scrim so text stays sharp; plaque stays clear on the right */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/hero-plaque-v8.jpg"
+            alt="Mathaka QR memorial plaque with candle, flowers, and sunset frame"
+            fill
+            priority
+            quality={100}
+            sizes="100vw"
+            className="object-cover object-[72%_45%] sm:object-[65%_45%]"
+          />
+        </div>
+        {/* Soft left wash for copy only — plaque, candle, and warmth stay untouched on the right */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-[#0B0D0F] via-[#0B0D0F]/80 to-transparent sm:via-[#0B0D0F]/70"
+          className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-[62%] max-w-xl bg-gradient-to-r from-[#0B0D0F]/85 via-[#0B0D0F]/40 to-transparent sm:w-[48%]"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-full max-w-2xl bg-gradient-to-r from-[#0B0D0F]/90 to-transparent sm:w-[58%]"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-2/5 bg-gradient-to-t from-[#0B0D0F]/70 to-transparent"
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-24 bg-gradient-to-t from-[#0B0D0F]/30 to-transparent"
         />
 
-        <div className="relative z-10 mx-auto flex min-h-[calc(100vh-5rem)] w-full max-w-5xl flex-col justify-end px-6 pb-20 pt-28 sm:pb-28 sm:pt-32">
-          <div className="max-w-xl [text-shadow:0_1px_2px_rgba(0,0,0,0.65),0_8px_24px_rgba(0,0,0,0.35)]">
+        <div className="relative z-10 mx-auto flex min-h-[calc(100vh-5rem)] w-full max-w-5xl flex-col justify-center px-6 pt-20 sm:pt-28">
+          <div className="max-w-md [text-shadow:0_1px_3px_rgba(0,0,0,0.55)] sm:max-w-lg">
             <p className="sohona-fade-up font-sans text-5xl font-semibold tracking-tight text-[#F5F1E8] sm:text-6xl md:text-7xl">
               Mathaka QR
             </p>
@@ -44,7 +46,7 @@ export default function HomePage() {
               Digital remembrance. Private by design.
             </h1>
             <p
-              className="sohona-fade-up mt-5 max-w-md font-sans text-base leading-7 text-[#d6d1c7] sm:text-[1.05rem] sm:leading-8"
+              className="sohona-fade-up mt-5 max-w-md font-sans text-base leading-7 text-[#e4dfd4] sm:text-[1.05rem] sm:leading-8"
               style={{ animationDelay: "140ms" }}
             >
               A respectful digital place for temples and families — private

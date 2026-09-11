@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import {
   PACKAGE_CATALOG,
@@ -12,20 +11,21 @@ export default function HomePage() {
   return (
     <main className="flex flex-1 flex-col">
       {/* Hero — brand + one headline + CTAs over full-bleed image */}
-      <section className="relative min-h-[calc(100vh-5rem)] overflow-hidden border-b border-border">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/hero-memorial.jpg"
-            alt="Memorial book with lotus emblem beside a candle"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-[72%_center] brightness-[1.22] contrast-[1.06] sm:object-[68%_center]"
-          />
-        </div>
+      <section className="relative min-h-[calc(100vh-5rem)] overflow-hidden border-b border-border bg-[#0B0D0F]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/hero-mathaka-plaque.jpg"
+          alt="Mathaka QR memorial plaque with candle and flowers"
+          className="absolute inset-0 z-0 h-full w-full object-cover object-center"
+        />
+        {/* Strong left scrim so text stays sharp; plaque stays clear on the right */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-[#0B0D0F]/82 via-[#0B0D0F]/28 to-transparent"
+          className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-[#0B0D0F] via-[#0B0D0F]/80 to-transparent sm:via-[#0B0D0F]/70"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-full max-w-2xl bg-gradient-to-r from-[#0B0D0F]/90 to-transparent sm:w-[58%]"
         />
         <div
           aria-hidden
@@ -33,22 +33,24 @@ export default function HomePage() {
         />
 
         <div className="relative z-10 mx-auto flex min-h-[calc(100vh-5rem)] w-full max-w-5xl flex-col justify-end px-6 pb-20 pt-28 sm:pb-28 sm:pt-32">
-          <p className="sohona-fade-up font-sans text-5xl font-semibold tracking-tight text-[#F5F1E8] sm:text-6xl md:text-7xl">
-            Mathaka QR
-          </p>
-          <h1
-            className="sohona-fade-up mt-5 max-w-xl font-sans text-xl font-medium leading-snug tracking-tight text-[#F5F1E8] sm:mt-6 sm:text-2xl md:text-[1.75rem] md:leading-snug"
-            style={{ animationDelay: "80ms" }}
-          >
-            Digital remembrance. Private by design.
-          </h1>
-          <p
-            className="sohona-fade-up mt-5 max-w-md font-sans text-base leading-7 text-gray-400 sm:text-[1.05rem] sm:leading-8"
-            style={{ animationDelay: "140ms" }}
-          >
-            A respectful digital place for temples and families — private
-            memories stay under family control.
-          </p>
+          <div className="max-w-xl [text-shadow:0_1px_2px_rgba(0,0,0,0.65),0_8px_24px_rgba(0,0,0,0.35)]">
+            <p className="sohona-fade-up font-sans text-5xl font-semibold tracking-tight text-[#F5F1E8] sm:text-6xl md:text-7xl">
+              Mathaka QR
+            </p>
+            <h1
+              className="sohona-fade-up mt-5 font-sans text-xl font-medium leading-snug tracking-tight text-[#F5F1E8] sm:mt-6 sm:text-2xl md:text-[1.75rem] md:leading-snug"
+              style={{ animationDelay: "80ms" }}
+            >
+              Digital remembrance. Private by design.
+            </h1>
+            <p
+              className="sohona-fade-up mt-5 max-w-md font-sans text-base leading-7 text-[#d6d1c7] sm:text-[1.05rem] sm:leading-8"
+              style={{ animationDelay: "140ms" }}
+            >
+              A respectful digital place for temples and families — private
+              memories stay under family control.
+            </p>
+          </div>
           <div
             className="sohona-fade-up mt-10 flex flex-wrap gap-3"
             style={{ animationDelay: "200ms" }}
@@ -61,7 +63,7 @@ export default function HomePage() {
             </Link>
             <Link
               href="/about"
-              className="inline-flex h-12 min-h-12 items-center justify-center rounded-xl border border-[#2A2E33] bg-[#181C20]/75 px-7 font-sans text-sm font-medium text-[#F5F1E8] backdrop-blur-sm transition duration-300 hover:border-gold/40"
+              className="inline-flex h-12 min-h-12 items-center justify-center rounded-xl border border-[#2A2E33] bg-[#181C20]/90 px-7 font-sans text-sm font-medium text-[#F5F1E8] backdrop-blur-sm transition duration-300 hover:border-gold/40"
             >
               Learn More
             </Link>

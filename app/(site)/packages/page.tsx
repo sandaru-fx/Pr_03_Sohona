@@ -106,7 +106,7 @@ export default function PackagesPage() {
   return (
     <main className="flex flex-1 flex-col">
       {/* Hero */}
-      <section className="relative min-h-[calc(100vh-5rem)] overflow-hidden border-b border-border bg-[#0B0D0F]">
+      <section className="relative min-h-[calc(100vh-6rem)] overflow-hidden border-b border-border bg-[#0B0D0F]">
         <div className="absolute inset-0 z-0">
           <Image
             src="/packages-hero.jpg"
@@ -120,40 +120,40 @@ export default function PackagesPage() {
         </div>
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-full max-w-2xl bg-gradient-to-r from-[#0B0D0F]/70 via-[#0B0D0F]/30 to-transparent sm:w-[52%]"
+          className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-[72%] max-w-2xl bg-gradient-to-r from-[#0B0D0F]/92 via-[#0B0D0F]/55 to-transparent sm:w-[56%]"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-28 bg-gradient-to-t from-[#0B0D0F]/40 to-transparent"
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-20 bg-gradient-to-t from-[#0B0D0F]/25 to-transparent"
         />
 
-        <div className="relative z-10 mx-auto flex min-h-[calc(100vh-5rem)] w-full max-w-6xl flex-col justify-end px-6 pb-20 pt-28 sm:pb-28 sm:pt-32">
-          <div className="max-w-3xl [text-shadow:0_1px_2px_rgba(0,0,0,0.65),0_8px_24px_rgba(0,0,0,0.35)]">
-            <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
+        <div className="relative z-10 mx-auto flex min-h-[calc(100vh-6rem)] w-full max-w-7xl flex-col justify-center px-10 pt-20 sm:px-14 lg:px-20 sm:pt-24">
+          <div className="max-w-2xl rounded-2xl bg-[#0B0D0F]/50 px-6 py-8 backdrop-blur-[2px] sm:max-w-3xl sm:px-9 sm:py-9 [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]">
+            <p className="text-sm font-medium uppercase tracking-[0.18em] text-gold">
               Packages
             </p>
-            <h1 className="mt-4 font-sans text-4xl font-medium tracking-tight text-[#F5F1E8] sm:text-5xl sm:leading-tight lg:text-6xl">
+            <h1 className="mt-4 font-sans text-5xl font-medium tracking-tight text-[#F5F1E8] sm:text-6xl sm:leading-tight lg:text-7xl">
               Three packages. Same privacy. Different years.
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-[#d6d1c7]">
+            <p className="mt-5 max-w-2xl text-lg leading-8 text-[#F5F1E8]/90 sm:text-xl">
               Mathaka QR is not a public checkout. Your temple helps you choose
               the remembrance horizon — while every package keeps the same
               private content limits, PIN protection, and admin-blind privacy.
             </p>
-          </div>
-          <div className="mt-10 flex flex-wrap gap-3">
-            <Link
-              href="/contact"
-              className="inline-flex h-12 min-h-12 items-center rounded-xl bg-gold px-6 text-sm font-medium text-[#0B0D0F] transition-opacity duration-300 hover:opacity-90"
-            >
-              Speak with the temple
-            </Link>
-            <a
-              href="#compare"
-              className="inline-flex h-12 min-h-12 items-center rounded-xl border border-[#2A2E33] bg-[#181C20]/90 px-6 text-sm font-medium text-[#F5F1E8] backdrop-blur-sm transition duration-300 hover:border-gold/40"
-            >
-              Compare packages
-            </a>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="/contact"
+                className="inline-flex h-12 min-h-12 items-center rounded-xl bg-gold px-6 text-base font-medium text-[#0B0D0F] transition-opacity duration-300 hover:opacity-90"
+              >
+                Speak with the temple
+              </Link>
+              <a
+                href="#compare"
+                className="inline-flex h-12 min-h-12 items-center rounded-xl border border-[#2A2E33] bg-[#181C20]/90 px-6 text-base font-medium text-[#F5F1E8] backdrop-blur-sm transition duration-300 hover:border-gold/40"
+              >
+                Compare packages
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -163,7 +163,7 @@ export default function PackagesPage() {
         id="compare"
         className="border-b border-[#2A2E33] bg-background-secondary"
       >
-        <div className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
+        <div className="mx-auto max-w-7xl px-10 py-28 sm:px-14 lg:px-20 sm:py-36">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
@@ -255,9 +255,38 @@ export default function PackagesPage() {
         </div>
       </section>
 
+      {/* Voice reminder */}
+      <section className="border-b border-[#2A2E33]">
+        <div className="mx-auto grid max-w-7xl items-center gap-16 px-10 py-28 sm:grid-cols-2 sm:gap-20 lg:gap-24 sm:px-14 lg:px-20 sm:py-36">
+          <div className="relative min-h-[22rem] overflow-hidden rounded-xl sm:min-h-[32rem] lg:min-h-[36rem]">
+            <Image
+              src="/feature-voice.jpg"
+              alt="Smartphone playing a private voice memory with headphones nearby"
+              fill
+              quality={100}
+              sizes="(max-width: 640px) 100vw, 50vw"
+              className="object-cover object-center"
+            />
+          </div>
+          <div>
+            <p className="text-sm font-medium uppercase tracking-[0.18em] text-gold">
+              Every package includes
+            </p>
+            <h2 className="mt-4 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-4xl">
+              Photos, voice, video, and words — same limits on A, B, and C.
+            </h2>
+            <p className="mt-6 text-lg leading-8 text-gray-400">
+              The remembrance horizon changes. The privacy model and content
+              limits do not. Families keep a PIN; temple staff never open private
+              media.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Shared limits */}
       <section className="border-b border-[#2A2E33]">
-        <div className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
+        <div className="mx-auto max-w-7xl px-10 py-28 sm:px-14 lg:px-20 sm:py-36">
           <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
             Included in every package
           </p>
@@ -296,7 +325,7 @@ export default function PackagesPage() {
 
       {/* Comparison table */}
       <section className="border-b border-[#2A2E33] bg-background-secondary">
-        <div className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
+        <div className="mx-auto max-w-7xl px-10 py-28 sm:px-14 lg:px-20 sm:py-36">
           <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
             Side by side
           </p>
@@ -359,7 +388,7 @@ export default function PackagesPage() {
 
       {/* Journey */}
       <section className="border-b border-[#2A2E33]">
-        <div className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
+        <div className="mx-auto max-w-7xl px-10 py-28 sm:px-14 lg:px-20 sm:py-36">
           <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
             How packages work
           </p>
@@ -386,7 +415,7 @@ export default function PackagesPage() {
 
       {/* Privacy + CTA */}
       <section className="bg-background-secondary">
-        <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 sm:grid-cols-[1.2fr_0.8fr] sm:py-24">
+        <div className="mx-auto grid max-w-7xl gap-16 px-10 py-28 sm:grid-cols-[1.2fr_0.8fr] sm:px-14 lg:px-20 sm:py-36">
           <div>
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gold-subtle text-gold">
               <Shield className="h-5 w-5" aria-hidden />

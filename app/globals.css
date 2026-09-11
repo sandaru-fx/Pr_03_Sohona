@@ -59,12 +59,16 @@
 
 html {
   color-scheme: dark;
+  /* Site-wide type scale bump (default 16px → 18px) */
+  font-size: 112.5%;
 }
 
 body {
   background-color: #0b0d0f;
   color: #f5f1e8;
   font-family: var(--font-sans);
+  font-size: 1.0625rem; /* body ~19px for easier reading */
+  line-height: 1.65;
 }
 
 /* Kill default blue rings; components apply gold ring-1 */

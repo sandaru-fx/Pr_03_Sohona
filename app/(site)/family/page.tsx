@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function FamilyPage() {
   return (
-    <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-20 sm:py-28">
+    <main className="mx-auto w-full max-w-3xl flex-1 px-10 py-28 sm:px-14 lg:px-20 sm:py-36">
       <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
         Family access
       </p>
@@ -23,7 +23,7 @@ export default function FamilyPage() {
         continue.
       </p>
 
-      <section className="mt-14 rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 sm:px-8 sm:py-10">
+      <section className="mt-16 rounded-2xl border border-[#2A2E33] bg-[#181C20] px-8 py-10 sm:px-10 sm:py-12">
         <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gold-subtle text-gold">
           <Lock className="h-5 w-5" aria-hidden />
         </div>

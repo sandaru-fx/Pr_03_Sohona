@@ -12,7 +12,7 @@ export default function AboutPage() {
   return (
     <main className="flex flex-1 flex-col">
       {/* Hero */}
-      <section className="relative min-h-[min(72vh,40rem)] overflow-hidden border-b border-[#2A2E33] sm:min-h-[min(78vh,46rem)]">
+      <section className="relative min-h-[calc(100vh-5rem)] overflow-hidden border-b border-border bg-[#0B0D0F]">
         <div className="absolute inset-0 z-0">
           <Image
             src="/about-hero.jpg"
@@ -33,7 +33,7 @@ export default function AboutPage() {
           className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-full max-w-2xl bg-gradient-to-r from-[#0B0D0F]/55 via-[#0B0D0F]/20 to-transparent sm:w-[50%]"
         />
 
-        <div className="relative z-10 mx-auto flex min-h-[min(72vh,40rem)] w-full max-w-5xl flex-col justify-end px-6 pb-14 pt-28 sm:min-h-[min(78vh,46rem)] sm:pb-20 sm:pt-32">
+        <div className="relative z-10 mx-auto flex min-h-[calc(100vh-5rem)] w-full max-w-5xl flex-col justify-end px-6 pb-20 pt-28 sm:pb-28 sm:pt-32">
           <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
             About
           </p>

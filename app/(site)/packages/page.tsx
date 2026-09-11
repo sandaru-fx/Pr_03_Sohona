@@ -106,7 +106,7 @@ export default function PackagesPage() {
   return (
     <main className="flex flex-1 flex-col">
       {/* Hero */}
-      <section className="relative min-h-[min(70vh,38rem)] overflow-hidden border-b border-[#2A2E33] bg-[#0B0D0F] sm:min-h-[min(75vh,44rem)]">
+      <section className="relative min-h-[calc(100vh-5rem)] overflow-hidden border-b border-border bg-[#0B0D0F]">
         <div className="absolute inset-0 z-0">
           <Image
             src="/packages-hero.jpg"
@@ -127,7 +127,7 @@ export default function PackagesPage() {
           className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-28 bg-gradient-to-t from-[#0B0D0F]/40 to-transparent"
         />
 
-        <div className="relative z-10 mx-auto flex min-h-[min(70vh,38rem)] w-full max-w-6xl flex-col justify-end px-6 pb-14 pt-28 sm:min-h-[min(75vh,44rem)] sm:pb-20 sm:pt-32">
+        <div className="relative z-10 mx-auto flex min-h-[calc(100vh-5rem)] w-full max-w-6xl flex-col justify-end px-6 pb-20 pt-28 sm:pb-28 sm:pt-32">
           <div className="max-w-3xl [text-shadow:0_1px_2px_rgba(0,0,0,0.65),0_8px_24px_rgba(0,0,0,0.35)]">
             <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
               Packages

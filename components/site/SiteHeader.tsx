@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -21,17 +22,28 @@ export function SiteHeader({ pathname }: SiteHeaderProps) {
 
   return (
     <header className="sticky top-0 z-20 border-b border-border/80 bg-[#0B0D0F]/90 backdrop-blur-md">
-      <div className="mx-auto flex h-24 max-w-7xl items-center justify-between gap-4 px-10 sm:px-14 lg:px-20">
+      <div className="flex h-24 w-full items-center gap-6 px-4 sm:gap-8 sm:px-5 lg:px-6">
         <Link
           href="/"
-          className="font-sans text-3xl font-semibold tracking-tight text-[#F5F1E8] transition-opacity duration-300 hover:opacity-80 sm:text-4xl"
+          className="group inline-flex shrink-0 items-center gap-3 transition-opacity duration-300 hover:opacity-90"
+          aria-label="Mathaka QR home"
         >
-          Mathaka QR
+          <Image
+            src="/mathaka-qr-mark.png"
+            alt=""
+            width={48}
+            height={48}
+            priority
+            className="h-11 w-11 rounded-lg object-contain sm:h-12 sm:w-12"
+          />
+          <span className="whitespace-nowrap font-sans text-2xl font-semibold tracking-tight text-[#F5F1E8] sm:text-3xl">
+            Mathaka <span className="text-gold">QR</span>
+          </span>
         </Link>
 
         <nav
           aria-label="Primary"
-          className="hidden items-center gap-6 md:flex lg:gap-8"
+          className="ml-40 hidden items-center gap-5 sm:ml-48 md:flex lg:ml-64 lg:gap-7"
         >
           {links.map((link) => {
             const active =
@@ -57,7 +69,7 @@ export function SiteHeader({ pathname }: SiteHeaderProps) {
 
         <button
           type="button"
-          className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-[#2A2E33] text-[#F5F1E8] md:hidden"
+          className="ml-auto inline-flex h-11 w-11 items-center justify-center rounded-xl border border-[#2A2E33] text-[#F5F1E8] md:hidden"
           aria-expanded={open}
           aria-label={open ? "Close menu" : "Open menu"}
           onClick={() => setOpen((value) => !value)}

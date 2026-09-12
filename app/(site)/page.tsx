@@ -119,14 +119,14 @@ export default function HomePage() {
       {/* Voice / stories felt */}
       <section className="border-b border-border">
         <div className="mx-auto grid max-w-7xl items-center gap-16 px-10 py-32 sm:grid-cols-2 sm:gap-20 lg:gap-24 sm:px-14 lg:px-20 sm:py-40">
-          <div className="relative min-h-[22rem] overflow-hidden rounded-xl sm:min-h-[32rem] lg:min-h-[36rem]">
+          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl bg-[#121518]">
             <Image
               src="/feature-voice.jpg"
               alt="Phone playing a family voice memory beside headphones and a handwritten note"
               fill
               quality={100}
               sizes="(max-width: 640px) 100vw, 50vw"
-              className="object-cover object-center"
+              className="object-contain object-center"
             />
           </div>
           <div>
@@ -182,14 +182,14 @@ export default function HomePage() {
               How privacy works →
             </Link>
           </div>
-          <div className="relative order-1 min-h-[22rem] overflow-hidden rounded-xl sm:order-2 sm:min-h-[32rem] lg:min-h-[36rem]">
+          <div className="relative order-1 aspect-[16/9] w-full overflow-hidden rounded-xl bg-[#121518] sm:order-2">
             <Image
               src="/feature-privacy.jpg"
               alt="Leather-bound journal with a small padlock resting on the cover"
               fill
               quality={100}
               sizes="(max-width: 640px) 100vw, 50vw"
-              className="object-cover object-[center_40%]"
+              className="object-contain object-center"
             />
           </div>
         </div>
@@ -198,14 +198,14 @@ export default function HomePage() {
       {/* Words / messages */}
       <section className="border-b border-border">
         <div className="mx-auto grid max-w-7xl items-center gap-16 px-10 py-32 sm:grid-cols-2 sm:gap-20 lg:gap-24 sm:px-14 lg:px-20 sm:py-40">
-          <div className="relative min-h-[22rem] overflow-hidden rounded-xl sm:min-h-[32rem] lg:min-h-[36rem]">
+          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl bg-[#121518]">
             <Image
               src="/feature-words.jpg"
               alt="Handwritten note that reads Always with you beside a pen and candlelight"
               fill
               quality={100}
               sizes="(max-width: 640px) 100vw, 50vw"
-              className="object-cover object-center"
+              className="object-contain object-center"
             />
           </div>
           <div>
@@ -236,30 +236,26 @@ export default function HomePage() {
       </section>
 
       {/* Family together */}
-      <section className="relative min-h-[min(70vh,36rem)] overflow-hidden border-b border-border">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/feature-family.jpg"
-            alt="Family sitting together on a hill looking toward a sunset over water"
-            fill
-            quality={100}
-            sizes="100vw"
-            className="object-cover object-[center_55%]"
-          />
-        </div>
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-[#0B0D0F]/85 via-[#0B0D0F]/45 to-[#0B0D0F]/20"
-        />
-        <div className="relative z-10 mx-auto flex min-h-[min(70vh,36rem)] max-w-7xl items-center px-10 py-24 sm:px-14 lg:px-20 sm:py-28">
-          <div className="max-w-xl [text-shadow:0_1px_2px_rgba(0,0,0,0.7)]">
+      <section className="border-b border-border bg-background-secondary">
+        <div className="mx-auto grid max-w-7xl items-center gap-16 px-10 py-32 sm:grid-cols-2 sm:gap-20 lg:gap-24 sm:px-14 lg:px-20 sm:py-40">
+          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl bg-[#121518]">
+            <Image
+              src="/feature-family.jpg"
+              alt="Family sitting together on a hill looking toward a sunset over water"
+              fill
+              quality={100}
+              sizes="(max-width: 640px) 100vw, 50vw"
+              className="object-contain object-center"
+            />
+          </div>
+          <div>
             <p className="text-sm font-medium uppercase tracking-[0.18em] text-gold">
               For families
             </p>
             <h2 className="mt-4 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-4xl sm:leading-tight">
               Remembrance that gathers people — without putting them on display.
             </h2>
-            <p className="mt-6 text-lg leading-8 text-[#e4dfd4]">
+            <p className="mt-6 text-lg leading-8 text-gray-400">
               Mathaka QR is built so temples can offer a dignified digital
               memorial, while the family keeps control of what is private and
               what visitors may see.

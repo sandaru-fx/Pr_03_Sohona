@@ -258,14 +258,14 @@ export default function PackagesPage() {
       {/* Voice reminder */}
       <section className="border-b border-[#2A2E33]">
         <div className="mx-auto grid max-w-7xl items-center gap-16 px-10 py-28 sm:grid-cols-2 sm:gap-20 lg:gap-24 sm:px-14 lg:px-20 sm:py-36">
-          <div className="relative min-h-[22rem] overflow-hidden rounded-xl sm:min-h-[32rem] lg:min-h-[36rem]">
+          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl bg-[#121518]">
             <Image
               src="/feature-voice.jpg"
               alt="Smartphone playing a private voice memory with headphones nearby"
               fill
               quality={100}
               sizes="(max-width: 640px) 100vw, 50vw"
-              className="object-cover object-center"
+              className="object-contain object-center"
             />
           </div>
           <div>

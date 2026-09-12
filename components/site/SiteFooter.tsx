@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export function SiteFooter() {
@@ -6,10 +7,19 @@ export function SiteFooter() {
       <div className="mx-auto flex max-w-7xl flex-col gap-12 px-10 py-16 sm:px-14 lg:px-20 sm:py-20">
         <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="font-sans text-2xl font-medium tracking-tight text-[#F5F1E8] sm:text-3xl">
-              Mathaka QR
-            </p>
-            <p className="mt-3 max-w-sm text-sm leading-7 text-gray-400">
+            <div className="inline-flex items-center gap-3">
+              <Image
+                src="/mathaka-qr-mark.png"
+                alt=""
+                width={44}
+                height={44}
+                className="h-11 w-11 rounded-lg object-contain"
+              />
+              <p className="whitespace-nowrap font-sans text-2xl font-semibold tracking-tight text-[#F5F1E8] sm:text-3xl">
+                Mathaka <span className="text-gold">QR</span>
+              </p>
+            </div>
+            <p className="mt-4 max-w-sm text-base leading-7 text-gray-400">
               Remember. Preserve. Protect. Share. Respect. — private by design.
             </p>
           </div>

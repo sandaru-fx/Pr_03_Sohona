@@ -22,11 +22,11 @@ function main() {
     "adminProfileSelect must never include comments",
   );
 
-  assert(getCommentMaxWordsForIndex("A", 1) === 100, "slot 1 = 100");
-  assert(getCommentMaxWordsForIndex("A", 5) === 100, "slot 5 = 100");
-  assert(getCommentMaxWordsForIndex("A", 6) === 150, "slot 6 = 150");
-  assert(getCommentMaxWordsForIndex("A", 10) === 150, "slot 10 = 150");
-  assert(getCommentMaxWordsForIndex("A", 11) === null, "slot 11 blocked");
+  assert(getCommentMaxWordsForIndex(1) === 100, "slot 1 = 100");
+  assert(getCommentMaxWordsForIndex(5) === 100, "slot 5 = 100");
+  assert(getCommentMaxWordsForIndex(6) === 150, "slot 6 = 150");
+  assert(getCommentMaxWordsForIndex(10) === 150, "slot 10 = 150");
+  assert(getCommentMaxWordsForIndex(11) === null, "slot 11 blocked");
 
   const ok = publicCommentSchema.safeParse({
     qrId: "demo-qr",
@@ -42,7 +42,7 @@ function main() {
   );
   assert(words === 101, "101 tokens counted");
   assert(
-    words > (getCommentMaxWordsForIndex("A", 1) as number),
+    words > (getCommentMaxWordsForIndex(1) as number),
     "101 words exceeds first-slot limit",
   );
 

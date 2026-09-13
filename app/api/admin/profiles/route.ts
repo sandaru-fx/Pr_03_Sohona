@@ -62,7 +62,7 @@ export async function POST(request: Request) {
 
   const { APP_URL } = getServerEnv();
   const displayName = parsed.data.displayName;
-  const packageTier = parsed.data.packageTier;
+  const packageId = parsed.data.packageId;
   const setupToken = generateSetupToken();
   const setupTokenHash = hashToken(setupToken);
   const setupTokenExpiresAt = getSetupTokenExpiry();
@@ -78,7 +78,7 @@ export async function POST(request: Request) {
         setupTokenHash,
         setupTokenExpiresAt,
         isSetupComplete: false,
-        packageTier,
+        packageId,
         createdByAdminId: gate.session.user.id,
       },
       select: {
@@ -87,7 +87,7 @@ export async function POST(request: Request) {
         qrId: true,
         isSetupComplete: true,
         setupTokenExpiresAt: true,
-        packageTier: true,
+        packageId: true,
         createdAt: true,
       },
     });
@@ -104,7 +104,7 @@ export async function POST(request: Request) {
           setupTokenHash,
           setupTokenExpiresAt,
           isSetupComplete: false,
-          packageTier,
+          packageId,
           createdByAdminId: gate.session.user.id,
         },
         select: {
@@ -113,7 +113,7 @@ export async function POST(request: Request) {
           qrId: true,
           isSetupComplete: true,
           setupTokenExpiresAt: true,
-          packageTier: true,
+          packageId: true,
           createdAt: true,
         },
       });

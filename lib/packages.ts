@@ -1,13 +1,6 @@
-import type { PackageTier } from "@prisma/client";
-
 /**
- * Package catalog — single source of truth for A / B / C.
- * Content limits are identical; retention years differ.
+ * Package catalog — limits are identical across all tiers.
  */
-
-export const PACKAGE_TIERS = ["A", "B", "C"] as const;
-
-export type PackageTierId = (typeof PACKAGE_TIERS)[number];
 
 export type PackageCommentSlotRule = {
   /** 1-based inclusive index range within the memorial's comment list. */
@@ -25,14 +18,7 @@ export type PackageLimits = {
   commentSlots: PackageCommentSlotRule[];
 };
 
-export type PackageDefinition = {
-  tier: PackageTierId;
-  retentionYears: number;
-  label: string;
-  limits: PackageLimits;
-};
-
-/** Shared limits for A / B / C (client-approved). */
+/** Shared limits for all dynamic packages. */
 export const SHARED_PACKAGE_LIMITS: PackageLimits = {
   maxImages: 5,
   maxVideoSeconds: 60,
@@ -45,57 +31,14 @@ export const SHARED_PACKAGE_LIMITS: PackageLimits = {
   ],
 };
 
-export const PACKAGE_CATALOG: Record<PackageTierId, PackageDefinition> = {
-  A: {
-    tier: "A",
-    retentionYears: 25,
-    label: "Package A · 25 years",
-    limits: SHARED_PACKAGE_LIMITS,
-  },
-  B: {
-    tier: "B",
-    retentionYears: 50,
-    label: "Package B · 50 years",
-    limits: SHARED_PACKAGE_LIMITS,
-  },
-  C: {
-    tier: "C",
-    retentionYears: 100,
-    label: "Package C · 100 years",
-    limits: SHARED_PACKAGE_LIMITS,
-  },
-};
-
-export function isPackageTier(value: string): value is PackageTierId {
-  return (PACKAGE_TIERS as readonly string[]).includes(value);
-}
-
-export function getPackageDefinition(
-  tier: PackageTier | PackageTierId,
-): PackageDefinition {
-  return PACKAGE_CATALOG[tier as PackageTierId];
-}
-
-/** Short admin UI label, e.g. "A · 25 years". */
-export function formatPackageAdminLabel(
-  tier: PackageTier | PackageTierId,
-): string {
-  const def = getPackageDefinition(tier);
-  return `${def.tier} · ${def.retentionYears} years`;
-}
-
-export function getPackageLimits(
-  tier: PackageTier | PackageTierId,
-): PackageLimits {
-  return getPackageDefinition(tier).limits;
+export function getPackageLimits(): PackageLimits {
+  return SHARED_PACKAGE_LIMITS;
 }
 
 /** Max words allowed for the Nth comment (1-based). Null if over maxComments. */
 export function getCommentMaxWordsForIndex(
-  tier: PackageTier | PackageTierId,
-  oneBasedIndex: number,
 ): number | null {
-  const { maxComments, commentSlots } = getPackageLimits(tier);
+  const { maxComments, commentSlots } = SHARED_PACKAGE_LIMITS;
   if (oneBasedIndex < 1 || oneBasedIndex > maxComments) return null;
   const slot = commentSlots.find(
     (rule) => oneBasedIndex >= rule.fromIndex && oneBasedIndex <= rule.toIndex,
@@ -104,13 +47,12 @@ export function getCommentMaxWordsForIndex(
 }
 
 /**
- * Retention window starts when family setup completes (Step 1 default).
+ * Retention window starts when family setup completes.
  */
 export function computePackageWindow(
   startedAt: Date,
-  tier: PackageTier | PackageTierId,
+  retentionYears: number,
 ): { packageStartedAt: Date; packageEndsAt: Date; retentionYears: number } {
-  const { retentionYears } = getPackageDefinition(tier);
   const packageStartedAt = new Date(startedAt);
   const packageEndsAt = new Date(startedAt);
   packageEndsAt.setFullYear(packageEndsAt.getFullYear() + retentionYears);

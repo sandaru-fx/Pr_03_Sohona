@@ -34,7 +34,7 @@ export function SetupGateCard({
         expiresLabel={formatExpiry(result.profile.setupTokenExpiresAt)}
         hasPin={result.profile.hasPin}
         r2Configured={r2Configured}
-        packageTier={result.profile.packageTier}
+        packageTier={result.profile.packageId}
         initialStatements={result.statements}
         initialMedia={result.media.map((item) => ({
           id: item.id,

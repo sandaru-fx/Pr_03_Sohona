@@ -10,7 +10,13 @@ export const adminProfileSelect = {
   isSetupComplete: true,
   setupTokenExpiresAt: true,
   setupUsedAt: true,
-  packageTier: true,
+  packageId: true,
+  package: {
+    select: {
+      name: true,
+      retentionYears: true,
+    }
+  },
   packageStartedAt: true,
   packageEndsAt: true,
   createdAt: true,
@@ -37,7 +43,11 @@ export type AdminProfileListItem = {
   isSetupComplete: boolean;
   setupTokenExpiresAt: Date | null;
   setupUsedAt: Date | null;
-  packageTier: "A" | "B" | "C";
+  packageId: string;
+  package: {
+    name: string;
+    retentionYears: number;
+  };
   packageStartedAt: Date | null;
   packageEndsAt: Date | null;
   createdAt: Date;

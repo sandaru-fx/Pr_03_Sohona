@@ -68,7 +68,7 @@ export async function POST(request: Request) {
       hashedPin: true,
       isSetupComplete: true,
       manageTokenHash: true,
-      packageTier: true,
+      packageId: true,
     },
   });
 
@@ -102,7 +102,7 @@ export async function POST(request: Request) {
   const manageToken = generateManageToken();
   const manageTokenHash = hashToken(manageToken);
   const setupUsedAt = new Date();
-  const packageWindow = computePackageWindow(setupUsedAt, profile.packageTier);
+  const packageWindow = computePackageWindow(setupUsedAt, profile.packageId);
 
   const updated = await prisma.profile.updateMany({
     where: {
@@ -139,7 +139,7 @@ export async function POST(request: Request) {
       ...securityEventRequestFields(request),
       metadata: {
         source: "family_setup",
-        packageTier: profile.packageTier,
+        packageTier: profile.packageId,
         retentionYears: packageWindow.retentionYears,
       },
     },
@@ -158,7 +158,7 @@ export async function POST(request: Request) {
         qrId: profile.qrId,
         isSetupComplete: true,
         setupUsedAt,
-        packageTier: profile.packageTier,
+        packageTier: profile.packageId,
         packageStartedAt: packageWindow.packageStartedAt,
         packageEndsAt: packageWindow.packageEndsAt,
       },

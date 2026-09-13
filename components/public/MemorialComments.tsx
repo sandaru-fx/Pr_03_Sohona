@@ -104,7 +104,7 @@ export function MemorialComments({
       setNextMaxWords(
         nextUsed >= max
           ? null
-          : getCommentMaxWordsForIndex(packageTier, nextUsed + 1),
+          : getCommentMaxWordsForIndex(nextUsed + 1),
       );
       setBody("");
       setMessage("Thank you. Your message was added.");

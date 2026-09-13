@@ -1,13 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  PACKAGE_CATALOG,
-  PACKAGE_TIERS,
-  SHARED_PACKAGE_LIMITS,
-} from "@/lib/packages";
+import { SHARED_PACKAGE_LIMITS } from "@/lib/packages";
+import { prisma } from "@/lib/prisma";
 
-export default function HomePage() {
+export default async function HomePage() {
   const limits = SHARED_PACKAGE_LIMITS;
+  const packages = await prisma.package.findMany({
+    where: { isActive: true },
+    orderBy: { retentionYears: 'asc' }
+  });
 
   return (
     <main className="flex flex-1 flex-col">
@@ -279,14 +280,12 @@ export default function HomePage() {
             completed.
           </p>
           <ul className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-[#2A2E33] bg-[#2A2E33] sm:grid-cols-3">
-            {PACKAGE_TIERS.map((tier) => {
-              const item = PACKAGE_CATALOG[tier];
-              return (
+            {packages.map((item) => (
                 <li
-                  key={item.tier}
+                  key={item.id}
                   className="bg-[#181C20] px-8 py-10 sm:px-10 sm:py-12"
                 >
-                  <p className="text-sm text-gray-500">Package {item.tier}</p>
+                  <p className="text-sm text-gray-500">{item.name}</p>
                   <p className="mt-3 font-sans text-4xl font-medium tracking-tight text-[#F5F1E8]">
                     {item.retentionYears}
                     <span className="ml-1 text-lg font-normal text-gray-400">
@@ -299,8 +298,7 @@ export default function HomePage() {
                     {limits.maxStatementWords} words
                   </p>
                 </li>
-              );
-            })}
+            ))}
           </ul>
           <Link
             href="/packages"

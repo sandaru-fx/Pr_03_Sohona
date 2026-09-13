@@ -11,7 +11,7 @@ export function assertStatementWordLimit(
   tier: PackageTier,
   statements: Array<{ body: string }>,
 ): LimitCheckResult & { usedWords?: number; maxWords?: number } {
-  const { maxStatementWords } = getPackageLimits(tier);
+  const { maxStatementWords } = getPackageLimits();
   const usedWords = totalStatementWords(statements);
   if (usedWords > maxStatementWords) {
     return {
@@ -84,7 +84,7 @@ export async function assertMediaUploadAllowed(input: {
   kind: MediaKind;
   durationSeconds?: number | null;
 }): Promise<LimitCheckResult> {
-  const limits = getPackageLimits(input.tier);
+  const limits = getPackageLimits();
 
   if (input.kind === "PHOTO") {
     const photoCount = await prisma.mediaAsset.count({

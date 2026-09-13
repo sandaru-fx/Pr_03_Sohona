@@ -8,8 +8,10 @@ import {
   Package,
   PlusCircle,
   Settings,
+  ShieldAlert,
   Users,
   X,
+  ExternalLink,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { signOutAdmin } from "@/app/admin/actions";
@@ -18,7 +20,8 @@ const navItems = [
   { href: "/admin", label: "Dashboard", icon: Home, exact: true },
   { href: "/admin/profiles", label: "Memorials", icon: Users },
   { href: "/admin/create", label: "Create Memorial", icon: PlusCircle },
-  { href: "/packages", label: "Packages", icon: Package },
+  { href: "/admin/packages", label: "Packages", icon: Package },
+  { href: "/admin/security", label: "Security Logs", icon: ShieldAlert },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ] as const;
 
@@ -109,6 +112,17 @@ export function Sidebar({
                 {userEmail}
               </p>
             ) : null}
+          </div>
+
+          <div className="mb-2 space-y-1">
+            <Link
+              href="/"
+              target="_blank"
+              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground-secondary transition hover:bg-background-secondary hover:text-foreground"
+            >
+              <ExternalLink className="h-4 w-4 shrink-0" aria-hidden />
+              View Public Site
+            </Link>
           </div>
 
           <form action={signOutAdmin}>

@@ -21,12 +21,12 @@ export async function getCommentQuota(
   profileId: string,
   tier: PackageTier,
 ): Promise<CommentQuota> {
-  const { maxComments } = getPackageLimits(tier);
+  const { maxComments } = getPackageLimits();
   const used = await prisma.comment.count({ where: { profileId } });
   const nextMaxWords =
     used >= maxComments
       ? null
-      : getCommentMaxWordsForIndex(tier, used + 1);
+      : getCommentMaxWordsForIndex(used + 1);
 
   return { used, max: maxComments, nextMaxWords };
 }
@@ -40,7 +40,7 @@ export async function assertCanCreateComment(input: {
   tier: PackageTier;
   body: string;
 }): Promise<CommentLimitResult> {
-  const { maxComments } = getPackageLimits(input.tier);
+  const { maxComments } = getPackageLimits();
   const used = await prisma.comment.count({
     where: { profileId: input.profileId },
   });
@@ -54,7 +54,7 @@ export async function assertCanCreateComment(input: {
   }
 
   const nextIndex = used + 1;
-  const maxWords = getCommentMaxWordsForIndex(input.tier, nextIndex);
+  const maxWords = getCommentMaxWordsForIndex(nextIndex);
   if (maxWords === null) {
     return {
       ok: false,

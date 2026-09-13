@@ -40,7 +40,7 @@ export default async function AdminProfileDetailPage({
 
   const status = getSetupStatus(profile);
   const publicUrl = getPublicProfileUrl(profile.qrId);
-  const pkg = getPackageDefinition(profile.packageTier);
+  const pkg = getPackageDefinition(profile.packageId);
 
   return (
     <div className="space-y-6">
@@ -58,7 +58,7 @@ export default async function AdminProfileDetailPage({
           </h1>
           <SetupStatusBadge label={status.label} tone={status.tone} />
           <span className="rounded-full bg-surface-elevated px-2.5 py-1 text-xs font-medium text-foreground-secondary">
-            {formatPackageAdminLabel(profile.packageTier)}
+            {formatPackageAdminLabel(profile.packageId)}
           </span>
         </div>
         <p className="mt-2 text-sm text-foreground-secondary">

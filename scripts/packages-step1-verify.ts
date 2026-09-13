@@ -35,11 +35,11 @@ function main() {
     );
   }
 
-  assert(getCommentMaxWordsForIndex("A", 1) === 100, "comment 1 → 100 words");
-  assert(getCommentMaxWordsForIndex("A", 5) === 100, "comment 5 → 100 words");
-  assert(getCommentMaxWordsForIndex("A", 6) === 150, "comment 6 → 150 words");
-  assert(getCommentMaxWordsForIndex("A", 10) === 150, "comment 10 → 150 words");
-  assert(getCommentMaxWordsForIndex("A", 11) === null, "comment 11 blocked");
+  assert(getCommentMaxWordsForIndex(1) === 100, "comment 1 → 100 words");
+  assert(getCommentMaxWordsForIndex(5) === 100, "comment 5 → 100 words");
+  assert(getCommentMaxWordsForIndex(6) === 150, "comment 6 → 150 words");
+  assert(getCommentMaxWordsForIndex(10) === 150, "comment 10 → 150 words");
+  assert(getCommentMaxWordsForIndex(11) === null, "comment 11 blocked");
 
   const start = new Date("2026-01-15T00:00:00.000Z");
   const windowA = computePackageWindow(start, "A");

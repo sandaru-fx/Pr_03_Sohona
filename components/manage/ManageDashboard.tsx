@@ -80,7 +80,7 @@ export function ManageDashboard({
 }: ManageDashboardProps) {
   const router = useRouter();
   const publicPath = `/p/${encodeURIComponent(qrId)}`;
-  const limits = getPackageLimits(packageTier);
+  const limits = getPackageLimits();
 
   const [statements, setStatements] = useState<StatementDraft[]>(
     initialStatements.length > 0

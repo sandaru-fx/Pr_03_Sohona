@@ -37,7 +37,7 @@ export function ManageGateCard({
           ownerContent?.profile.isPublicPinRequired ??
           result.profile.isPublicPinRequired
         }
-        packageTier={ownerContent?.profile.packageTier ?? "A"}
+        packageTier={ownerContent?.profile.packageId ?? "A"}
         r2Configured={r2Configured}
         initialStatements={statements.map((item) => ({
           id: item.id,

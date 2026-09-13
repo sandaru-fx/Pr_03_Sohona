@@ -26,6 +26,8 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  isDisabled      Boolean   @default(false)
+
   accounts        Account[]
   sessions        Session[]
   profilesCreated Profile[] @relation("ProfileCreatedBy")
@@ -72,6 +74,15 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+// Pre-approved emails that are allowed to log in as admin.
+// Managed from the admin UI (Settings > Admins).
+model AdminInvite {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  addedBy   String?  // email of admin who added this entry
+  createdAt DateTime @default(now())
+}
+
 // -----------------------------------------------------------------------------
 // Memorial profile — admin-safe identity + auth secrets (hashes only)
 // Private statements/media live in separate collections.
@@ -107,9 +118,10 @@ model Profile {
   /// Long-lived secret manage-link token — STORE HASH ONLY
   manageTokenHash String?
 
-  /// Package tier (A/B/C). Content limits identical; retention years differ.
-  /// Existing memorials default to A until admin changes (Step 2 picker).
-  packageTier PackageTier @default(A)
+  /// Package ID linking to dynamic packages.
+  /// Existing memorials default to the first package until admin changes.
+  packageId String @db.ObjectId
+  package   Package @relation(fields: [packageId], references: [id])
 
   /// Retention clock — set when family setup completes (not on admin create).
   packageStartedAt DateTime?
@@ -134,13 +146,31 @@ model Profile {
   @@index([createdByAdminId])
   @@index([setupTokenHash])
   @@index([manageTokenHash])
-  @@index([packageTier])
+  @@index([packageId])
 }
 
-enum PackageTier {
-  A
-  B
-  C
+model Package {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  description    String?
+  retentionYears Int
+  priceAmount    Float?
+  priceCurrency  String   @default("LKR")
+  features       String[]
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  profiles       Profile[]
+}
+
+model TempleSettings {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  templeName      String   @default("Mathaka QR Temple")
+  templeAddress   String?
+  templePhone     String?
+  templeEmail     String?
+  updatedAt       DateTime @updatedAt
 }
 
 // -----------------------------------------------------------------------------

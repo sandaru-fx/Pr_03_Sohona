@@ -69,7 +69,7 @@ export async function resolveSetupGate(
       setupUsedAt: true,
       setupTokenHash: true,
       hashedPin: true,
-      packageTier: true,
+      packageId: true,
       statements: {
         orderBy: { sortOrder: "asc" },
         select: { id: true, body: true, sortOrder: true },
@@ -105,7 +105,7 @@ export async function resolveSetupGate(
     setupTokenExpiresAt: profile.setupTokenExpiresAt,
     setupUsedAt: profile.setupUsedAt,
     hasPin: Boolean(profile.hashedPin),
-    packageTier: profile.packageTier,
+    packageTier: profile.packageId,
   };
 
   if (profile.isSetupComplete) {

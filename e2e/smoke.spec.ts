@@ -27,7 +27,7 @@ test.describe("Mathaka QR public site smoke", () => {
     await expect(
       page.getByRole("heading", { name: /three packages/i }),
     ).toBeVisible();
-    await expect(page.getByText("Package A")).toBeVisible();
+    await expect(page.getByText("Package A").first()).toBeVisible();
     await expect(page.getByText("25 years").first()).toBeVisible();
     await expect(page.getByText(/QR comments/i)).toBeVisible();
     await expect(
@@ -35,7 +35,7 @@ test.describe("Mathaka QR public site smoke", () => {
         /Temple admin never sees private statements, media, or comments/i,
       ),
     ).toBeVisible();
-    await expect(page.getByText("Package C")).toBeVisible();
+    await expect(page.getByText("Package C").first()).toBeVisible();
     await expect(page.getByText("100 years").first()).toBeVisible();
 
     await page.goto("/contact");

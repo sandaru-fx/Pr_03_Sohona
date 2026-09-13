@@ -65,7 +65,7 @@ export async function authorizeManageSession(): Promise<
       displayName: true,
       isPublicPinRequired: true,
       isSetupComplete: true,
-      packageTier: true,
+      packageId: true,
       hashedPin: true,
       manageTokenHash: true,
     },
@@ -93,7 +93,7 @@ export async function authorizeManageSession(): Promise<
       displayName: profile.displayName,
       isPublicPinRequired: profile.isPublicPinRequired,
       isSetupComplete: profile.isSetupComplete,
-      packageTier: profile.packageTier,
+      packageTier: profile.packageId,
     },
   };
 }

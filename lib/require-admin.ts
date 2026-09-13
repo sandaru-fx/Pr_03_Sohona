@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { redirect } from "next/navigation";
 import type { Session } from "next-auth";
 import { auth } from "@/auth";
-import { isAdminEmailAllowed } from "@/lib/admin-allowlist";
+import { isAdminEmailAllowed, isAdminEmailAllowedDb } from "@/lib/admin-allowlist";
 import { isAdminSession } from "@/lib/auth-guards";
 import { enforceIpRateLimit } from "@/lib/rate-limit-presets";
 
@@ -10,10 +10,15 @@ export type AdminSession = Session & {
   user: { id: string; role: "ADMIN" };
 };
 
-function isActiveAdmin(session: Session | null): session is AdminSession {
-  return (
-    isAdminSession(session) && isAdminEmailAllowed(session.user.email)
-  );
+/** Edge-safe check (env only) — used in middleware */
+export function isActiveAdminEdge(session: Session | null): session is AdminSession {
+  return isAdminSession(session) && isAdminEmailAllowed(session.user.email);
+}
+
+/** Full check (env + DB) — use in Node runtime */
+async function isActiveAdmin(session: Session | null): Promise<boolean> {
+  if (!isAdminSession(session)) return false;
+  return isAdminEmailAllowedDb(session.user.email);
 }
 
 /** JSON no-store helper for admin APIs. */
@@ -45,7 +50,7 @@ export async function requireAdminApi(
 
   const session = await auth();
 
-  if (!isActiveAdmin(session)) {
+  if (!(await isActiveAdmin(session))) {
     return {
       error: adminJson(
         { error: "Unauthorized", message: "Admin sign-in required." },
@@ -54,7 +59,7 @@ export async function requireAdminApi(
     };
   }
 
-  return { session };
+  return { session: session as AdminSession };
 }
 
 /**
@@ -63,9 +68,9 @@ export async function requireAdminApi(
 export async function requireAdminPage(): Promise<AdminSession> {
   const session = await auth();
 
-  if (!isActiveAdmin(session)) {
+  if (!(await isActiveAdmin(session))) {
     redirect("/login?error=Unauthorized&callbackUrl=/admin");
   }
 
-  return session;
+  return session as AdminSession;
 }

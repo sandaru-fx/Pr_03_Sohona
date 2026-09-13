@@ -4,7 +4,7 @@ import {
   getSetupStatus,
   listAdminProfiles,
 } from "@/lib/admin-profiles";
-import { formatPackageAdminLabel } from "@/lib/packages";
+
 import { SetupStatusBadge } from "@/components/admin/SetupStatusBadge";
 
 function formatDate(value: Date) {
@@ -62,7 +62,7 @@ export default async function AdminProfilesPage() {
           <ul className="divide-y divide-border" role="list">
             {profiles.map((profile) => {
               const status = getSetupStatus(profile);
-              const packageLabel = formatPackageAdminLabel(profile.packageTier);
+              const packageLabel = profile.package.name;
               return (
                 <li key={profile.id}>
                   <Link

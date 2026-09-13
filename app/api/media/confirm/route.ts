@@ -105,7 +105,7 @@ export async function POST(request: Request) {
 
   const limitCheck = await assertMediaUploadAllowed({
     profileId: auth.profile.id,
-    tier: auth.profile.packageTier,
+    tier: auth.profile.packageId,
     kind: uploadCheck.kind,
     durationSeconds,
   });

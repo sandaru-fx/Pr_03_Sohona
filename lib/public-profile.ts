@@ -83,7 +83,7 @@ export async function resolvePublicProfileGate(
       qrId: true,
       isSetupComplete: true,
       isPublicPinRequired: true,
-      packageTier: true,
+      packageId: true,
       pinLockedUntil: true,
     },
   });
@@ -121,7 +121,7 @@ export async function resolvePublicProfileGate(
       displayName: profile.displayName,
       qrId: profile.qrId,
       isPublicPinRequired: profile.isPublicPinRequired,
-      packageTier: profile.packageTier,
+      packageTier: profile.packageId,
     },
     access,
     pinLock,
@@ -174,7 +174,7 @@ export async function loadPublicMemorialContent(
 ): Promise<PublicMemorialContent> {
   const profile = await prisma.profile.findUnique({
     where: { id: profileId },
-    select: { packageTier: true },
+    select: { packageId: true },
   });
 
   const tier = profile?.packageTier ?? "A";

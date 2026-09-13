@@ -92,7 +92,7 @@ export async function authorizeSetupToken(input: {
       isSetupComplete: true,
       setupTokenHash: true,
       setupTokenExpiresAt: true,
-      packageTier: true,
+      packageId: true,
     },
   });
 
@@ -176,7 +176,7 @@ export async function authorizeSetupToken(input: {
       qrId: profile.qrId,
       isSetupComplete: profile.isSetupComplete,
       setupTokenExpiresAt: profile.setupTokenExpiresAt,
-      packageTier: profile.packageTier,
+      packageTier: profile.packageId,
     },
   };
 }

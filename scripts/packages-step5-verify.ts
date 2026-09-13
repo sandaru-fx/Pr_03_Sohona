@@ -176,9 +176,9 @@ function main() {
   assert(!voiceMissing.success, "voice without duration must fail zod");
 
   // --- Comment edge cases ---
-  assert(getCommentMaxWordsForIndex("C", 5) === 100, "comment 5 = 100");
-  assert(getCommentMaxWordsForIndex("C", 6) === 150, "comment 6 = 150");
-  assert(getCommentMaxWordsForIndex("C", 11) === null, "comment 11 blocked");
+  assert(getCommentMaxWordsForIndex(5) === 100, "comment 5 = 100");
+  assert(getCommentMaxWordsForIndex(6) === 150, "comment 6 = 150");
+  assert(getCommentMaxWordsForIndex(11) === null, "comment 11 blocked");
   assert(countWords(words(100)) === 100, "100 words counted");
   assert(countWords(words(101)) === 101, "101 words counted");
   assert(

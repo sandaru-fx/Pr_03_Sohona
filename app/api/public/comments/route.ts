@@ -51,7 +51,7 @@ export async function POST(request: Request) {
 
   const limit = await assertCanCreateComment({
     profileId: auth.profile.id,
-    tier: auth.profile.packageTier,
+    tier: auth.profile.packageId,
     body: parsed.data.body,
   });
   if (!limit.ok) {

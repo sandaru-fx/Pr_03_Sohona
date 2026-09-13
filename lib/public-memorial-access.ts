@@ -45,7 +45,7 @@ export async function authorizePublicMemorialByQrId(
       displayName: true,
       isSetupComplete: true,
       isPublicPinRequired: true,
-      packageTier: true,
+      packageId: true,
     },
   });
 
@@ -77,7 +77,7 @@ export async function authorizePublicMemorialByQrId(
       qrId: profile.qrId,
       displayName: profile.displayName,
       isPublicPinRequired: profile.isPublicPinRequired,
-      packageTier: profile.packageTier,
+      packageTier: profile.packageId,
     },
   };
 }

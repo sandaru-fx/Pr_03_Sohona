@@ -69,7 +69,7 @@ export function SetupContentForm({
   initialMedia,
   onComplete,
 }: SetupContentFormProps) {
-  const limits = getPackageLimits(packageTier);
+  const limits = getPackageLimits();
   const [statements, setStatements] = useState<StatementDraft[]>(
     initialStatements.length > 0
       ? initialStatements.map((item) => newDraft(item.body))

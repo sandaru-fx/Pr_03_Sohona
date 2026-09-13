@@ -13,43 +13,13 @@ import {
   Sparkles,
   TextQuote,
 } from "lucide-react";
-import {
-  PACKAGE_CATALOG,
-  PACKAGE_TIERS,
-  SHARED_PACKAGE_LIMITS,
-  type PackageTierId,
-} from "@/lib/packages";
+import { SHARED_PACKAGE_LIMITS } from "@/lib/packages";
+import { prisma } from "@/lib/prisma";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Packages",
-  description:
-    "Mathaka QR memorial packages A, B, and C — same content limits, 25 / 50 / 100 year retention.",
-};
-
-const PACKAGE_STORIES: Record<
-  PackageTierId,
-  { name: string; blurb: string; bestFor: string; highlight?: boolean }
-> = {
-  A: {
-    name: "Heritage",
-    blurb:
-      "A generation of remembrance — enough for family visits, temple gatherings, and quiet returns over decades.",
-    bestFor: "Families planning a meaningful first memorial window.",
-  },
-  B: {
-    name: "Continuum",
-    blurb:
-      "Half a century of care — chosen when families want the memorial to walk with children and grandchildren.",
-    bestFor: "Temples offering a balanced long-horizon option.",
-    highlight: true,
-  },
-  C: {
-    name: "Legacy",
-    blurb:
-      "A full century of remembrance — the longest horizon, for families who want the story held for generations.",
-    bestFor: "Enduring temple memorials and multi-generation families.",
-  },
+  description: "Mathaka QR memorial packages — same content limits, different retention.",
 };
 
 const SHARED_FEATURES = [
@@ -88,7 +58,7 @@ const SHARED_FEATURES = [
 const JOURNEY = [
   {
     title: "Temple chooses a package",
-    body: "Staff create the memorial shell, select A, B, or C, and print the QR.",
+    body: "Staff create the memorial shell, select a package, and print the QR.",
   },
   {
     title: "Family completes setup",
@@ -100,12 +70,15 @@ const JOURNEY = [
   },
 ] as const;
 
-export default function PackagesPage() {
+export default async function PackagesPage() {
   const limits = SHARED_PACKAGE_LIMITS;
+  const packages = await prisma.package.findMany({
+    where: { isActive: true },
+    orderBy: { retentionYears: 'asc' }
+  });
 
   return (
     <main className="flex flex-1 flex-col">
-      {/* Hero */}
       <section className="relative min-h-[calc(100vh-6rem)] overflow-hidden border-b border-border bg-[#0B0D0F]">
         <div className="absolute inset-0 z-0">
           <Image
@@ -133,7 +106,7 @@ export default function PackagesPage() {
               Packages
             </p>
             <h1 className="mt-4 font-sans text-5xl font-medium tracking-tight text-[#F5F1E8] sm:text-6xl sm:leading-tight lg:text-7xl">
-              Three packages. Same privacy. Different years.
+              Different packages. Same privacy.
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-[#F5F1E8]/90 sm:text-xl">
               Mathaka QR is not a public checkout. Your temple helps you choose
@@ -158,7 +131,6 @@ export default function PackagesPage() {
         </div>
       </section>
 
-      {/* Package cards */}
       <section
         id="compare"
         className="border-b border-[#2A2E33] bg-background-secondary"
@@ -180,46 +152,30 @@ export default function PackagesPage() {
           </div>
 
           <ul className="mt-14 grid gap-5 lg:grid-cols-3">
-            {PACKAGE_TIERS.map((tier, index) => {
-              const item = PACKAGE_CATALOG[tier];
-              const story = PACKAGE_STORIES[tier];
-              return (
+            {packages.map((pkg, index) => (
                 <li
-                  key={item.tier}
+                  key={pkg.id}
                   className={cn(
-                    "group relative flex flex-col overflow-hidden rounded-2xl border bg-[#181C20] p-7 transition duration-300 sm:p-8",
-                    story.highlight
-                      ? "border-gold/50 shadow-[0_0_0_1px_rgba(201,164,92,0.12)]"
-                      : "border-[#2A2E33] hover:border-gold/30",
+                    "group relative flex flex-col overflow-hidden rounded-2xl border bg-[#181C20] p-7 transition duration-300 sm:p-8 border-[#2A2E33] hover:border-gold/30"
                   )}
                 >
-                  {story.highlight ? (
-                    <span className="absolute right-5 top-5 inline-flex items-center gap-1.5 rounded-full border border-gold/30 bg-gold-subtle px-2.5 py-1 text-[11px] font-medium uppercase tracking-wider text-gold">
-                      <Sparkles className="h-3 w-3" aria-hidden />
-                      Often chosen
-                    </span>
-                  ) : null}
-
                   <p className="text-sm tabular-nums text-gold/80">
                     {String(index + 1).padStart(2, "0")}
                   </p>
                   <p className="mt-4 text-sm text-gray-500">
-                    Package {item.tier} · {story.name}
+                    {pkg.name}
                   </p>
                   <h3 className="mt-2 font-sans text-xl font-medium text-[#F5F1E8]">
-                    Package {item.tier}
+                    {pkg.name}
                   </h3>
                   <p className="mt-5 font-sans text-5xl font-medium tracking-tight text-[#F5F1E8]">
-                    {item.retentionYears}
+                    {pkg.retentionYears}
                     <span className="ml-2 text-lg font-normal text-gray-400">
                       years
                     </span>
                   </p>
                   <p className="mt-5 flex-1 text-sm leading-7 text-gray-400">
-                    {story.blurb}
-                  </p>
-                  <p className="mt-6 border-t border-[#2A2E33] pt-5 text-sm leading-7 text-gray-500">
-                    Best for: {story.bestFor}
+                    {pkg.description}
                   </p>
                   <ul className="mt-5 space-y-2.5 text-sm text-gray-400">
                     {[
@@ -239,23 +195,16 @@ export default function PackagesPage() {
                   </ul>
                   <Link
                     href="/contact"
-                    className={cn(
-                      "mt-8 inline-flex h-12 min-h-12 items-center justify-center rounded-xl text-sm font-medium transition duration-300",
-                      story.highlight
-                        ? "bg-gold text-[#0B0D0F] hover:opacity-90"
-                        : "border border-[#2A2E33] text-[#F5F1E8] hover:border-gold/40",
-                    )}
+                    className="mt-8 inline-flex h-12 min-h-12 items-center justify-center rounded-xl text-sm font-medium transition duration-300 border border-[#2A2E33] text-[#F5F1E8] hover:border-gold/40"
                   >
-                    Ask the temple about Package {item.tier}
+                    Ask the temple about {pkg.name}
                   </Link>
                 </li>
-              );
-            })}
+            ))}
           </ul>
         </div>
       </section>
 
-      {/* Voice reminder */}
       <section className="border-b border-[#2A2E33]">
         <div className="mx-auto grid max-w-7xl items-center gap-16 px-10 py-28 sm:grid-cols-2 sm:gap-20 lg:gap-24 sm:px-14 lg:px-20 sm:py-36">
           <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl bg-[#121518]">
@@ -273,7 +222,7 @@ export default function PackagesPage() {
               Every package includes
             </p>
             <h2 className="mt-4 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-4xl">
-              Photos, voice, video, and words — same limits on A, B, and C.
+              Photos, voice, video, and words — same limits across all packages.
             </h2>
             <p className="mt-6 text-lg leading-8 text-gray-400">
               The remembrance horizon changes. The privacy model and content
@@ -284,7 +233,6 @@ export default function PackagesPage() {
         </div>
       </section>
 
-      {/* Shared limits */}
       <section className="border-b border-[#2A2E33]">
         <div className="mx-auto max-w-7xl px-10 py-28 sm:px-14 lg:px-20 sm:py-36">
           <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
@@ -323,7 +271,6 @@ export default function PackagesPage() {
         </div>
       </section>
 
-      {/* Comparison table */}
       <section className="border-b border-[#2A2E33] bg-background-secondary">
         <div className="mx-auto max-w-7xl px-10 py-28 sm:px-14 lg:px-20 sm:py-36">
           <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
@@ -338,12 +285,12 @@ export default function PackagesPage() {
               <thead className="bg-[#181C20] text-gray-500">
                 <tr>
                   <th className="px-5 py-4 font-medium sm:px-6">Feature</th>
-                  {PACKAGE_TIERS.map((tier) => (
+                  {packages.map((pkg) => (
                     <th
-                      key={tier}
+                      key={pkg.id}
                       className="px-5 py-4 font-medium text-[#F5F1E8] sm:px-6"
                     >
-                      Package {tier}
+                      {pkg.name}
                     </th>
                   ))}
                 </tr>
@@ -353,12 +300,12 @@ export default function PackagesPage() {
                   <td className="px-5 py-4 text-gray-400 sm:px-6">
                     Retention years
                   </td>
-                  {PACKAGE_TIERS.map((tier) => (
+                  {packages.map((pkg) => (
                     <td
-                      key={tier}
+                      key={pkg.id}
                       className="px-5 py-4 font-medium text-gold sm:px-6"
                     >
-                      {PACKAGE_CATALOG[tier].retentionYears} years
+                      {pkg.retentionYears} years
                     </td>
                   ))}
                 </tr>
@@ -373,8 +320,8 @@ export default function PackagesPage() {
                 ].map(([label, value]) => (
                   <tr key={label}>
                     <td className="px-5 py-4 text-gray-400 sm:px-6">{label}</td>
-                    {PACKAGE_TIERS.map((tier) => (
-                      <td key={tier} className="px-5 py-4 text-[#F5F1E8] sm:px-6">
+                    {packages.map((pkg) => (
+                      <td key={pkg.id} className="px-5 py-4 text-[#F5F1E8] sm:px-6">
                         {value}
                       </td>
                     ))}
@@ -386,7 +333,6 @@ export default function PackagesPage() {
         </div>
       </section>
 
-      {/* Journey */}
       <section className="border-b border-[#2A2E33]">
         <div className="mx-auto max-w-7xl px-10 py-28 sm:px-14 lg:px-20 sm:py-36">
           <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
@@ -413,7 +359,6 @@ export default function PackagesPage() {
         </div>
       </section>
 
-      {/* Privacy + CTA */}
       <section className="bg-background-secondary">
         <div className="mx-auto grid max-w-7xl gap-16 px-10 py-28 sm:grid-cols-[1.2fr_0.8fr] sm:px-14 lg:px-20 sm:py-36">
           <div>
@@ -421,7 +366,7 @@ export default function PackagesPage() {
               <Shield className="h-5 w-5" aria-hidden />
             </div>
             <h2 className="mt-6 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8]">
-              Privacy is identical across A, B, and C
+              Privacy is identical across packages
             </h2>
             <p className="mt-5 max-w-xl text-base leading-8 text-gray-400">
               Longer years do not mean more exposure. Statements, media, and
@@ -445,7 +390,7 @@ export default function PackagesPage() {
               Ready to discuss what fits your temple?
             </h3>
             <p className="mt-4 text-sm leading-7 text-gray-400">
-              Contact us to arrange Package A, B, or C. There is no aggressive
+              Contact us to arrange a package. There is no aggressive
               online checkout — just a calm conversation about remembrance.
             </p>
             <Link

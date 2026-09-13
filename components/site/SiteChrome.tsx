@@ -3,15 +3,17 @@
 import { usePathname } from "next/navigation";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
+import { WhatsAppWidget } from "@/components/site/WhatsAppWidget";
 
 export function SiteChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   return (
-    <div className="site-shell flex min-h-full flex-1 flex-col">
+    <div className="site-shell flex min-h-full flex-1 flex-col relative">
       <SiteHeader pathname={pathname} />
       <div className="flex flex-1 flex-col">{children}</div>
       <SiteFooter />
+      <WhatsAppWidget />
     </div>
   );
 }

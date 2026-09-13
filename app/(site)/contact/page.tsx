@@ -89,19 +89,53 @@ export default function ContactPage() {
 
       <div className="mx-auto w-full max-w-3xl flex-1 px-10 py-24 sm:px-14 lg:px-20 sm:py-32">
         <section className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-8 py-10 sm:px-10 sm:py-12">
-          <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-gray-500">
-            Email
-          </h2>
-          <a
-            href="mailto:temple@sohona.example"
-            className="mt-4 inline-flex font-sans text-xl font-medium text-gold transition-opacity duration-300 hover:opacity-80 sm:text-2xl"
-          >
-            temple@sohona.example
-          </a>
-          <p className="mt-5 text-base leading-7 text-gray-500">
-            Replace this address with your temple&apos;s real contact when you
-            go live. Until then, temple staff can also use admin sign-in.
-          </p>
+          <div className="flex flex-col gap-10 sm:gap-12">
+            <div>
+              <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-gray-500">
+                Contact Numbers
+              </h2>
+              <div className="mt-4 flex flex-col gap-2">
+                <a href="tel:0768046019" className="inline-flex font-sans text-xl font-medium text-gold transition-opacity duration-300 hover:opacity-80 sm:text-2xl">076 804 6019</a>
+                <a href="tel:0774880604" className="inline-flex font-sans text-xl font-medium text-gold transition-opacity duration-300 hover:opacity-80 sm:text-2xl">077 488 0604</a>
+                <a href="tel:0779489397" className="inline-flex font-sans text-xl font-medium text-gold transition-opacity duration-300 hover:opacity-80 sm:text-2xl">077 948 9397</a>
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-gray-500">
+                WhatsApp
+              </h2>
+              <a
+                href="https://wa.me/94768946019"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex font-sans text-xl font-medium text-gold transition-opacity duration-300 hover:opacity-80 sm:text-2xl"
+              >
+                076 894 6019
+              </a>
+            </div>
+
+            <div>
+              <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-gray-500">
+                Email
+              </h2>
+              <a
+                href="mailto:mathakaqr@gmail.com"
+                className="mt-4 inline-flex font-sans text-xl font-medium text-gold transition-opacity duration-300 hover:opacity-80 sm:text-2xl"
+              >
+                mathakaqr@gmail.com
+              </a>
+            </div>
+
+            <div>
+              <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-gray-500">
+                Location
+              </h2>
+              <p className="mt-4 font-sans text-xl font-medium text-gold sm:text-2xl">
+                Galigamuwa, Kegalle
+              </p>
+            </div>
+          </div>
         </section>
 
         <p className="mt-12 text-base text-gray-400">

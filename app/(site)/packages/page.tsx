@@ -2,84 +2,75 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  Check,
-  Clock3,
-  FileAudio,
-  FileImage,
   FileVideo,
-  Lock,
+  FileAudio,
+  Image as ImageIcon,
+  FileText,
   MessageCircle,
-  Shield,
+  ShieldCheck,
+  Crown,
   Sparkles,
-  TextQuote,
 } from "lucide-react";
-import { SHARED_PACKAGE_LIMITS } from "@/lib/packages";
-import { prisma } from "@/lib/prisma";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Packages",
-  description: "Mathaka QR memorial packages — same content limits, different retention.",
+  title: "Packages | Mathaka QR",
+  description: "Premium memorial packages with uncompromising privacy and lasting retention.",
 };
 
-const SHARED_FEATURES = [
+const PACKAGES = [
   {
-    icon: FileImage,
-    title: "Photographs",
-    body: `Up to ${SHARED_PACKAGE_LIMITS.maxImages} private images, shown only on the memorial page.`,
+    name: "A",
+    years: 25,
+    specs: [
+      { icon: FileVideo, text: "1 Minute Video Spec" },
+      { icon: FileAudio, text: "2 Minutes Audio Spec" },
+      { icon: ImageIcon, text: "5 Images" },
+      { icon: FileText, text: "Word 500 Spec" },
+    ],
+    comments: {
+      title: "Comment Section",
+      line1: "Word 100*5",
+      line2: "(After that Word 150*5 Spec)",
+    }
   },
   {
-    icon: FileVideo,
-    title: "Video",
-    body: `Up to ${SHARED_PACKAGE_LIMITS.maxVideoSeconds / 60} minute of video — short, respectful clips.`,
+    name: "B",
+    years: 50,
+    specs: [
+      { icon: FileVideo, text: "1 Minute Video Spec" },
+      { icon: FileAudio, text: "2 Minutes Audio Spec" },
+      { icon: ImageIcon, text: "5 Images" },
+      { icon: FileText, text: "Word 500 Spec" },
+    ],
+    comments: {
+      title: "Comment Section",
+      line1: "Word 100*5",
+      line2: "(After that Word 150*5 Spec)",
+    }
   },
   {
-    icon: FileAudio,
-    title: "Voice & audio",
-    body: `Up to ${SHARED_PACKAGE_LIMITS.maxAudioSeconds / 60} minutes of voice or audio remembrance.`,
-  },
-  {
-    icon: TextQuote,
-    title: "Statements",
-    body: `Up to ${SHARED_PACKAGE_LIMITS.maxStatementWords} words total in Sinhala or English.`,
-  },
-  {
-    icon: MessageCircle,
-    title: "QR comments",
-    body: `Up to ${SHARED_PACKAGE_LIMITS.maxComments} visitor messages — first 5 up to 100 words, next 5 up to 150.`,
-  },
-  {
-    icon: Lock,
-    title: "Family PIN privacy",
-    body: "Temple admin never sees private statements, media, or comments.",
-  },
-] as const;
+    name: "C",
+    years: 100,
+    specs: [
+      { icon: FileVideo, text: "1 Minute Video Spec" },
+      { icon: FileAudio, text: "2 Minutes Audio Spec" },
+      { icon: ImageIcon, text: "5 Images" },
+      { icon: FileText, text: "Word 500 Spec" },
+    ],
+    comments: {
+      title: "Comment Section",
+      line1: "Word 100*5",
+      line2: "(After that Word 150*5 Spec)",
+    }
+  }
+];
 
-const JOURNEY = [
-  {
-    title: "Temple chooses a package",
-    body: "Staff create the memorial shell, select a package, and print the QR.",
-  },
-  {
-    title: "Family completes setup",
-    body: "With a private link and PIN, the family adds words and media at their pace.",
-  },
-  {
-    title: "Retention begins",
-    body: "The remembrance window starts only when setup is finished — not on create day.",
-  },
-] as const;
-
-export default async function PackagesPage() {
-  const limits = SHARED_PACKAGE_LIMITS;
-  const packages = await prisma.package.findMany({
-    where: { isActive: true },
-    orderBy: { retentionYears: 'asc' }
-  });
-
+export default function PackagesPage() {
   return (
-    <main className="flex flex-1 flex-col">
-      <section className="relative min-h-[calc(100vh-6rem)] overflow-hidden border-b border-border bg-[#0B0D0F]">
+    <main className="flex flex-1 flex-col bg-[#050608] selection:bg-gold/30 selection:text-white">
+      {/* HERO SECTION */}
+      <section className="relative flex min-h-[85vh] lg:min-h-[calc(100vh-6rem)] flex-col items-center justify-center overflow-hidden border-b border-[#1A1D21] pt-24 pb-20">
         <div className="absolute inset-0 z-0">
           <Image
             src="/packages-hero.jpg"
@@ -88,324 +79,148 @@ export default async function PackagesPage() {
             priority
             quality={100}
             sizes="100vw"
-            className="object-cover object-[center_45%] brightness-[1.22] contrast-[1.05]"
+            className="object-cover object-[center_45%] brightness-[0.8] contrast-[1.1]"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050608] via-[#050608]/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#050608]/60 via-[#050608]/20 to-transparent" />
+          <div className="absolute left-1/2 top-1/2 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold/10 opacity-60 blur-[150px]" />
         </div>
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-[72%] max-w-2xl bg-gradient-to-r from-[#0B0D0F]/92 via-[#0B0D0F]/55 to-transparent sm:w-[56%]"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-20 bg-gradient-to-t from-[#0B0D0F]/25 to-transparent"
-        />
+        <div className="absolute inset-0 z-0 bg-[url('/noise.png')] opacity-[0.04] mix-blend-overlay" />
 
-        <div className="relative z-10 mx-auto flex min-h-[calc(100vh-6rem)] w-full max-w-7xl flex-col justify-center px-10 pt-20 sm:px-14 lg:px-20 sm:pt-24">
-          <div className="max-w-2xl rounded-2xl bg-[#0B0D0F]/50 px-6 py-8 backdrop-blur-[2px] sm:max-w-3xl sm:px-9 sm:py-9 [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]">
-            <p className="text-sm font-medium uppercase tracking-[0.18em] text-gold">
-              Packages
-            </p>
-            <h1 className="mt-4 font-sans text-5xl font-medium tracking-tight text-[#F5F1E8] sm:text-6xl sm:leading-tight lg:text-7xl">
-              Different packages. Same privacy.
+        <div className="relative z-10 flex w-full max-w-5xl flex-col items-center px-6 sm:px-10">
+          <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-[#0B0D0F]/50 px-8 py-16 text-center shadow-[0_0_50px_rgba(0,0,0,0.5)] backdrop-blur-xl sm:px-16 sm:py-20">
+            {/* Top gold accent line */}
+            <div className="absolute left-1/2 top-0 h-1 w-32 -translate-x-1/2 bg-gradient-to-r from-transparent via-gold to-transparent" />
+            
+            <h1 className="font-sans text-5xl font-medium tracking-tight text-[#F5F1E8] drop-shadow-xl sm:text-6xl lg:text-7xl">
+              Choose the Remembrance Horizon
             </h1>
-            <p className="mt-5 max-w-2xl text-lg leading-8 text-[#F5F1E8]/90 sm:text-xl">
-              Mathaka QR is not a public checkout. Your temple helps you choose
-              the remembrance horizon — while every package keeps the same
-              private content limits, PIN protection, and admin-blind privacy.
+            <p className="mx-auto mt-8 max-w-3xl text-lg leading-relaxed text-[#F5F1E8]/90 drop-shadow-md sm:text-xl">
+              A timeless tribute structured perfectly to preserve your memories exactly as you want. 
+              Whether you choose a horizon of 25, 50, or 100 years, the uncompromising privacy 
+              and rich media features remain the exact same. Secure your family's legacy today.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href="/contact"
-                className="inline-flex h-12 min-h-12 items-center rounded-xl bg-gold px-6 text-base font-medium text-[#0B0D0F] transition-opacity duration-300 hover:opacity-90"
-              >
-                Speak with the temple
-              </Link>
-              <a
-                href="#compare"
-                className="inline-flex h-12 min-h-12 items-center rounded-xl border border-[#2A2E33] bg-[#181C20]/90 px-6 text-base font-medium text-[#F5F1E8] backdrop-blur-sm transition duration-300 hover:border-gold/40"
-              >
-                Compare packages
-              </a>
-            </div>
           </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-10 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 animate-pulse opacity-70">
+          <span className="text-xs font-medium uppercase tracking-[0.2em] text-gold">Scroll</span>
+          <div className="h-12 w-px bg-gradient-to-b from-gold to-transparent" />
         </div>
       </section>
 
-      <section
-        id="compare"
-        className="border-b border-[#2A2E33] bg-background-secondary"
-      >
-        <div className="mx-auto max-w-7xl px-10 py-28 sm:px-14 lg:px-20 sm:py-36">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
-                Remembrance horizons
-              </p>
-              <h2 className="mt-3 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-4xl">
-                Choose how long the memory is kept
-              </h2>
-            </div>
-            <p className="max-w-sm text-sm leading-7 text-gray-500">
-              Content is identical. Only retention years change. Pricing is
-              arranged privately with your temple.
-            </p>
-          </div>
+      {/* PACKAGES SHOWCASE */}
+      <section className="relative pb-32 pt-20">
+        <div className="mx-auto max-w-7xl px-6 sm:px-10 lg:px-20">
+          <div className="grid gap-8 lg:grid-cols-3">
+            {PACKAGES.map((pkg) => {
+              const isPremium = pkg.years === 100;
 
-          <ul className="mt-14 grid gap-5 lg:grid-cols-3">
-            {packages.map((pkg, index) => (
-                <li
-                  key={pkg.id}
+              return (
+                <div
+                  key={pkg.name}
                   className={cn(
-                    "group relative flex flex-col overflow-hidden rounded-2xl border bg-[#181C20] p-7 transition duration-300 sm:p-8 border-[#2A2E33] hover:border-gold/30"
+                    "group relative flex flex-col overflow-hidden rounded-[2rem] border transition-all duration-500 hover:-translate-y-2",
+                    isPremium
+                      ? "border-gold/50 bg-gradient-to-b from-[#181C20] to-[#0B0D0F]"
+                      : "border-[#2A2E33] bg-[#121518] hover:border-gold/30"
                   )}
                 >
-                  <p className="text-sm tabular-nums text-gold/80">
-                    {String(index + 1).padStart(2, "0")}
-                  </p>
-                  <p className="mt-4 text-sm text-gray-500">
-                    {pkg.name}
-                  </p>
-                  <h3 className="mt-2 font-sans text-xl font-medium text-[#F5F1E8]">
-                    {pkg.name}
-                  </h3>
-                  <p className="mt-5 font-sans text-5xl font-medium tracking-tight text-[#F5F1E8]">
-                    {pkg.retentionYears}
-                    <span className="ml-2 text-lg font-normal text-gray-400">
-                      years
-                    </span>
-                  </p>
-                  <p className="mt-5 flex-1 text-sm leading-7 text-gray-400">
-                    {pkg.description}
-                  </p>
-                  <ul className="mt-5 space-y-2.5 text-sm text-gray-400">
-                    {[
-                      "Same photo / video / audio limits",
-                      "Same statement & comment caps",
-                      "Family PIN + admin-blind privacy",
-                      "Retention starts at setup complete",
-                    ].map((line) => (
-                      <li key={line} className="flex gap-2.5">
-                        <Check
-                          className="mt-0.5 h-4 w-4 shrink-0 text-gold"
-                          aria-hidden
-                        />
-                        <span>{line}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    href="/contact"
-                    className="mt-8 inline-flex h-12 min-h-12 items-center justify-center rounded-xl text-sm font-medium transition duration-300 border border-[#2A2E33] text-[#F5F1E8] hover:border-gold/40"
-                  >
-                    Ask the temple about {pkg.name}
-                  </Link>
-                </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+                  {isPremium && (
+                    <div className="absolute inset-0 bg-gradient-to-b from-gold/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                  )}
+                  
+                  <div className="relative z-10 flex flex-1 flex-col p-8 sm:p-10">
+                    <div className="flex items-center justify-between">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#1A1D21] border border-[#2A2E33]">
+                        <span className="font-sans text-xl font-bold text-gold">{pkg.name}</span>
+                      </div>
+                      {isPremium && (
+                        <span className="flex items-center gap-1 rounded-full bg-gold/20 px-3 py-1 text-xs font-medium text-gold">
+                          <Crown className="h-3 w-3" /> Premium
+                        </span>
+                      )}
+                    </div>
+                    
+                    <div className="mt-8 flex items-baseline gap-2 border-b border-[#2A2E33] pb-8">
+                      <span className="font-sans text-6xl font-bold tracking-tighter text-[#F5F1E8]">
+                        {pkg.years}
+                      </span>
+                      <span className="text-xl font-medium text-gray-500">Years Design</span>
+                    </div>
 
-      <section className="border-b border-[#2A2E33]">
-        <div className="mx-auto grid max-w-7xl items-center gap-16 px-10 py-28 sm:grid-cols-2 sm:gap-20 lg:gap-24 sm:px-14 lg:px-20 sm:py-36">
-          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl bg-[#121518]">
-            <Image
-              src="/feature-voice.jpg"
-              alt="Smartphone playing a private voice memory with headphones nearby"
-              fill
-              quality={100}
-              sizes="(max-width: 640px) 100vw, 50vw"
-              className="object-contain object-center"
-            />
-          </div>
-          <div>
-            <p className="text-sm font-medium uppercase tracking-[0.18em] text-gold">
-              Every package includes
-            </p>
-            <h2 className="mt-4 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-4xl">
-              Photos, voice, video, and words — same limits across all packages.
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-gray-400">
-              The remembrance horizon changes. The privacy model and content
-              limits do not. Families keep a PIN; temple staff never open private
-              media.
-            </p>
-          </div>
-        </div>
-      </section>
+                    <ul className="mt-10 flex flex-col gap-6">
+                      {pkg.specs.map((spec, i) => (
+                        <li key={i} className="flex items-center gap-5 rounded-xl bg-[#1A1D21]/30 p-3 transition-colors hover:bg-[#1A1D21]">
+                          <div className={cn(
+                            "flex h-12 w-12 shrink-0 items-center justify-center rounded-full border",
+                            isPremium ? "border-gold/40 bg-gold/10 text-gold shadow-[0_0_15px_rgba(201,162,112,0.2)]" : "border-[#2A2E33] bg-[#121518] text-gray-300"
+                          )}>
+                            <spec.icon className="h-6 w-6" />
+                          </div>
+                          <span className="text-[17px] font-semibold text-[#F5F1E8] sm:text-lg">{spec.text}</span>
+                        </li>
+                      ))}
+                    </ul>
 
-      <section className="border-b border-[#2A2E33]">
-        <div className="mx-auto max-w-7xl px-10 py-28 sm:px-14 lg:px-20 sm:py-36">
-          <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
-            Included in every package
-          </p>
-          <h2 className="mt-3 max-w-2xl font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-4xl">
-            Shared content limits
-          </h2>
-          <p className="mt-5 max-w-2xl text-base leading-8 text-gray-400">
-            Whether you choose 25, 50, or 100 years, the memorial experience and
-            privacy rules stay the same. Only the retention horizon changes.
-          </p>
-
-          <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {SHARED_FEATURES.map(({ icon: Icon, title, body }) => (
-              <li
-                key={title}
-                className="rounded-2xl border border-[#2A2E33] bg-[#181C20] p-6 transition duration-300 hover:border-gold/25"
-              >
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gold-subtle text-gold">
-                  <Icon className="h-5 w-5" aria-hidden />
+                    <div className="mt-10 rounded-2xl border border-gold/20 bg-gradient-to-br from-[#121518] to-[#0A0C0E] p-8 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+                      <div className="flex items-center gap-3 mb-5 border-b border-[#2A2E33] pb-4">
+                        <MessageCircle className="h-7 w-7 text-gold" />
+                        <h4 className="text-xl font-bold uppercase tracking-widest text-gold drop-shadow-sm">{pkg.comments.title}</h4>
+                      </div>
+                      <p className="text-xl font-bold text-white sm:text-2xl drop-shadow-md">{pkg.comments.line1}</p>
+                      <p className="mt-2 text-base font-medium text-gray-400 sm:text-lg">{pkg.comments.line2}</p>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="mt-5 font-sans text-lg font-medium text-[#F5F1E8]">
-                  {title}
-                </h3>
-                <p className="mt-2 text-sm leading-7 text-gray-400">{body}</p>
-              </li>
-            ))}
-          </ul>
-
-          <p className="mt-8 text-sm leading-7 text-gray-500">
-            QR comments: first 5 up to 100 words each, next 5 up to 150 words
-            each (max {limits.maxComments}). Temple admin never sees private
-            statements, media, or comments.
-          </p>
-        </div>
-      </section>
-
-      <section className="border-b border-[#2A2E33] bg-background-secondary">
-        <div className="mx-auto max-w-7xl px-10 py-28 sm:px-14 lg:px-20 sm:py-36">
-          <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
-            Side by side
-          </p>
-          <h2 className="mt-3 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-4xl">
-            What actually differs
-          </h2>
-
-          <div className="mt-12 overflow-x-auto rounded-2xl border border-[#2A2E33]">
-            <table className="min-w-full text-left text-sm">
-              <thead className="bg-[#181C20] text-gray-500">
-                <tr>
-                  <th className="px-5 py-4 font-medium sm:px-6">Feature</th>
-                  {packages.map((pkg) => (
-                    <th
-                      key={pkg.id}
-                      className="px-5 py-4 font-medium text-[#F5F1E8] sm:px-6"
-                    >
-                      {pkg.name}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#2A2E33] bg-[#0B0D0F]/40">
-                <tr>
-                  <td className="px-5 py-4 text-gray-400 sm:px-6">
-                    Retention years
-                  </td>
-                  {packages.map((pkg) => (
-                    <td
-                      key={pkg.id}
-                      className="px-5 py-4 font-medium text-gold sm:px-6"
-                    >
-                      {pkg.retentionYears} years
-                    </td>
-                  ))}
-                </tr>
-                {[
-                  ["Photos", `${limits.maxImages}`],
-                  ["Video", `≤ ${limits.maxVideoSeconds}s`],
-                  ["Audio", `≤ ${limits.maxAudioSeconds}s`],
-                  ["Statement words", `≤ ${limits.maxStatementWords}`],
-                  ["QR comments", `≤ ${limits.maxComments}`],
-                  ["Admin sees private content", "Never"],
-                  ["Family PIN for edits", "Always"],
-                ].map(([label, value]) => (
-                  <tr key={label}>
-                    <td className="px-5 py-4 text-gray-400 sm:px-6">{label}</td>
-                    {packages.map((pkg) => (
-                      <td key={pkg.id} className="px-5 py-4 text-[#F5F1E8] sm:px-6">
-                        {value}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+              );
+            })}
           </div>
-        </div>
-      </section>
 
-      <section className="border-b border-[#2A2E33]">
-        <div className="mx-auto max-w-7xl px-10 py-28 sm:px-14 lg:px-20 sm:py-36">
-          <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
-            How packages work
-          </p>
-          <h2 className="mt-3 max-w-2xl font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-4xl">
-            From temple choice to living memorial
-          </h2>
-          <ol className="mt-14 grid gap-8 sm:grid-cols-3">
-            {JOURNEY.map((item, index) => (
-              <li key={item.title}>
-                <p className="text-sm tabular-nums text-gold/80">
-                  {String(index + 1).padStart(2, "0")}
-                </p>
-                <h3 className="mt-4 font-sans text-xl font-medium text-[#F5F1E8]">
-                  {item.title}
-                </h3>
-                <p className="mt-3 text-sm leading-7 text-gray-400">
-                  {item.body}
-                </p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      <section className="bg-background-secondary">
-        <div className="mx-auto grid max-w-7xl gap-16 px-10 py-28 sm:grid-cols-[1.2fr_0.8fr] sm:px-14 lg:px-20 sm:py-36">
-          <div>
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gold-subtle text-gold">
-              <Shield className="h-5 w-5" aria-hidden />
-            </div>
-            <h2 className="mt-6 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8]">
-              Privacy is identical across packages
+          
+          {/* DESCRIPTIVE CONTENT SECTION */}
+          <div className="mx-auto mt-32 max-w-4xl text-center">
+            <h2 className="font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-4xl">
+              Preserving Memories with Dignity
             </h2>
-            <p className="mt-5 max-w-xl text-base leading-8 text-gray-400">
-              Longer years do not mean more exposure. Statements, media, and
-              visitor comments stay family-controlled. Temple staff manage
-              packages and QR infrastructure only.
-            </p>
-            <div className="mt-8 flex items-start gap-3 text-sm leading-7 text-gray-500">
-              <Clock3 className="mt-0.5 h-4 w-4 shrink-0 text-gold" aria-hidden />
-              <p>
-                Your retention period begins when family setup is completed —
-                not when the temple first creates the profile.
-              </p>
+            <div className="mt-12 grid gap-12 sm:grid-cols-2 text-left">
+              <div>
+                <h3 className="text-xl font-semibold text-gold">Uncompromising Quality</h3>
+                <p className="mt-4 text-base leading-relaxed text-gray-400">
+                  Every package at Mathaka QR is carefully crafted to honor your loved ones. 
+                  While the remembrance horizons vary—from a meaningful 25 years to an enduring century—the 
+                  quality of the memorial remains exactly the same. Your photos, videos, and audio clips are preserved securely.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-gold">Absolute Privacy</h3>
+                <p className="mt-4 text-base leading-relaxed text-gray-400">
+                  Your family's privacy is our highest priority. All media, statements, and comments are protected 
+                  by a secure family PIN. This ensures that the digital space remains a calm, respectful sanctuary 
+                  for those who truly matter.
+                </p>
+              </div>
+              <div className="sm:col-span-2">
+                <h3 className="text-xl font-semibold text-gold text-center">Thoughtful Tributes</h3>
+                <p className="mt-4 text-base leading-relaxed text-gray-400 text-center max-w-2xl mx-auto">
+                  Our structured comment sections are designed to encourage profound, considered tributes. 
+                  By guiding visitors with thoughtful word limits, we foster a respectful environment free from 
+                  the noise of public social media. Every word left behind becomes a cherished part of the legacy.
+                </p>
+              </div>
             </div>
           </div>
-
-          <div className="rounded-2xl border border-[#2A2E33] bg-[#181C20] p-8">
-            <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
-              Next step
-            </p>
-            <h3 className="mt-4 font-sans text-2xl font-medium text-[#F5F1E8]">
-              Ready to discuss what fits your temple?
-            </h3>
-            <p className="mt-4 text-sm leading-7 text-gray-400">
-              Contact us to arrange a package. There is no aggressive
-              online checkout — just a calm conversation about remembrance.
-            </p>
-            <Link
+          
+          <div className="mt-20 text-center flex justify-center">
+             <Link
               href="/contact"
-              className="mt-8 inline-flex h-12 min-h-12 w-full items-center justify-center rounded-xl bg-gold px-6 text-sm font-medium text-[#0B0D0F] transition-opacity duration-300 hover:opacity-90"
+              className="inline-flex h-14 items-center justify-center rounded-full bg-gold px-10 font-medium text-black transition-all hover:scale-105 hover:shadow-[0_0_20px_rgba(201,162,112,0.3)]"
             >
-              Contact us
-            </Link>
-            <Link
-              href="/about"
-              className="mt-3 inline-flex h-12 min-h-12 w-full items-center justify-center rounded-xl border border-[#2A2E33] text-sm font-medium text-[#F5F1E8] transition duration-300 hover:border-gold/40"
-            >
-              Learn about Mathaka QR
+              Inquire with Us
             </Link>
           </div>
+
         </div>
       </section>
     </main>

@@ -4,7 +4,7 @@ import React, { useState, useRef, MouseEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useMotionValue, useTransform, useSpring, useScroll, AnimatePresence } from "framer-motion";
-import { Check, Copy, Send, Loader2, Plus, Minus, Clock } from "lucide-react";
+import { Check, Copy, Send, Loader2, Plus, Minus, Clock, Facebook } from "lucide-react";
 
 export function ContactClient() {
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -153,6 +153,21 @@ export function ContactClient() {
               Memorials begin with a quiet conversation. Reach out to arrange a
               package and receive your family setup link.
             </motion.p>
+            
+            <motion.div variants={itemVariants} className="mt-8 flex items-center gap-4">
+              <div className="relative h-16 w-16 overflow-hidden rounded-full border-2 border-gold/30 bg-white p-1 shadow-[0_0_15px_rgba(232,201,133,0.15)]">
+                <Image
+                  src="/logo-mathaka.jpg"
+                  alt="Mathaka QR Logo"
+                  fill
+                  className="object-contain p-1"
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="font-sans text-lg font-medium text-[#F5F1E8]">Mathaka QR</span>
+                <span className="text-sm text-gold">Memory • Connect</span>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
@@ -330,6 +345,25 @@ export function ContactClient() {
                   >
                     {copiedId === "email" ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
                   </button>
+                </div>
+              </div>
+
+              <div>
+                <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-gray-500">
+                  Social Media
+                </h2>
+                <div className="mt-4 flex items-center gap-4">
+                  <motion.a
+                    href="https://www.facebook.com/share/1BcRq1dq9C/?mibextid=wwXIfr"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.1, color: "#e8c985" }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                    className="flex h-12 w-12 items-center justify-center rounded-full bg-gold/10 text-gold transition-colors hover:bg-gold/20"
+                    title="Follow us on Facebook"
+                  >
+                    <Facebook className="h-6 w-6" />
+                  </motion.a>
                 </div>
               </div>
 

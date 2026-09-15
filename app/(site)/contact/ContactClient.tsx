@@ -3,8 +3,8 @@
 import React, { useState, useRef, MouseEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useMotionValue, useTransform, useSpring, useScroll } from "framer-motion";
-import { Check, Copy, Send, Loader2 } from "lucide-react";
+import { motion, useMotionValue, useTransform, useSpring, useScroll, AnimatePresence } from "framer-motion";
+import { Check, Copy, Send, Loader2, Plus, Minus, Clock } from "lucide-react";
 
 export function ContactClient() {
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -62,6 +62,31 @@ export function ContactClient() {
       setIsSuccess(true);
       setTimeout(() => setIsSuccess(false), 5000);
     }, 1500);
+  };
+
+  const faqs = [
+    {
+      question: "How long does it take to set up a memorial?",
+      answer: "Once you choose a package and we have our initial conversation, we create the memorial shell within 24 hours. From there, your family can take as much time as needed to add photos, videos, and stories."
+    },
+    {
+      question: "Do I need any technical knowledge?",
+      answer: "Not at all. We handle all the technical setup. You simply receive a secure link and a PIN to access and update your family member's profile using an intuitive, easy-to-use interface."
+    },
+    {
+      question: "How do we learn about package pricing?",
+      answer: "We prefer to discuss packages personally to ensure we meet your family's exact needs with dignity. Please call or email us, and we will guide you through the options without any obligation."
+    },
+    {
+      question: "Can anyone see the private memories?",
+      answer: "No. Privacy is our priority. Public visitors can only see what you choose to share. Private stories, audio, and personal family comments are locked securely."
+    }
+  ];
+
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+
+  const toggleFaq = (index: number) => {
+    setOpenFaqIndex(openFaqIndex === index ? null : index);
   };
 
   const containerVariants = {
@@ -308,30 +333,117 @@ export function ContactClient() {
                 </div>
               </div>
 
-              <div>
-                <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-gray-500">
-                  Location
-                </h2>
-                <div className="mt-4 overflow-hidden rounded-2xl border border-white/5 relative group/map">
-                  <div className="absolute inset-0 z-10 pointer-events-none shadow-[inset_0_0_20px_rgba(0,0,0,0.8)] rounded-2xl" />
-                  <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126620.06316262104!2d80.25265697693526!3d7.257088469850117!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae31698e6c4cce1%3A0xe543e5714c30c822!2sKegalle!5e0!3m2!1sen!2slk!4v1700000000000!5m2!1sen!2slk" 
-                    width="100%" 
-                    height="180" 
-                    style={{ border: 0, filter: "invert(90%) hue-rotate(180deg) brightness(1.2) contrast(1.1) grayscale(30%) sepia(10%)" }} 
-                    allowFullScreen={false} 
-                    loading="lazy" 
-                    referrerPolicy="no-referrer-when-downgrade"
-                    className="opacity-70 group-hover/map:opacity-100 transition-opacity duration-500"
-                  />
-                  <div className="absolute bottom-4 left-4 z-20 pointer-events-none rounded-xl bg-[#0B0D0F]/80 backdrop-blur-md px-4 py-2 border border-white/10">
-                    <p className="font-sans text-lg font-medium text-gold">Galigamuwa, Kegalle</p>
+              <div className="flex flex-col gap-6 sm:flex-row sm:justify-between sm:gap-10">
+                <div className="flex-1">
+                  <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-gray-500">
+                    Location
+                  </h2>
+                  <div className="mt-4 overflow-hidden rounded-2xl border border-white/5 relative group/map">
+                    <div className="absolute inset-0 z-10 pointer-events-none shadow-[inset_0_0_20px_rgba(0,0,0,0.8)] rounded-2xl" />
+                    <iframe 
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126620.06316262104!2d80.25265697693526!3d7.257088469850117!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae31698e6c4cce1%3A0xe543e5714c30c822!2sKegalle!5e0!3m2!1sen!2slk!4v1700000000000!5m2!1sen!2slk" 
+                      width="100%" 
+                      height="180" 
+                      style={{ border: 0, filter: "invert(90%) hue-rotate(180deg) brightness(1.2) contrast(1.1) grayscale(30%) sepia(10%)" }} 
+                      allowFullScreen={false} 
+                      loading="lazy" 
+                      referrerPolicy="no-referrer-when-downgrade"
+                      className="opacity-70 group-hover/map:opacity-100 transition-opacity duration-500"
+                    />
+                    <div className="absolute bottom-4 left-4 z-20 pointer-events-none rounded-xl bg-[#0B0D0F]/80 backdrop-blur-md px-4 py-2 border border-white/10">
+                      <p className="font-sans text-lg font-medium text-gold">Galigamuwa, Kegalle</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex-1">
+                  <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-gray-500">
+                    Business Hours
+                  </h2>
+                  <div className="mt-4 flex flex-col gap-4 rounded-2xl border border-white/5 bg-[#121518]/50 p-6 relative overflow-hidden group/hours">
+                    <div className="absolute inset-0 bg-gold/5 opacity-0 group-hover/hours:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                    <div className="flex items-start gap-4">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold/10 text-gold mt-1">
+                        <Clock className="h-5 w-5" />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <p className="font-sans text-lg font-medium text-[#F5F1E8]">Monday – Friday</p>
+                        <p className="text-base text-gold">09:00 AM – 05:00 PM</p>
+                      </div>
+                    </div>
+                    <div className="h-[1px] w-full bg-white/5" />
+                    <p className="text-sm leading-relaxed text-gray-400">
+                      We aim to respond to all emails within <strong className="font-medium text-gray-300">2-4 hours</strong> during business days. For urgent matters, please call.
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
           </motion.section>
         </div>
+
+        {/* FAQ Section */}
+        <motion.section 
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7, type: "spring", bounce: 0.2 }}
+          className="mt-32 max-w-4xl mx-auto"
+        >
+          <div className="text-center mb-12">
+            <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-gold">
+              Questions
+            </h2>
+            <h3 className="mt-4 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-4xl">
+              Frequently Asked Questions
+            </h3>
+          </div>
+          
+          <div className="flex flex-col gap-4">
+            {faqs.map((faq, index) => (
+              <div 
+                key={index} 
+                className="rounded-2xl border border-[#2A2E33] bg-[#181C20] overflow-hidden transition-colors hover:border-gold/30"
+              >
+                <button
+                  onClick={() => toggleFaq(index)}
+                  className="flex w-full items-center justify-between p-6 text-left focus:outline-none"
+                >
+                  <span className="font-sans text-lg font-medium text-[#F5F1E8] pr-8">
+                    {faq.question}
+                  </span>
+                  <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors duration-300 ${openFaqIndex === index ? 'bg-gold text-[#0B0D0F]' : 'bg-white/5 text-gold'}`}>
+                    <motion.div
+                      initial={false}
+                      animate={{ rotate: openFaqIndex === index ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {openFaqIndex === index ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+                    </motion.div>
+                  </div>
+                </button>
+                <AnimatePresence initial={false}>
+                  {openFaqIndex === index && (
+                    <motion.div
+                      initial="collapsed"
+                      animate="open"
+                      exit="collapsed"
+                      variants={{
+                        open: { opacity: 1, height: "auto" },
+                        collapsed: { opacity: 0, height: 0 }
+                      }}
+                      transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+                    >
+                      <div className="px-6 pb-6 text-base leading-7 text-gray-400">
+                        {faq.answer}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ))}
+          </div>
+        </motion.section>
 
         <motion.div 
           initial={{ opacity: 0 }}

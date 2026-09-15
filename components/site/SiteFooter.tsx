@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Phone, Mail, MapPin } from "lucide-react";
 
 export function SiteFooter() {
   return (
@@ -7,71 +8,94 @@ export function SiteFooter() {
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/images/footer-bg.jpg"
+          src="/images/new-footer-bg.png"
           alt="Footer Background"
           fill
-          className="object-cover object-center opacity-30 mix-blend-luminosity"
+          className="object-cover object-[center_65%] opacity-100"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0B0D0F] via-[#0B0D0F]/80 to-[#0B0D0F]/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B0D0F]/95 via-[#0B0D0F]/70 to-[#0B0D0F]/20" />
       </div>
 
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col gap-12 px-10 py-16 sm:px-14 lg:px-20 sm:py-20">
-        <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
-          <div>
+      <div className="relative z-10 mx-auto flex max-w-7xl flex-col gap-12 px-10 py-24 sm:px-14 lg:px-20 sm:py-32">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
+          {/* Brand & Tagline */}
+          <div className="flex flex-col gap-6">
             <div className="inline-flex items-center gap-3">
               <Image
                 src="/mathaka-qr-mark.png"
                 alt=""
                 width={44}
                 height={44}
-                className="h-11 w-11 rounded-lg object-contain"
+                className="h-11 w-11 rounded-lg object-contain drop-shadow-lg"
               />
-              <p className="whitespace-nowrap font-sans text-2xl font-semibold tracking-tight text-[#F5F1E8] sm:text-3xl">
+              <p className="whitespace-nowrap font-sans text-2xl font-semibold tracking-tight text-white drop-shadow-lg sm:text-3xl">
                 Mathaka <span className="text-gold">QR</span>
               </p>
             </div>
-            <p className="mt-4 max-w-sm text-base leading-7 text-gray-400 drop-shadow-md">
+            <p className="max-w-sm text-base font-medium leading-7 text-gray-100 drop-shadow-lg">
               Remember. Preserve. Protect. Share. Respect. — private by design.
             </p>
           </div>
-          <div className="flex flex-wrap gap-x-6 gap-y-3 text-base text-gray-300 drop-shadow-md">
-            <Link
-              href="/about"
-              className="transition-colors duration-300 hover:text-gold"
-            >
-              About
-            </Link>
-            <Link
-              href="/packages"
-              className="transition-colors duration-300 hover:text-gold"
-            >
-              Packages
-            </Link>
-            <Link
-              href="/contact"
-              className="transition-colors duration-300 hover:text-gold"
-            >
-              Contact
-            </Link>
-            <Link
-              href="/family"
-              className="transition-colors duration-300 hover:text-gold"
-            >
-              Family access
-            </Link>
+
+          {/* Quick Links */}
+          <div className="flex flex-col gap-6">
+            <h3 className="text-lg font-semibold text-white drop-shadow-lg">Quick Links</h3>
+            <div className="flex flex-col gap-4 text-base font-medium text-gray-100 drop-shadow-lg">
+              <Link href="/about" className="w-fit transition-colors duration-300 hover:text-gold">
+                About Us
+              </Link>
+              <Link href="/packages" className="w-fit transition-colors duration-300 hover:text-gold">
+                Packages
+              </Link>
+              <Link href="/contact" className="w-fit transition-colors duration-300 hover:text-gold">
+                Contact Us
+              </Link>
+              <Link href="/family" className="w-fit transition-colors duration-300 hover:text-gold">
+                Family Access
+              </Link>
+            </div>
+          </div>
+
+          {/* Contact & Socials */}
+          <div className="flex flex-col gap-6">
+            <h3 className="text-lg font-semibold text-white drop-shadow-lg">Get in Touch</h3>
+            <div className="flex flex-col gap-4 text-base font-medium text-gray-100 drop-shadow-lg">
+              <div className="flex items-center gap-3">
+                <Phone className="h-5 w-5 text-gold" />
+                <span>+94 76 804 6019</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Mail className="h-5 w-5 text-gold" />
+                <span>hello@mathakaqr.com</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <MapPin className="h-5 w-5 text-gold" />
+                <span>Colombo, Sri Lanka</span>
+              </div>
+            </div>
+            {/* Social Icons 
+                Removed because lucide-react brand icons are missing in this version
+            */}
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 border-t border-white/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm leading-7 text-gray-400 drop-shadow-md">
-            Organization staff manage memorials from the admin panel.
+        {/* Bottom Bar & Copyright (with Hidden Admin Link) */}
+        <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-white/20 pt-8 text-sm font-medium text-gray-200 drop-shadow-lg sm:flex-row">
+          <p>
+            © {new Date().getFullYear()}{" "}
+            <Link href="/login" className="transition-colors duration-300 hover:text-gold">
+              Mathaka QR
+            </Link>
+            . All rights reserved.
           </p>
-          <Link
-            href="/login"
-            className="inline-flex h-12 min-h-12 items-center justify-center rounded-xl border border-white/10 bg-[#181C20]/60 backdrop-blur-md px-6 font-sans text-sm font-medium text-[#F5F1E8] transition duration-300 hover:border-gold/40 hover:text-gold hover:bg-[#181C20]/80 focus:outline-none focus-visible:ring-1 focus-visible:ring-[#C9A45C]"
-          >
-            Admin login
-          </Link>
+          <div className="flex items-center gap-6">
+            <Link href="#" className="transition-colors duration-300 hover:text-gold">
+              Privacy Policy
+            </Link>
+            <Link href="#" className="transition-colors duration-300 hover:text-gold">
+              Terms of Service
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

@@ -3,7 +3,7 @@
 import React, { useState, useRef, MouseEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { motion, useMotionValue, useTransform, useSpring, useScroll } from "framer-motion";
 import { Check, Copy, Send, Loader2 } from "lucide-react";
 
 export function ContactClient() {
@@ -12,6 +12,10 @@ export function ContactClient() {
   // Form State
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+
+  // Parallax Scroll Hooks
+  const { scrollY } = useScroll();
+  const yHero = useTransform(scrollY, [0, 1000], [0, 400]);
 
   // Tilt Effect Hooks
   const boundingRef = useRef<HTMLElement>(null);
@@ -85,7 +89,8 @@ export function ContactClient() {
           initial={{ scale: 1.1, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
-          className="absolute inset-0 z-0"
+          style={{ y: yHero }}
+          className="absolute inset-0 z-0 origin-top"
         >
           <Image
             src="/contact-hero.jpg"
@@ -307,9 +312,22 @@ export function ContactClient() {
                 <h2 className="text-sm font-medium uppercase tracking-[0.18em] text-gray-500">
                   Location
                 </h2>
-                <p className="mt-4 font-sans text-xl font-medium text-gold sm:text-2xl">
-                  Galigamuwa, Kegalle
-                </p>
+                <div className="mt-4 overflow-hidden rounded-2xl border border-white/5 relative group/map">
+                  <div className="absolute inset-0 z-10 pointer-events-none shadow-[inset_0_0_20px_rgba(0,0,0,0.8)] rounded-2xl" />
+                  <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126620.06316262104!2d80.25265697693526!3d7.257088469850117!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae31698e6c4cce1%3A0xe543e5714c30c822!2sKegalle!5e0!3m2!1sen!2slk!4v1700000000000!5m2!1sen!2slk" 
+                    width="100%" 
+                    height="180" 
+                    style={{ border: 0, filter: "invert(90%) hue-rotate(180deg) brightness(1.2) contrast(1.1) grayscale(30%) sepia(10%)" }} 
+                    allowFullScreen={false} 
+                    loading="lazy" 
+                    referrerPolicy="no-referrer-when-downgrade"
+                    className="opacity-70 group-hover/map:opacity-100 transition-opacity duration-500"
+                  />
+                  <div className="absolute bottom-4 left-4 z-20 pointer-events-none rounded-xl bg-[#0B0D0F]/80 backdrop-blur-md px-4 py-2 border border-white/10">
+                    <p className="font-sans text-lg font-medium text-gold">Galigamuwa, Kegalle</p>
+                  </div>
+                </div>
               </div>
             </div>
           </motion.section>

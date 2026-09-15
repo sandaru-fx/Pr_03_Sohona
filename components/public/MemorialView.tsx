@@ -147,7 +147,7 @@ export function MemorialView({
       />
 
       <p className="px-2 pb-4 text-center text-xs leading-6 text-gray-500">
-        Family memories are private. Temple administrators cannot view
+        Family memories are private. Organization administrators cannot view
         statements, media, or comments.
       </p>
     </div>

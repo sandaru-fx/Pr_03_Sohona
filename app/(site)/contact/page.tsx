@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Contact the temple about a Mathaka QR digital memorial.",
+  description: "Contact us about a Mathaka QR digital memorial.",
 };
 
 export default function ContactPage() {
@@ -38,7 +38,7 @@ export default function ContactPage() {
               Contact
             </p>
             <h1 className="mt-4 font-sans text-5xl font-medium tracking-tight text-[#F5F1E8] sm:text-6xl sm:leading-tight">
-              Speak with the temple
+              Speak with us
             </h1>
             <p className="mt-5 max-w-xl text-lg leading-8 text-[#F5F1E8]/90 sm:text-xl">
               Memorials begin with a quiet conversation. Reach out to arrange a
@@ -68,13 +68,13 @@ export default function ContactPage() {
               A quiet conversation starts the memorial.
             </h2>
             <p className="mt-6 text-lg leading-8 text-gray-400">
-              Reach out to your temple to choose a package, create the memorial
+              Reach out to us to choose a package, create the memorial
               shell, and receive a private family setup link. There is no public
               checkout — care stays personal.
             </p>
             <ol className="mt-8 space-y-4 text-base leading-7 text-gray-400">
               <li className="border-l border-gold/40 pl-4">
-                01 — Email or visit the temple
+                01 — Email or visit us
               </li>
               <li className="border-l border-gold/40 pl-4">
                 02 — Choose package A, B, or C together
@@ -139,7 +139,7 @@ export default function ContactPage() {
         </section>
 
         <p className="mt-12 text-base text-gray-400">
-          Temple staff?{" "}
+          Organization staff?{" "}
           <Link
             href="/login"
             className="font-medium text-gold transition-opacity duration-300 hover:opacity-80"

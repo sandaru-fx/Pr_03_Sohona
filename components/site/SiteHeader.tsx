@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Phone } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -41,31 +41,45 @@ export function SiteHeader({ pathname }: SiteHeaderProps) {
           </span>
         </Link>
 
-        <nav
-          aria-label="Primary"
-          className="ml-40 hidden items-center gap-5 sm:ml-48 md:flex lg:ml-64 lg:gap-7"
-        >
-          {links.map((link) => {
-            const active =
-              link.href === "/"
-                ? pathname === "/"
-                : pathname.startsWith(link.href);
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "rounded-lg px-4 py-2.5 text-base font-semibold tracking-wide transition duration-300 sm:text-lg",
-                  active
-                    ? "bg-gold-subtle text-gold"
-                    : "text-[#F5F1E8] hover:bg-[#181C20] hover:text-white",
-                )}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-        </nav>
+        <div className="hidden md:flex flex-1 justify-center">
+          <nav
+            aria-label="Primary"
+            className="flex items-center gap-5 lg:gap-7"
+          >
+            {links.map((link) => {
+              const active =
+                link.href === "/"
+                  ? pathname === "/"
+                  : pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "rounded-lg px-4 py-2.5 text-base font-semibold tracking-wide transition duration-300 sm:text-lg",
+                    active
+                      ? "bg-gold-subtle text-gold"
+                      : "text-[#F5F1E8] hover:bg-[#181C20] hover:text-white",
+                  )}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+
+        <div className="hidden md:flex shrink-0 items-center gap-3 bg-gold px-4 py-3 rounded-xl ml-auto md:ml-0 shadow-lg shadow-gold/10 transition-transform duration-300 hover:scale-105">
+          <Phone className="h-5 w-5 text-[#0B0D0F]" />
+          <div className="flex flex-col items-start justify-center">
+            <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#0B0D0F]/70 leading-tight mb-0.5">
+              Call Us Now
+            </span>
+            <a href="tel:0768046019" className="text-base font-extrabold leading-none text-[#0B0D0F] tracking-wide hover:underline">
+              076 804 6019
+            </a>
+          </div>
+        </div>
 
         <button
           type="button"

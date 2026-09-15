@@ -54,7 +54,7 @@ export default async function AdminSettingsPage() {
   let templeSettings = await prisma.templeSettings.findFirst();
   if (!templeSettings) {
     templeSettings = await prisma.templeSettings.create({
-      data: { templeName: "Mathaka QR Temple" }
+      data: { templeName: "Mathaka QR" }
     });
   }
 
@@ -66,7 +66,7 @@ export default async function AdminSettingsPage() {
           Settings
         </h1>
         <p className="mt-3 max-w-2xl text-base leading-7 text-gray-400">
-          Manage who can access the admin panel. Add or remove temple staff Gmail accounts.
+          Manage who can access the admin panel. Add or remove staff Gmail accounts.
         </p>
       </div>
 
@@ -78,7 +78,7 @@ export default async function AdminSettingsPage() {
           </div>
           <div>
             <h2 className="font-sans text-lg font-semibold text-[#F5F1E8]">
-              Temple Profile
+              Organization Profile
             </h2>
             <p className="text-xs text-foreground-muted">
               Public contact information shown on memorial QR pages.

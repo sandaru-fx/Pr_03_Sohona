@@ -49,7 +49,7 @@ export default async function HomePage() {
               className="sohona-fade-up mt-4 max-w-md font-sans text-lg leading-8 text-[#F5F1E8]/90 sm:text-xl sm:leading-8"
               style={{ animationDelay: "140ms" }}
             >
-              A respectful digital place for temples and families — private
+              A respectful digital place for organizations and families — private
               memories stay under family control.
             </p>
             <div
@@ -83,13 +83,13 @@ export default async function HomePage() {
             Three quiet steps
           </h2>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-gray-400">
-            From the temple desk to a family living room — remembrance moves
+            From the desk to a family living room — remembrance moves
             gently, without public accounts or noisy feeds.
           </p>
           <ol className="mt-16 grid gap-14 sm:grid-cols-3 sm:gap-16">
             {[
               {
-                title: "Temple creates the memorial",
+                title: "Organization creates the memorial",
                 body: "Staff set up a name-only profile, choose a package, and share a private setup link with the family.",
               },
               {
@@ -147,7 +147,7 @@ export default async function HomePage() {
                 Up to {limits.maxAudioSeconds / 60} minutes of voice or audio
               </li>
               <li className="border-l border-gold/40 pl-4">
-                Stored privately — temple admin cannot open it
+                Stored privately — organization admin cannot open it
               </li>
               <li className="border-l border-gold/40 pl-4">
                 Played gently on the memorial page, never as a feed
@@ -168,7 +168,7 @@ export default async function HomePage() {
               Your memories remain private to your family.
             </h2>
             <p className="mt-6 text-lg leading-8 text-gray-400">
-              Temple administrators manage profiles, packages, and QR codes
+              Organization administrators manage profiles, packages, and QR codes
               only. They cannot open statements, photos, videos, audio, or
               visitor comments. Privacy is not a setting — it is the product.
             </p>
@@ -229,7 +229,7 @@ export default async function HomePage() {
                 Up to {limits.maxComments} visitor messages on the memorial
               </li>
               <li className="border-l border-gold/40 pl-4">
-                Family can remove a comment; temple cannot read private text
+                Family can remove a comment; organization cannot read private text
               </li>
             </ul>
           </div>
@@ -257,7 +257,7 @@ export default async function HomePage() {
               Remembrance that gathers people — without putting them on display.
             </h2>
             <p className="mt-6 text-lg leading-8 text-gray-400">
-              Mathaka QR is built so temples can offer a dignified digital
+              Mathaka QR is built so organizations can offer a dignified digital
               memorial, while the family keeps control of what is private and
               what visitors may see.
             </p>
@@ -317,7 +317,7 @@ export default async function HomePage() {
               About
             </p>
             <h2 className="mt-4 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8]">
-              Built for temples
+              Built for organizations
             </h2>
             <p className="mt-5 text-lg leading-8 text-gray-400">
               A dignified way to support families — without turning remembrance
@@ -338,14 +338,14 @@ export default async function HomePage() {
               Begin with a conversation
             </h2>
             <p className="mt-5 text-lg leading-8 text-gray-400">
-              Speak with your temple about starting a memorial for someone you
+              Speak with us about starting a memorial for someone you
               love.
             </p>
             <Link
               href="/contact"
               className="mt-8 inline-flex h-12 min-h-12 items-center rounded-xl bg-gold px-6 text-base font-medium text-[#0B0D0F] transition-opacity duration-300 hover:opacity-90"
             >
-              Contact the temple
+              Contact us
             </Link>
           </div>
         </div>

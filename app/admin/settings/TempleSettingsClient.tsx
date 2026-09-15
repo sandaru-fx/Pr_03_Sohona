@@ -17,7 +17,7 @@ export function TempleSettingsClient({
   initial: TempleSettings | null;
 }) {
   const [form, setForm] = useState<TempleSettings>({
-    templeName: initial?.templeName ?? "Mathaka QR Temple",
+    templeName: initial?.templeName ?? "Mathaka QR",
     templeAddress: initial?.templeAddress ?? "",
     templePhone: initial?.templePhone ?? "",
     templeEmail: initial?.templeEmail ?? "",
@@ -37,7 +37,7 @@ export function TempleSettingsClient({
 
   async function handleSave() {
     if (!form.templeName.trim()) {
-      setError("Temple name is required.");
+      setError("Organization name is required.");
       return;
     }
     
@@ -53,7 +53,7 @@ export function TempleSettingsClient({
       if (!res.ok) {
         setError(data.message ?? "Failed to save settings.");
       } else {
-        showToast("Temple details saved ✓");
+        showToast("Organization details saved ✓");
       }
     } catch {
       setError("Network error. Try again.");
@@ -82,7 +82,7 @@ export function TempleSettingsClient({
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label className="block text-xs font-medium text-foreground-secondary">
-            Temple Name <span className="text-error">*</span>
+            Organization Name <span className="text-error">*</span>
           </label>
           <input
             value={form.templeName}
@@ -99,7 +99,7 @@ export function TempleSettingsClient({
             type="email"
             value={form.templeEmail ?? ""}
             onChange={(e) => set("templeEmail", e.target.value)}
-            placeholder="temple@example.com"
+            placeholder="contact@example.com"
             disabled={saving}
             className="mt-1.5 h-10 w-full rounded-xl border border-border bg-background-secondary px-3 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:opacity-50"
           />
@@ -126,7 +126,7 @@ export function TempleSettingsClient({
           <input
             value={form.templeAddress ?? ""}
             onChange={(e) => set("templeAddress", e.target.value)}
-            placeholder="Temple Road, City"
+            placeholder="Main Road, City"
             disabled={saving}
             className="mt-1.5 h-10 w-full rounded-xl border border-border bg-background-secondary px-3 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:opacity-50"
           />

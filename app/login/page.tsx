@@ -14,7 +14,7 @@ function googleConfigured() {
 function errorMessage(code: string | undefined) {
   switch (code) {
     case "AccessDenied":
-      return "This Google account is not on the temple admin allow-list.";
+      return "This Google account is not on the organization admin allow-list.";
     case "Unauthorized":
       return "Please sign in with an allow-listed admin account.";
     case "OAuthAccountNotLinked":
@@ -59,7 +59,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           Admin sign in
         </h1>
         <p className="mt-4 text-base leading-7 text-gray-400">
-          Temple staff only. Sign in with a Google account on the admin
+          Organization staff only. Sign in with a Google account on the admin
           allow-list.
         </p>
 

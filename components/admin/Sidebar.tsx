@@ -63,7 +63,7 @@ export function Sidebar({
             <p className="font-sans text-lg font-medium tracking-tight text-[#F5F1E8]">
               Mathaka QR
             </p>
-            <p className="text-xs text-gray-500">Temple Admin</p>
+            <p className="text-xs text-gray-500">Organization Admin</p>
           </div>
           <button
             type="button"

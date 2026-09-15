@@ -5,7 +5,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Mathaka QR helps temples offer privacy-first digital memorials for families.",
+    "Mathaka QR helps organizations offer privacy-first digital memorials for families.",
 };
 
 export default function AboutPage() {
@@ -39,7 +39,7 @@ export default function AboutPage() {
               About
             </p>
             <h1 className="mt-4 font-sans text-5xl font-medium tracking-tight text-[#F5F1E8] sm:text-6xl sm:leading-tight">
-              Built for temples. Private for families.
+              Built for organizations. Private for families.
             </h1>
             <p className="mt-5 max-w-xl text-lg leading-8 text-[#F5F1E8]/90 sm:text-xl">
               Mathaka QR is a quiet digital memorial platform — remembrance with
@@ -53,7 +53,7 @@ export default function AboutPage() {
       <section className="border-b border-border">
         <div className="mx-auto max-w-3xl px-10 py-24 sm:px-14 lg:px-20 sm:py-32">
           <p className="text-xl leading-9 text-gray-400 sm:text-2xl sm:leading-10">
-            Temples create the profile and QR. Families add words and media
+            Organizations create the profile and QR. Families add words and media
             behind a PIN. Visitors remember with respect — without turning grief
             into engagement metrics.
           </p>
@@ -81,12 +81,12 @@ export default function AboutPage() {
               Remembrance should not feel like a social network.
             </h2>
             <p className="mt-6 text-lg leading-8 text-gray-400">
-              Mathaka QR was shaped for temple communities and families who want
+              Mathaka QR was shaped for communities and families who want
               a calm digital place — photographs, voice, and words — held with
               dignity, not displayed for attention.
             </p>
             <p className="mt-5 text-lg leading-8 text-gray-400">
-              The temple helps start the memorial. The family keeps the keys to
+              The organization helps start the memorial. The family keeps the keys to
               what stays private.
             </p>
           </div>
@@ -115,7 +115,7 @@ export default function AboutPage() {
               </li>
             </ul>
             <p className="mt-8 text-lg leading-8 text-gray-400">
-              Temple administrators never see this content. They only manage
+              Organization administrators never see this content. They only manage
               memorial infrastructure — names, packages, links, and QR codes.
             </p>
           </div>
@@ -161,7 +161,7 @@ export default function AboutPage() {
               href="/contact"
               className="mt-10 inline-flex h-12 min-h-12 items-center rounded-xl bg-gold px-6 text-base font-medium text-[#0B0D0F] transition-opacity duration-300 hover:opacity-90"
             >
-              Speak with the temple
+              Speak with the organization
             </Link>
           </div>
         </div>

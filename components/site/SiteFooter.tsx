@@ -53,7 +53,7 @@ export function SiteFooter() {
 
         <div className="flex flex-col gap-4 border-t border-[#2A2E33] pt-8 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm leading-7 text-gray-500">
-            Temple staff manage memorials from the admin panel.
+            Organization staff manage memorials from the admin panel.
           </p>
           <Link
             href="/login"

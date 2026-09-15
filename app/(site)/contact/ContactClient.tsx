@@ -222,51 +222,70 @@ export function ContactClient() {
       <div className="mx-auto w-full max-w-7xl flex-1 px-10 py-24 sm:px-14 lg:px-20 sm:py-32">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
           
-          {/* Form Section */}
-          <motion.section
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.7, type: "spring", bounce: 0.2 }}
-            className="flex flex-col"
-          >
-            <h2 className="text-2xl font-medium tracking-tight text-[#F5F1E8] sm:text-3xl">
-              Send us a message
-            </h2>
-            <p className="mt-3 text-base leading-7 text-gray-400">
-              Have questions? Send us a message and we'll get back to you shortly.
-            </p>
-            
-            <form onSubmit={handleFormSubmit} className="mt-8 flex flex-col gap-5">
-              <div className="grid gap-5 sm:grid-cols-2">
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="name" className="text-sm font-medium text-gray-400">Name</label>
-                  <input required type="text" id="name" className="h-12 w-full rounded-xl border border-border bg-[#181C20] px-4 text-sm text-[#F5F1E8] outline-none transition focus-visible:border-gold/50 focus-visible:ring-1 focus-visible:ring-gold/50" placeholder="Your name" />
+          <div className="flex flex-col gap-12">
+            <motion.section
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.7, type: "spring", bounce: 0.2 }}
+              className="flex flex-col"
+            >
+              <h2 className="text-2xl font-medium tracking-tight text-[#F5F1E8] sm:text-3xl">
+                Send us a message
+              </h2>
+              <p className="mt-3 text-base leading-7 text-gray-400">
+                Have questions? Send us a message and we'll get back to you shortly.
+              </p>
+              
+              <form onSubmit={handleFormSubmit} className="mt-8 flex flex-col gap-5">
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="name" className="text-sm font-medium text-gray-400">Name</label>
+                    <input required type="text" id="name" className="h-12 w-full rounded-xl border border-border bg-[#181C20] px-4 text-sm text-[#F5F1E8] outline-none transition focus-visible:border-gold/50 focus-visible:ring-1 focus-visible:ring-gold/50" placeholder="Your name" />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="phone" className="text-sm font-medium text-gray-400">Phone</label>
+                    <input required type="tel" id="phone" className="h-12 w-full rounded-xl border border-border bg-[#181C20] px-4 text-sm text-[#F5F1E8] outline-none transition focus-visible:border-gold/50 focus-visible:ring-1 focus-visible:ring-gold/50" placeholder="Your phone number" />
+                  </div>
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="phone" className="text-sm font-medium text-gray-400">Phone</label>
-                  <input required type="tel" id="phone" className="h-12 w-full rounded-xl border border-border bg-[#181C20] px-4 text-sm text-[#F5F1E8] outline-none transition focus-visible:border-gold/50 focus-visible:ring-1 focus-visible:ring-gold/50" placeholder="Your phone number" />
+                  <label htmlFor="message" className="text-sm font-medium text-gray-400">Message</label>
+                  <textarea required id="message" rows={4} className="w-full resize-none rounded-xl border border-border bg-[#181C20] p-4 text-sm text-[#F5F1E8] outline-none transition focus-visible:border-gold/50 focus-visible:ring-1 focus-visible:ring-gold/50" placeholder="How can we help?" />
                 </div>
-              </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="message" className="text-sm font-medium text-gray-400">Message</label>
-                <textarea required id="message" rows={4} className="w-full resize-none rounded-xl border border-border bg-[#181C20] p-4 text-sm text-[#F5F1E8] outline-none transition focus-visible:border-gold/50 focus-visible:ring-1 focus-visible:ring-gold/50" placeholder="How can we help?" />
-              </div>
-              <button 
-                type="submit" 
-                disabled={isSubmitting || isSuccess}
-                className="group relative inline-flex h-12 items-center justify-center gap-2 overflow-hidden rounded-xl bg-gold px-8 font-sans text-sm font-medium text-[#0B0D0F] transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:bg-gray-700 disabled:text-gray-400 w-full sm:w-auto self-start"
-              >
-                {isSubmitting ? (
-                  <><Loader2 className="h-4 w-4 animate-spin" /> Sending...</>
-                ) : isSuccess ? (
-                  <><Check className="h-4 w-4" /> Message Sent</>
-                ) : (
-                  <><Send className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" /> Send Message</>
-                )}
-              </button>
-            </form>
-          </motion.section>
+                <button 
+                  type="submit" 
+                  disabled={isSubmitting || isSuccess}
+                  className="group relative inline-flex h-12 items-center justify-center gap-2 overflow-hidden rounded-xl bg-gold px-8 font-sans text-sm font-medium text-[#0B0D0F] transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:bg-gray-700 disabled:text-gray-400 w-full sm:w-auto self-start"
+                >
+                  {isSubmitting ? (
+                    <><Loader2 className="h-4 w-4 animate-spin" /> Sending...</>
+                  ) : isSuccess ? (
+                    <><Check className="h-4 w-4" /> Message Sent</>
+                  ) : (
+                    <><Send className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" /> Send Message</>
+                  )}
+                </button>
+              </form>
+            </motion.section>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.7, type: "spring", bounce: 0.2 }}
+              className="relative hidden flex-1 overflow-hidden rounded-3xl border border-[#2A2E33] lg:block"
+            >
+              <Image
+                src="/feature-words.jpg"
+                alt="Memorial candle and journal"
+                fill
+                quality={100}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover object-center opacity-80 mix-blend-luminosity hover:mix-blend-normal transition-all duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0B0D0F] to-transparent opacity-60 pointer-events-none" />
+            </motion.div>
+          </div>
 
           {/* Details Section with 3D Tilt */}
           <motion.section 

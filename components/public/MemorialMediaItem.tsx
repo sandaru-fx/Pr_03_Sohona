@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 type MemorialMediaItemProps = {
   item: PublicMediaMetaItem;
   enabled: boolean;
-  presentation?: "list" | "gallery";
+  presentation?: "list" | "gallery" | "voice" | "video";
 };
 
 function formatBytes(size: number) {
@@ -239,7 +239,7 @@ export function MemorialMediaItem({
               <img
                 src={url}
                 alt={item.originalName ?? "Memorial photo"}
-                className="max-h-[28rem] w-full object-cover cursor-zoom-in transition duration-300 hover:opacity-90"
+                className="max-h-[32rem] w-full object-cover cursor-zoom-in transition-transform duration-700 ease-out hover:scale-[1.02]"
                 onError={() => void retry()}
                 onClick={() => setIsZoomed(true)}
               />
@@ -270,16 +270,32 @@ export function MemorialMediaItem({
             </>
           ) : null}
           {item.kind === "VIDEO" ? (
-            <video
-              key={url}
-              controls
-              playsInline
-              preload="metadata"
-              className="max-h-[28rem] w-full"
-              onError={() => void retry()}
-            >
-              <source src={url} type={item.contentType} />
-            </video>
+            <div className="relative group cursor-pointer" onClick={(e) => {
+              const video = e.currentTarget.querySelector('video');
+              if (video) {
+                if (video.paused) {
+                  video.play().catch(console.error);
+                  video.controls = true;
+                } else {
+                  video.pause();
+                }
+              }
+            }}>
+              <video
+                key={url}
+                playsInline
+                preload="metadata"
+                className="max-h-[32rem] w-full object-cover bg-black"
+                onError={() => void retry()}
+              >
+                <source src={url} type={item.contentType} />
+              </video>
+              <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors pointer-events-none">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-md transition-transform group-hover:scale-110">
+                  <Play className="h-8 w-8 ml-1" />
+                </div>
+              </div>
+            </div>
           ) : null}
           {item.kind === "VOICE" ? (
             <div className="px-5 py-4 glass-panel rounded-xl flex items-center gap-4">
@@ -309,7 +325,9 @@ export function MemorialMediaItem({
                 onTimeUpdate={handleAudioTimeUpdate}
                 onEnded={handleAudioEnded}
                 onError={() => void retry()}
-                className="hidden"
+                className="sr-only"
+                controls
+                aria-label={item.originalName ?? "Voice message"}
               >
                 <source src={url} type={item.contentType} />
               </audio>

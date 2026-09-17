@@ -19,13 +19,13 @@ export async function generateMetadata({ params }: PublicProfilePageProps) {
 
   if (result.status === "ready") {
     return {
-      title: `${result.profile.displayName} · Mathaka QR`,
+      title: `${result.profile.displayName} · Sohona`,
       robots: { index: false, follow: false },
     };
   }
 
   return {
-    title: "Memorial · Mathaka QR",
+    title: "Memorial · Sohona",
     robots: { index: false, follow: false },
   };
 }
@@ -57,8 +57,8 @@ export default async function PublicProfilePage({
     <main
       className={
         isMemorial
-          ? "ambient-glow flex min-h-full flex-1 flex-col items-center bg-[#0B0D0F] px-5 py-12 text-[#F5F1E8] sm:px-6 sm:py-16 relative"
-          : "relative flex min-h-full flex-1 flex-col items-center justify-center overflow-hidden bg-[#0B0D0F] px-5 py-16 text-[#F5F1E8] sm:px-6"
+          ? "flex min-h-full flex-1 flex-col items-center bg-[#0A0A09] text-[#F2EDE3] relative overflow-hidden"
+          : "relative flex min-h-full flex-1 flex-col items-center justify-center overflow-hidden bg-[#0A0A09] px-5 py-16 text-[#F2EDE3] sm:px-6"
       }
     >
       {!isMemorial ? (
@@ -67,7 +67,7 @@ export default async function PublicProfilePage({
           className="ambient-glow pointer-events-none absolute inset-0"
         />
       ) : null}
-      <div className="relative w-full max-w-5xl">
+      <div className={isMemorial ? "relative w-full z-10" : "relative w-full max-w-5xl z-10"}>
         <PublicGateCard
           result={result}
           content={content}

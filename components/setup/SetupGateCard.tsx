@@ -1,3 +1,5 @@
+"use client";
+
 import { AlertTriangle, Clock3, ShieldOff } from "lucide-react";
 import { SetupFlow } from "@/components/setup/SetupFlow";
 import type { SetupGateResult } from "@/lib/setup-lookup";

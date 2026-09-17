@@ -1,26 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  /* Quiet-luxury forced dark palette */
-  --background: #0b0d0f;
-  --background-secondary: #121518;
-  --surface: #181c20;
-  --surface-elevated: #1d2227;
+  /* Quiet-luxury premium dark palette */
+  --background: #0a0a09;
+  --background-secondary: #0f0f0d;
+  --surface: #151512;
+  --surface-elevated: #1a1915;
 
-  /* Soft off-white primary text — never pure #FFFFFF */
-  --foreground: #f5f1e8;
-  /* Muted secondary: gray-400 / gray-500 */
-  --foreground-secondary: #9ca3af;
-  --foreground-muted: #6b7280;
+  /* Warm Ivory */
+  --foreground: #f2ede3;
+  /* Warm Stone */
+  --foreground-secondary: #aaa398;
+  --foreground-muted: #746f67;
 
-  /* Accent gold — use sparingly (~5%) */
-  --gold: #dcb871;
-  --gold-hover: #e5c586;
-  --gold-subtle: rgba(220, 184, 113, 0.1);
+  /* Antique Gold */
+  --gold: #c6a15b;
+  --gold-hover: #dfc17d;
+  --gold-subtle: rgba(198, 161, 91, 0.1);
 
-  /* Subtle borders (no heavy shadows) */
-  --border: #23272b;
-  --border-subtle: rgba(255, 255, 255, 0.05);
+  /* Subtle gold borders */
+  --border: rgba(198, 161, 91, 0.14);
+  --border-subtle: rgba(198, 161, 91, 0.05);
 
   /* Semantic */
   --success: #6faf8f;
@@ -64,10 +64,16 @@ html {
 }
 
 body {
-  background-color: #0b0d0f;
-  color: #f5f1e8;
+  background-color: var(--background);
+  background-image: radial-gradient(
+    circle at 50% 22%,
+    rgba(198, 161, 91, 0.05) 0%,
+    rgba(198, 161, 91, 0.015) 28%,
+    transparent 52%
+  );
+  color: var(--foreground);
   font-family: var(--font-sans);
-  font-size: 1.0625rem; /* body ~19px for easier reading */
+  font-size: 1.0625rem;
   line-height: 1.65;
 }
 
@@ -87,22 +93,13 @@ body {
 }
 
 @keyframes sohona-fade-up {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes sohona-pulse {
-  0%,
-  100% {
-    opacity: 0.45;
-  }
-  50% {
-    opacity: 0.85;
-  }
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 0.85; }
 }
 
 .sohona-fade-up {
@@ -123,32 +120,60 @@ body {
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 
+/* ─── Memorial-specific utilities ─── */
+
+/* Warm bokeh/candle glow at top of hero */
+.memorial-hero-glow {
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(198, 161, 91, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 30% 25% at 30% 5%, rgba(220, 184, 113, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 25% 20% at 70% 8%, rgba(198, 161, 91, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse 15% 15% at 45% 3%, rgba(255, 220, 150, 0.05) 0%, transparent 40%);
+}
+
+/* Glass card for message/comment cards */
+.memorial-glass-card {
+  background: rgba(15, 15, 13, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(198, 161, 91, 0.08);
+  border-radius: 1rem;
+}
+
+/* Warm gold tint overlay for photos */
+.warm-image-overlay {
+  position: relative;
+}
+.warm-image-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(198, 161, 91, 0.05) 0%, rgba(10, 10, 9, 0.3) 100%);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Hide scrollbar for carousel */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Ambient glow background */
 .ambient-glow {
-  background: radial-gradient(
-    circle at 50% 10%,
-    rgba(220, 184, 113, 0.07) 0%,
-    transparent 50%
-  );
+  background: radial-gradient(circle at 50% 10%, rgba(220, 184, 113, 0.07) 0%, transparent 50%);
   animation: ambient-drift 12s ease-in-out infinite alternate;
 }
 
 @keyframes ambient-drift {
-  0% {
-    background-position: center 0%;
-  }
-  100% {
-    background-position: center 5%;
-  }
+  0% { background-position: center 0%; }
+  100% { background-position: center 5%; }
 }
 
 @keyframes lotus-glow {
-  0% {
-    transform: scale(1);
-    opacity: 0.6;
-  }
-  100% {
-    transform: scale(1.15);
-    opacity: 1;
-  }
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.15); opacity: 1; }
 }

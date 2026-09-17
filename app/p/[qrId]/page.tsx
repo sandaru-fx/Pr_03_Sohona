@@ -67,7 +67,7 @@ export default async function PublicProfilePage({
           className="ambient-glow pointer-events-none absolute inset-0"
         />
       ) : null}
-      <div className="relative w-full max-w-2xl">
+      <div className="relative w-full max-w-5xl">
         <PublicGateCard
           result={result}
           content={content}

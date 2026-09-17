@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { FileAudio, FileImage, FileVideo, Loader2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FileAudio, FileImage, FileVideo, Loader2, Play, Pause, X } from "lucide-react";
 import type { PublicMediaMetaItem } from "@/lib/public-profile";
 import { cn } from "@/lib/utils";
 
@@ -29,11 +30,17 @@ export function MemorialMediaItem({
   presentation = "list",
 }: MemorialMediaItemProps) {
   const rootRef = useRef<HTMLLIElement | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  
   const [visible, setVisible] = useState(false);
   const [url, setUrl] = useState<string | null>(null);
   const [expiresAt, setExpiresAt] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [audioProgress, setAudioProgress] = useState(0);
 
   useEffect(() => {
     const node = rootRef.current;
@@ -149,6 +156,30 @@ export function MemorialMediaItem({
     }
   }
 
+  function toggleAudio() {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play().catch(console.error);
+    }
+    setIsPlaying(!isPlaying);
+  }
+
+  function handleAudioTimeUpdate() {
+    if (!audioRef.current) return;
+    const current = audioRef.current.currentTime;
+    const duration = audioRef.current.duration;
+    if (duration > 0) {
+      setAudioProgress((current / duration) * 100);
+    }
+  }
+
+  function handleAudioEnded() {
+    setIsPlaying(false);
+    setAudioProgress(0);
+  }
+
   return (
     <li
       ref={rootRef}
@@ -203,13 +234,40 @@ export function MemorialMediaItem({
       {enabled && url ? (
         <div className="overflow-hidden rounded-xl bg-[#0B0D0F]">
           {item.kind === "PHOTO" ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={url}
-              alt={item.originalName ?? "Memorial photo"}
-              className="max-h-[28rem] w-full object-contain"
-              onError={() => void retry()}
-            />
+            <>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={url}
+                alt={item.originalName ?? "Memorial photo"}
+                className="max-h-[28rem] w-full object-cover cursor-zoom-in transition duration-300 hover:opacity-90"
+                onError={() => void retry()}
+                onClick={() => setIsZoomed(true)}
+              />
+              <AnimatePresence>
+                {isZoomed && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-[#0B0D0F]/90 backdrop-blur-sm p-4"
+                    onClick={() => setIsZoomed(false)}
+                  >
+                    <button
+                      className="absolute right-6 top-6 rounded-full bg-[#181C20] p-2 text-gray-400 hover:text-white transition"
+                      onClick={() => setIsZoomed(false)}
+                    >
+                      <X className="h-6 w-6" />
+                    </button>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={url}
+                      alt={item.originalName ?? "Memorial photo enlarged"}
+                      className="max-h-full max-w-full object-contain shadow-2xl rounded-sm cursor-zoom-out"
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </>
           ) : null}
           {item.kind === "VIDEO" ? (
             <video
@@ -224,13 +282,34 @@ export function MemorialMediaItem({
             </video>
           ) : null}
           {item.kind === "VOICE" ? (
-            <div className="px-3 py-4">
+            <div className="px-5 py-4 glass-panel rounded-xl flex items-center gap-4">
+              <button
+                type="button"
+                onClick={toggleAudio}
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gold text-[#0B0D0F] hover:bg-gold-hover transition shadow-lg"
+              >
+                {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5 ml-1" />}
+              </button>
+              <div className="flex-1 space-y-2">
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#181C20]">
+                  <div 
+                    className="h-full bg-gold transition-all duration-100 ease-linear"
+                    style={{ width: `${audioProgress}%` }}
+                  />
+                </div>
+                <div className="flex justify-between text-[10px] uppercase tracking-widest text-gray-500 font-medium">
+                  <span>Voice Note</span>
+                  <span>{isPlaying ? "Playing" : "Paused"}</span>
+                </div>
+              </div>
               <audio
+                ref={audioRef}
                 key={url}
-                controls
                 preload="metadata"
-                className="w-full"
+                onTimeUpdate={handleAudioTimeUpdate}
+                onEnded={handleAudioEnded}
                 onError={() => void retry()}
+                className="hidden"
               >
                 <source src={url} type={item.contentType} />
               </audio>

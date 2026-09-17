@@ -116,9 +116,9 @@ export function MemorialComments({
   }
 
   return (
-    <section className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 sm:px-8 sm:py-10">
+    <section className="glass-panel rounded-2xl px-6 py-8 sm:px-8 sm:py-10">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="inline-flex items-center gap-2.5 font-sans text-2xl font-medium tracking-tight text-[#F5F1E8]">
+        <h2 className="inline-flex items-center gap-2.5 font-serif text-2xl font-medium tracking-tight text-[#F5F1E8]">
           <MessageCircle className="h-5 w-5 text-gold" aria-hidden />
           Messages of remembrance
         </h2>
@@ -142,7 +142,7 @@ export function MemorialComments({
           {comments.map((item) => (
             <li
               key={item.id}
-              className="rounded-xl border border-[#2A2E33] bg-[#0B0D0F]/60 px-4 py-4 sm:px-5"
+              className="rounded-xl border border-gold/10 bg-[#0B0D0F]/60 px-4 py-4 sm:px-5"
             >
               <p className="whitespace-pre-wrap text-sm leading-7 text-[#F5F1E8] sm:text-base sm:leading-8">
                 {item.body}

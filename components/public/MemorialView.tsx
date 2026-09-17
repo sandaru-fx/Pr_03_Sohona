@@ -1,7 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { FloatingParticles } from "@/components/public/FloatingParticles";
+import { LotusOrnament } from "@/components/public/LotusOrnament";
 import { MemorialComments } from "@/components/public/MemorialComments";
+import { OrnamentalDivider } from "@/components/public/OrnamentalDivider";
 import { MemorialMediaItem } from "@/components/public/MemorialMediaItem";
 import { Alert } from "@/components/ui/Alert";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -43,13 +46,26 @@ export function MemorialView({
   const voices = media.filter((item) => item.kind === "VOICE");
 
   return (
-    <div className="w-full max-w-2xl space-y-10 sm:space-y-12">
+    <div className="relative w-full max-w-2xl space-y-10 sm:space-y-12">
+      {/* Floating candle-light particles */}
+      <FloatingParticles count={25} className="z-0" />
+
       <motion.header 
         initial={{ opacity: 0, y: 20, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="px-2 py-8 text-center sm:py-12"
+        className="relative z-10 px-2 py-8 text-center sm:py-12"
       >
+        {/* Lotus ornament */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
+          className="mb-6 flex justify-center"
+        >
+          <LotusOrnament />
+        </motion.div>
+
         <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
           In remembrance
         </p>
@@ -66,7 +82,13 @@ export function MemorialView({
         ) : null}
       </motion.header>
 
-      <section className="px-2 sm:px-0">
+      <motion.section 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="px-2 sm:px-0"
+      >
         <h2 className="font-serif text-2xl font-medium tracking-tight text-center text-gold">
           Memories
         </h2>
@@ -96,9 +118,18 @@ export function MemorialView({
             ))}
           </ul>
         )}
-      </section>
+      </motion.section>
 
-      <section className="glass-panel rounded-2xl px-6 py-8 sm:px-8 sm:py-10">
+      {/* Ornamental divider */}
+      <OrnamentalDivider />
+
+      <motion.section 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="glass-panel rounded-2xl px-6 py-8 sm:px-8 sm:py-10"
+      >
         <h2 className="font-serif text-2xl font-medium tracking-tight text-[#F5F1E8]">
           Photographs & media
         </h2>
@@ -123,16 +154,17 @@ export function MemorialView({
         ) : (
           <div className="mt-8 space-y-6">
             {photos.length > 0 ? (
-              <ul className="grid gap-4 sm:grid-cols-2">
+              <div className="columns-1 sm:columns-2 gap-4 space-y-4">
                 {photos.map((item) => (
-                  <MemorialMediaItem
-                    key={item.id}
-                    item={item}
-                    enabled={r2Configured}
-                    presentation="gallery"
-                  />
+                  <div key={item.id} className="break-inside-avoid">
+                    <MemorialMediaItem
+                      item={item}
+                      enabled={r2Configured}
+                      presentation="gallery"
+                    />
+                  </div>
                 ))}
-              </ul>
+              </div>
             ) : null}
             {videos.length > 0 || voices.length > 0 ? (
               <ul className="overflow-hidden rounded-xl border border-[#2A2E33]">
@@ -148,24 +180,57 @@ export function MemorialView({
             ) : null}
           </div>
         )}
-      </section>
+      </motion.section>
 
-      <MemorialComments
-        qrId={qrId}
-        packageId={packageId}
-        initialComments={comments.map((item) => ({
-          ...item,
-          createdAt: item.createdAt,
-        }))}
-        used={commentQuota.used}
-        max={commentQuota.max}
-        nextMaxWords={commentQuota.nextMaxWords}
-      />
+      {/* Ornamental divider */}
+      <OrnamentalDivider />
 
-      <p className="px-2 pb-4 text-center text-xs leading-6 text-gray-500">
-        Family memories are private. Organization administrators cannot view
-        statements, media, or comments.
-      </p>
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <MemorialComments
+          qrId={qrId}
+          packageId={packageId}
+          initialComments={comments.map((item) => ({
+            ...item,
+            createdAt: item.createdAt,
+          }))}
+          used={commentQuota.used}
+          max={commentQuota.max}
+          nextMaxWords={commentQuota.nextMaxWords}
+        />
+      </motion.div>
+
+      {/* Respectful closing footer */}
+      <motion.footer
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="relative z-10 flex flex-col items-center gap-4 px-2 pb-6 pt-4 text-center"
+      >
+        <OrnamentalDivider className="w-full max-w-xs" />
+        <div className="flex items-center gap-2 text-gold/70">
+          <svg width="18" height="24" viewBox="0 0 18 24" fill="none" aria-hidden="true">
+            {/* Candle body */}
+            <rect x="6" y="10" width="6" height="12" rx="1" fill="currentColor" opacity="0.5" />
+            {/* Flame */}
+            <path d="M9 2C9 2 12 6 12 8.5C12 10.5 10.5 12 9 12C7.5 12 6 10.5 6 8.5C6 6 9 2 9 2Z" fill="currentColor" opacity="0.8">
+              <animate attributeName="opacity" values="0.6;0.9;0.6" dur="2s" repeatCount="indefinite" />
+            </path>
+          </svg>
+          <p className="font-serif text-sm italic tracking-wide text-gold/60">
+            A light that never fades
+          </p>
+        </div>
+        <p className="max-w-sm text-[11px] leading-5 text-gray-600">
+          Family memories are private. Organization administrators cannot view
+          statements, media, or comments.
+        </p>
+      </motion.footer>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { AlertTriangle, Clock3, ShieldOff } from "lucide-react";
 import { SetupFlow } from "@/components/setup/SetupFlow";
 import type { SetupGateResult } from "@/lib/setup-lookup";
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 function formatExpiry(value: Date | null) {
   if (!value) return null;
@@ -70,16 +71,26 @@ export function SetupGateCard({
         : "Setup link unavailable";
 
   return (
-    <div className="w-full max-w-md rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-10 sm:px-8 sm:py-12">
+    <motion.div 
+      initial={{ opacity: 0, scale: 0.95, y: 15 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ type: "spring", stiffness: 300, damping: 25 }}
+      className="w-full max-w-md mx-auto rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-6 py-10 sm:px-8 sm:py-12 shadow-[0_0_40px_-10px_rgba(0,0,0,0.5)] backdrop-blur-md"
+    >
       <div
         className={cn(
-          "mx-auto flex h-14 w-14 items-center justify-center rounded-2xl",
-          tone === "amber" && "bg-warning/10 text-warning",
-          tone === "zinc" && "bg-[#0B0D0F] text-gray-400",
-          tone === "red" && "bg-error/10 text-error",
+          "mx-auto flex h-14 w-14 items-center justify-center rounded-2xl relative",
+          tone === "amber" && "bg-warning/10 text-warning shadow-[0_0_20px_-5px_rgba(234,179,8,0.2)]",
+          tone === "zinc" && "bg-background text-foreground-muted",
+          tone === "red" && "bg-error/10 text-error shadow-[0_0_20px_-5px_rgba(239,68,68,0.2)]",
         )}
       >
-        <Icon className="h-6 w-6" aria-hidden />
+        <motion.div 
+          animate={{ scale: [1, 1.1, 1] }} 
+          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+          className="absolute inset-0 rounded-2xl opacity-20 border current-color"
+        />
+        <Icon className="h-6 w-6 relative z-10" aria-hidden />
       </div>
       <p className="mt-8 text-center text-xs font-medium uppercase tracking-[0.18em] text-gold">
         Mathaka QR
@@ -87,17 +98,17 @@ export function SetupGateCard({
       <h1 className="mt-4 text-center font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-4xl">
         {title}
       </h1>
-      <p className="mx-auto mt-4 max-w-sm text-center text-base leading-7 text-gray-400">
+      <p className="mx-auto mt-4 max-w-sm text-center text-base leading-7 text-foreground-secondary">
         {result.message}
       </p>
       {result.profile?.displayName ? (
-        <p className="mt-6 text-center text-sm text-gray-500">
+        <p className="mt-6 text-center text-sm text-foreground-muted">
           Profile:{" "}
           <span className="font-medium text-[#F5F1E8]">
             {result.profile.displayName}
           </span>
         </p>
       ) : null}
-    </div>
+    </motion.div>
   );
 }

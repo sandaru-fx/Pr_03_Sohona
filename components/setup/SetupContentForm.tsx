@@ -9,11 +9,14 @@ import {
   Plus,
   Trash2,
   Upload,
+  AlertTriangle,
+  CheckCircle2,
 } from "lucide-react";
 import { readFileDurationSeconds } from "@/lib/browser-media-duration";
 import { getPackageLimits } from "@/lib/packages";
 import { cn } from "@/lib/utils";
 import { totalStatementWords } from "@/lib/word-count";
+import { motion, AnimatePresence } from "framer-motion";
 
 type StatementDraft = { key: string; body: string };
 
@@ -98,6 +101,11 @@ export function SetupContentForm({
     return "audio/mpeg,audio/mp4,audio/wav,audio/webm,.mp3,.m4a,.wav";
   }, [kind]);
 
+  function showMessage(msg: string) {
+    setMessage(msg);
+    setTimeout(() => setMessage(null), 3000);
+  }
+
   async function persistStatements(showSuccessMessage: boolean) {
     const cleaned = statements
       .map((item) => ({ body: item.body.trim() }))
@@ -136,7 +144,7 @@ export function SetupContentForm({
       );
     }
     if (showSuccessMessage) {
-      setMessage("Statements saved.");
+      showMessage("Statements saved.");
     }
   }
 
@@ -302,7 +310,7 @@ export function SetupContentForm({
       }
 
       setMedia((current) => [...current, confirm.media as MediaItem]);
-      setMessage(`Uploaded ${file.name}`);
+      showMessage(`Uploaded ${file.name}`);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Network error during upload.",
@@ -314,29 +322,56 @@ export function SetupContentForm({
 
   return (
     <div className="w-full max-w-2xl space-y-6">
-      <div className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 shadow-none sm:px-8 sm:py-10">
+      {/* Toast Notifications */}
+      <AnimatePresence>
+        {message && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-xl border border-success/30 bg-surface/90 px-4 py-3 text-sm font-medium text-success shadow-[0_0_30px_-5px_rgba(34,197,94,0.15)] backdrop-blur-md"
+          >
+            <CheckCircle2 className="h-4 w-4" />
+            {message}
+          </motion.div>
+        )}
+        {error && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-xl border border-error/30 bg-surface/90 px-4 py-3 text-sm font-medium text-error shadow-[0_0_30px_-5px_rgba(239,68,68,0.15)] backdrop-blur-md"
+          >
+            <AlertTriangle className="h-4 w-4" />
+            {error}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-6 py-8 shadow-none sm:px-8 sm:py-10 backdrop-blur-md">
         <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">Mathaka QR</p>
         <h1 className="mt-2 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8]">
           Add memories
         </h1>
-        <p className="mt-3 text-base leading-7 text-gray-400">
+        <p className="mt-3 text-base leading-7 text-foreground-secondary">
           Add statements and media for{" "}
-          <span className="font-medium text-foreground">{displayName}</span>.
+          <span className="font-medium text-[#F5F1E8]">{displayName}</span>.
           You can save now and finish setup in the next step.
         </p>
+        <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-gold/20 bg-gold/5 px-3 py-1 text-xs font-medium text-gold">
+          {packageTier} Tier Package Limits
+        </div>
         <p className="mt-3 text-xs leading-5 text-foreground-muted">
-          Package limits: {limits.maxImages} photos · video ≤{" "}
-          {limits.maxVideoSeconds}s · audio ≤ {limits.maxAudioSeconds}s ·
-          statements ≤ {limits.maxStatementWords} words total.
+          {limits.maxImages} photos · video ≤ {limits.maxVideoSeconds}s · audio ≤ {limits.maxAudioSeconds}s · statements ≤ {limits.maxStatementWords} words total.
         </p>
       </div>
 
-      <section className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 shadow-none sm:px-8 sm:py-10">
+      <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-6 py-8 shadow-none sm:px-8 sm:py-10 backdrop-blur-md">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h2 className="text-sm font-medium text-foreground">Statements</h2>
+          <h2 className="text-sm font-medium text-[#F5F1E8]">Statements</h2>
           <p
             className={cn(
-              "text-xs tabular-nums",
+              "text-xs tabular-nums transition-colors",
               usedWords > limits.maxStatementWords
                 ? "font-medium text-error"
                 : "text-foreground-muted",
@@ -349,57 +384,67 @@ export function SetupContentForm({
           Sinhala or English. Word count is across all statements combined.
         </p>
 
-        <div className="mt-5 space-y-3">
-          {statements.map((item, index) => (
-            <div key={item.key} className="flex gap-2">
-              <label className="sr-only" htmlFor={`statement-${item.key}`}>
-                Statement {index + 1}
-              </label>
-              <textarea
-                id={`statement-${item.key}`}
-                value={item.body}
-                rows={3}
-                disabled={savingStatements || finishing}
-                onChange={(event) => {
-                  const value = event.target.value;
-                  setStatements((current) =>
-                    current.map((row) =>
-                      row.key === item.key ? { ...row, body: value } : row,
-                    ),
-                  );
-                }}
-                placeholder="Write a memory or message..."
-                className="min-h-24 w-full rounded-xl border border-[#2A2E33] bg-surface px-3.5 py-3 text-sm text-foreground shadow-none outline-none transition focus:outline-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#C9A45C] disabled:bg-background-secondary"
-              />
-              <button
-                type="button"
-                aria-label={`Remove statement ${index + 1}`}
-                disabled={
-                  savingStatements || finishing || statements.length === 1
-                }
-                onClick={() =>
-                  setStatements((current) =>
-                    current.length === 1
-                      ? current
-                      : current.filter((row) => row.key !== item.key),
-                  )
-                }
-                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#2A2E33] text-foreground-muted transition hover:bg-background-secondary disabled:opacity-40"
+        <div className="mt-6 space-y-4">
+          <AnimatePresence mode="popLayout">
+            {statements.map((item, index) => (
+              <motion.div 
+                layout
+                initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                key={item.key} 
+                className="flex gap-3 relative group"
               >
-                <Trash2 className="h-4 w-4" aria-hidden />
-              </button>
-            </div>
-          ))}
+                <label className="sr-only" htmlFor={`statement-${item.key}`}>
+                  Statement {index + 1}
+                </label>
+                <textarea
+                  id={`statement-${item.key}`}
+                  value={item.body}
+                  rows={3}
+                  disabled={savingStatements || finishing}
+                  onChange={(event) => {
+                    const value = event.target.value;
+                    setStatements((current) =>
+                      current.map((row) =>
+                        row.key === item.key ? { ...row, body: value } : row,
+                      ),
+                    );
+                  }}
+                  placeholder="Write a memory or message..."
+                  className="min-h-24 w-full rounded-2xl border border-[#2A2E33] bg-background-secondary px-4 py-3.5 text-sm leading-relaxed text-foreground shadow-none outline-none transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/20 focus-visible:border-gold/50 disabled:opacity-50 resize-none"
+                />
+                <button
+                  type="button"
+                  aria-label={`Remove statement ${index + 1}`}
+                  disabled={
+                    savingStatements || finishing || statements.length === 1
+                  }
+                  onClick={() =>
+                    setStatements((current) =>
+                      current.length === 1
+                        ? current
+                        : current.filter((row) => row.key !== item.key),
+                    )
+                  }
+                  className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border text-foreground-muted transition-all hover:bg-error/10 hover:text-error hover:border-error/30 disabled:opacity-30 absolute -right-3 -top-3 opacity-0 group-hover:opacity-100 bg-surface shadow-sm"
+                >
+                  <Trash2 className="h-4 w-4" aria-hidden />
+                </button>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
 
-        <div className="mt-4 flex flex-wrap gap-3">
+        <div className="mt-6 flex flex-wrap gap-3">
           <button
             type="button"
             onClick={() => setStatements((current) => [...current, newDraft()])}
             disabled={
               savingStatements || finishing || statements.length >= 30
             }
-            className="inline-flex h-10 items-center gap-2 rounded-xl border border-[#2A2E33] bg-surface px-4 text-sm font-medium text-foreground transition hover:bg-background-secondary"
+            className="inline-flex h-11 items-center gap-2 rounded-xl border border-border bg-background-secondary/50 px-5 text-sm font-medium text-foreground transition-all hover:bg-background-secondary hover:border-gold/30 hover:text-[#F5F1E8]"
           >
             <Plus className="h-4 w-4" aria-hidden />
             Add statement
@@ -409,10 +454,10 @@ export function SetupContentForm({
             onClick={() => void saveStatements()}
             disabled={savingStatements || finishing}
             className={cn(
-              "inline-flex h-10 items-center gap-2 rounded-xl px-4 text-sm font-medium text-background transition",
+              "inline-flex h-11 items-center gap-2 rounded-xl px-5 text-sm font-medium text-background transition-all shadow-[0_0_20px_-5px_rgba(212,175,55,0.4)]",
               savingStatements || finishing
-                ? "cursor-not-allowed bg-foreground-muted"
-                : "bg-gold hover:bg-gold-hover",
+                ? "cursor-not-allowed bg-foreground-muted shadow-none"
+                : "bg-gold hover:scale-[1.02] active:scale-[0.98] hover:shadow-[0_0_25px_-5px_rgba(212,175,55,0.6)]",
             )}
           >
             {savingStatements ? (
@@ -427,9 +472,9 @@ export function SetupContentForm({
         </div>
       </section>
 
-      <section className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 shadow-none sm:px-8 sm:py-10">
+      <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-6 py-8 shadow-none sm:px-8 sm:py-10 backdrop-blur-md">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h2 className="text-sm font-medium text-foreground">
+          <h2 className="text-sm font-medium text-[#F5F1E8]">
             Photos, videos & voice
           </h2>
           <p className="text-xs tabular-nums text-foreground-muted">
@@ -442,39 +487,56 @@ export function SetupContentForm({
         </p>
 
         {!r2Configured ? (
-          <div className="mt-5 rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-warning">
-            Media storage (Cloudflare R2) is not connected yet. You can continue
-            with statements now and upload media after R2 is configured.
+          <div className="mt-6 flex items-start gap-3 rounded-xl border border-warning/30 bg-warning/10 px-5 py-4 text-sm text-warning">
+            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+            <p>
+              Media storage (Cloudflare R2) is not connected yet. You can continue
+              with statements now and upload media after R2 is configured.
+            </p>
           </div>
         ) : (
-          <div className="mt-5 space-y-4">
-            <div className="flex flex-wrap gap-3">
+          <div className="mt-6 space-y-5">
+            <div className="flex flex-wrap gap-2 p-1 bg-background-secondary rounded-xl w-fit">
               {(
                 [
                   ["PHOTO", "Photo", FileImage],
                   ["VIDEO", "Video", FileVideo],
                   ["VOICE", "Voice", FileAudio],
                 ] as const
-              ).map(([value, label, Icon]) => (
-                <button
-                  key={value}
-                  type="button"
-                  onClick={() => setKind(value)}
-                  className={cn(
-                    "inline-flex h-10 items-center gap-2 rounded-xl border px-4 text-sm font-medium transition",
-                    kind === value
-                      ? "border-gold bg-gold text-background"
-                      : "border-[#2A2E33] bg-surface text-foreground hover:bg-background-secondary",
-                  )}
-                >
-                  <Icon className="h-4 w-4" aria-hidden />
-                  {label}
-                </button>
-              ))}
+              ).map(([value, label, Icon]) => {
+                const isActive = kind === value;
+                return (
+                  <button
+                    key={value}
+                    type="button"
+                    onClick={() => setKind(value)}
+                    className={cn(
+                      "relative inline-flex h-9 items-center gap-2 rounded-lg px-4 text-sm font-medium transition-colors",
+                      isActive
+                        ? "text-background"
+                        : "text-foreground-secondary hover:text-foreground",
+                    )}
+                  >
+                    {isActive && (
+                      <motion.div
+                        layoutId="media-kind-bubble"
+                        className="absolute inset-0 bg-gold rounded-lg shadow-sm"
+                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      />
+                    )}
+                    <Icon className="h-4 w-4 relative z-10" aria-hidden />
+                    <span className="relative z-10">{label}</span>
+                  </button>
+                );
+              })}
             </div>
 
-            <label className="inline-flex h-11 cursor-pointer items-center gap-2 rounded-xl bg-gold px-5 text-sm font-medium text-background transition hover:bg-gold-hover">
-              <Upload className="h-4 w-4" aria-hidden />
+            <label className="inline-flex h-12 cursor-pointer items-center gap-2 rounded-xl border border-gold/30 bg-gold/5 px-6 text-sm font-medium text-gold transition-all hover:bg-gold/10 hover:border-gold/50 hover:shadow-[0_0_15px_-3px_rgba(212,175,55,0.2)]">
+              {uploading ? (
+                <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+              ) : (
+                <Upload className="h-4 w-4" aria-hidden />
+              )}
               {uploading ? "Uploading…" : `Upload ${kind.toLowerCase()}`}
               <input
                 type="file"
@@ -490,49 +552,52 @@ export function SetupContentForm({
           </div>
         )}
 
-        <ul className="mt-6 divide-y divide-border rounded-xl border border-[#2A2E33]">
-          {media.length === 0 ? (
-            <li className="px-4 py-6 text-sm text-foreground-muted">No media uploaded yet.</li>
-          ) : (
-            media.map((item) => (
-              <li
-                key={item.id}
-                className="flex items-center justify-between gap-3 px-4 py-3 text-sm"
+        <ul className="mt-8 space-y-2">
+          <AnimatePresence mode="popLayout">
+            {media.length === 0 ? (
+              <motion.li 
+                key="empty"
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                className="rounded-2xl border border-dashed border-[#2A2E33] px-4 py-8 text-center text-sm text-foreground-muted"
               >
-                <div className="min-w-0">
-                  <p className="truncate font-medium text-foreground">
-                    {item.originalName ?? item.kind}
-                  </p>
-                  <p className="text-xs text-foreground-muted">
-                    {item.kind} · {formatBytes(item.sizeBytes)}
-                  </p>
-                </div>
-              </li>
-            ))
-          )}
+                No media uploaded yet.
+              </motion.li>
+            ) : (
+              media.map((item) => (
+                <motion.li
+                  layout
+                  initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                  key={item.id}
+                  className="flex items-center justify-between gap-3 rounded-2xl border border-[#2A2E33] bg-background-secondary/30 px-5 py-4 transition-colors hover:border-gold/20"
+                >
+                  <div className="flex items-center gap-4 min-w-0">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface border border-border shrink-0">
+                      {item.kind === "PHOTO" ? <FileImage className="h-4 w-4 text-foreground-muted" /> : null}
+                      {item.kind === "VIDEO" ? <FileVideo className="h-4 w-4 text-foreground-muted" /> : null}
+                      {item.kind === "VOICE" ? <FileAudio className="h-4 w-4 text-foreground-muted" /> : null}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="truncate font-medium text-[#F5F1E8]">
+                        {item.originalName ?? item.kind}
+                      </p>
+                      <p className="text-xs text-foreground-muted mt-0.5">
+                        {item.kind} · {formatBytes(item.sizeBytes)}
+                      </p>
+                    </div>
+                  </div>
+                </motion.li>
+              ))
+            )}
+          </AnimatePresence>
         </ul>
       </section>
 
-      {error ? (
-        <p
-          className="rounded-xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error"
-          role="alert"
-        >
-          {error}
-        </p>
-      ) : null}
-      {message ? (
-        <p
-          className="rounded-xl border border-success/30 bg-success/10 px-4 py-3 text-sm text-success"
-          role="status"
-        >
-          {message}
-        </p>
-      ) : null}
-
-      <section className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 shadow-none sm:px-8 sm:py-10">
-        <h2 className="text-sm font-medium text-foreground">Finish setup</h2>
-        <p className="mt-1 text-sm text-foreground-secondary">
+      <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-6 py-8 shadow-[0_0_40px_-10px_rgba(212,175,55,0.05)] sm:px-8 sm:py-10 backdrop-blur-md text-center">
+        <h2 className="text-lg font-medium text-[#F5F1E8]">Finish setup</h2>
+        <p className="mt-2 text-sm text-foreground-secondary max-w-lg mx-auto">
           This locks the setup link forever and shows your private manage link
           once. You can finish with statements only — media can wait until
           storage is connected.
@@ -542,10 +607,10 @@ export function SetupContentForm({
           onClick={() => void finishSetup()}
           disabled={finishing || savingStatements || uploading}
           className={cn(
-            "mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl px-5 text-sm font-medium text-background transition sm:w-auto",
+            "mt-6 inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl px-8 text-sm font-medium text-background transition-all sm:w-auto",
             finishing || savingStatements || uploading
               ? "cursor-not-allowed bg-foreground-muted"
-              : "bg-gold hover:bg-gold-hover",
+              : "bg-gold shadow-[0_0_20px_-5px_rgba(212,175,55,0.4)] hover:shadow-[0_0_25px_-5px_rgba(212,175,55,0.6)] hover:scale-[1.02] active:scale-[0.98]",
           )}
         >
           {finishing ? (

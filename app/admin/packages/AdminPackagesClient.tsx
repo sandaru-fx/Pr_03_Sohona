@@ -15,6 +15,7 @@ import {
   ToggleRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 
 type PackageRow = {
   id: string;
@@ -75,6 +76,16 @@ function formToPayload(f: FormData) {
   };
 }
 
+const listVariants = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { staggerChildren: 0.05 } },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } },
+};
+
 function PackageForm({
   initial,
   onSave,
@@ -93,13 +104,27 @@ function PackageForm({
     setForm((prev) => ({ ...prev, [k]: v }));
 
   return (
-    <div className="space-y-5">
-      {error && (
-        <div className="flex items-start gap-2 rounded-xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error">
-          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
-          {error}
-        </div>
-      )}
+    <motion.div 
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: "auto" }}
+      exit={{ opacity: 0, height: 0 }}
+      className="space-y-5 overflow-hidden"
+    >
+      <AnimatePresence>
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="overflow-hidden"
+          >
+            <div className="flex items-start gap-2 rounded-xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error">
+              <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+              {error}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className="grid gap-4 sm:grid-cols-2">
         {/* Name */}
@@ -112,7 +137,7 @@ function PackageForm({
             onChange={(e) => set("name", e.target.value)}
             placeholder="e.g. Heritage"
             disabled={saving}
-            className="mt-1.5 h-10 w-full rounded-xl border border-border bg-background-secondary px-3 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:opacity-50"
+            className="mt-1.5 h-10 w-full rounded-xl border border-border bg-background-secondary px-3 text-sm text-foreground outline-none transition-all focus-visible:border-gold/50 focus-visible:ring-2 focus-visible:ring-gold/20 disabled:opacity-50"
           />
         </div>
 
@@ -128,7 +153,7 @@ function PackageForm({
             value={form.retentionYears}
             onChange={(e) => set("retentionYears", e.target.value)}
             disabled={saving}
-            className="mt-1.5 h-10 w-full rounded-xl border border-border bg-background-secondary px-3 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:opacity-50"
+            className="mt-1.5 h-10 w-full rounded-xl border border-border bg-background-secondary px-3 text-sm text-foreground outline-none transition-all focus-visible:border-gold/50 focus-visible:ring-2 focus-visible:ring-gold/20 disabled:opacity-50"
           />
         </div>
 
@@ -146,7 +171,7 @@ function PackageForm({
               onChange={(e) => set("priceAmount", e.target.value)}
               placeholder="e.g. 15000"
               disabled={saving}
-              className="h-10 flex-1 rounded-xl border border-border bg-background-secondary px-3 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:opacity-50"
+              className="h-10 flex-1 rounded-xl border border-border bg-background-secondary px-3 text-sm text-foreground outline-none transition-all focus-visible:border-gold/50 focus-visible:ring-2 focus-visible:ring-gold/20 disabled:opacity-50"
             />
             <input
               value={form.priceCurrency}
@@ -154,7 +179,7 @@ function PackageForm({
               maxLength={5}
               placeholder="LKR"
               disabled={saving}
-              className="h-10 w-20 rounded-xl border border-border bg-background-secondary px-3 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:opacity-50"
+              className="h-10 w-20 rounded-xl border border-border bg-background-secondary px-3 text-sm text-foreground outline-none transition-all focus-visible:border-gold/50 focus-visible:ring-2 focus-visible:ring-gold/20 disabled:opacity-50"
             />
           </div>
         </div>
@@ -165,13 +190,15 @@ function PackageForm({
             type="button"
             onClick={() => set("isActive", !form.isActive)}
             disabled={saving}
-            className="flex items-center gap-2 text-sm font-medium text-foreground"
+            className="flex items-center gap-2 text-sm font-medium text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50 rounded-lg p-1"
           >
-            {form.isActive ? (
-              <ToggleRight className="h-6 w-6 text-gold" />
-            ) : (
-              <ToggleLeft className="h-6 w-6 text-foreground-muted" />
-            )}
+            <motion.div layout>
+              {form.isActive ? (
+                <ToggleRight className="h-6 w-6 text-gold" />
+              ) : (
+                <ToggleLeft className="h-6 w-6 text-foreground-muted" />
+              )}
+            </motion.div>
             {form.isActive ? "Active" : "Inactive"}
           </button>
           <span className="text-xs text-foreground-muted">
@@ -191,7 +218,7 @@ function PackageForm({
           rows={2}
           placeholder="Short description shown on public packages page…"
           disabled={saving}
-          className="mt-1.5 w-full rounded-xl border border-border bg-background-secondary px-3 py-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:opacity-50 resize-none"
+          className="mt-1.5 w-full rounded-xl border border-border bg-background-secondary px-3 py-2 text-sm text-foreground outline-none transition-all focus-visible:border-gold/50 focus-visible:ring-2 focus-visible:ring-gold/20 disabled:opacity-50 resize-none"
         />
       </div>
 
@@ -206,7 +233,7 @@ function PackageForm({
           rows={4}
           placeholder={"Family PIN + admin-blind privacy\nRetention starts at setup complete\n…"}
           disabled={saving}
-          className="mt-1.5 w-full rounded-xl border border-border bg-background-secondary px-3 py-2 font-mono text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:opacity-50 resize-none"
+          className="mt-1.5 w-full rounded-xl border border-border bg-background-secondary px-3 py-2 font-mono text-sm text-foreground outline-none transition-all focus-visible:border-gold/50 focus-visible:ring-2 focus-visible:ring-gold/20 disabled:opacity-50 resize-none"
         />
       </div>
 
@@ -216,10 +243,10 @@ function PackageForm({
           onClick={() => onSave(form)}
           disabled={saving}
           className={cn(
-            "inline-flex h-10 items-center gap-2 rounded-xl px-5 text-sm font-medium text-background transition",
+            "relative inline-flex h-10 items-center gap-2 overflow-hidden rounded-xl px-5 text-sm font-medium text-background transition-all",
             saving
               ? "cursor-not-allowed bg-foreground-muted"
-              : "bg-gold hover:opacity-90",
+              : "bg-gold shadow-[0_0_20px_-5px_rgba(212,175,55,0.4)] hover:shadow-[0_0_25px_-5px_rgba(212,175,55,0.6)] hover:scale-[1.02] active:scale-[0.98]",
           )}
         >
           {saving ? (
@@ -232,12 +259,12 @@ function PackageForm({
           type="button"
           onClick={onCancel}
           disabled={saving}
-          className="inline-flex h-10 items-center rounded-xl border border-border px-5 text-sm font-medium text-foreground transition hover:bg-background-secondary"
+          className="inline-flex h-10 items-center rounded-xl border border-border px-5 text-sm font-medium text-foreground transition-colors hover:bg-background-secondary hover:text-[#F5F1E8]"
         >
           Cancel
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -339,15 +366,26 @@ export function AdminPackagesClient({
   return (
     <div className="space-y-6">
       {/* Toast */}
-      {toast && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-xl border border-success/30 bg-surface px-4 py-3 text-sm font-medium text-success shadow-lg animate-in slide-in-from-bottom-2">
-          <CheckCircle2 className="h-4 w-4" />
-          {toast}
-        </div>
-      )}
+      <AnimatePresence>
+        {toast && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-xl border border-success/30 bg-surface/90 px-4 py-3 text-sm font-medium text-success shadow-[0_0_30px_-5px_rgba(34,197,94,0.15)] backdrop-blur-md"
+          >
+            <CheckCircle2 className="h-4 w-4" />
+            {toast}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <motion.div 
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"
+      >
         <div>
           <h1 className="font-sans text-3xl font-medium tracking-tight text-[#F5F1E8]">
             Packages
@@ -356,197 +394,272 @@ export function AdminPackagesClient({
             Manage memorial packages. Each package defines a retention period shown on public pages and used when creating memorials.
           </p>
         </div>
-        {mode === "idle" && (
-          <button
-            onClick={() => { setMode("create"); setFormError(null); }}
-            className="inline-flex h-11 items-center gap-2 rounded-xl bg-gold px-5 text-sm font-medium text-background transition hover:opacity-90"
-          >
-            <Plus className="h-4 w-4" />
-            New Package
-          </button>
-        )}
-      </div>
+        <AnimatePresence>
+          {mode === "idle" && (
+            <motion.button
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              onClick={() => { setMode("create"); setFormError(null); }}
+              className="inline-flex h-11 items-center gap-2 rounded-xl bg-gold shadow-[0_0_20px_-5px_rgba(212,175,55,0.4)] px-5 text-sm font-medium text-background transition-all hover:scale-[1.02] active:scale-[0.98] hover:shadow-[0_0_25px_-5px_rgba(212,175,55,0.6)]"
+            >
+              <Plus className="h-4 w-4" />
+              New Package
+            </motion.button>
+          )}
+        </AnimatePresence>
+      </motion.div>
 
       {/* Create Form */}
-      {mode === "create" && (
-        <div className="rounded-2xl border border-gold/30 bg-surface p-6 shadow-sm">
-          <div className="mb-5 flex items-center justify-between">
-            <h2 className="text-base font-semibold text-[#F5F1E8]">New Package</h2>
-            <button onClick={() => setMode("idle")} className="rounded-lg p-1.5 text-foreground-muted hover:text-foreground">
-              <X className="h-4 w-4" />
-            </button>
-          </div>
-          <PackageForm
-            initial={EMPTY_FORM}
-            onSave={handleCreate}
-            onCancel={() => setMode("idle")}
-            saving={saving}
-            error={formError}
-          />
-        </div>
-      )}
-
-      {/* Packages List */}
-      {packages.length === 0 && mode === "idle" ? (
-        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-surface py-20 text-center">
-          <Package className="h-10 w-10 text-foreground-muted" />
-          <p className="mt-4 text-sm font-medium text-foreground">No packages yet</p>
-          <p className="mt-1 text-sm text-foreground-secondary">Create your first package to start offering memorials.</p>
-          <button
-            onClick={() => { setMode("create"); setFormError(null); }}
-            className="mt-6 inline-flex h-10 items-center gap-2 rounded-xl bg-gold px-5 text-sm font-medium text-background hover:opacity-90"
+      <AnimatePresence mode="popLayout">
+        {mode === "create" && (
+          <motion.div 
+            layoutId="create-form"
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="rounded-2xl border border-gold/30 bg-surface p-6 shadow-[0_0_30px_-5px_rgba(212,175,55,0.1)]"
           >
-            <Plus className="h-4 w-4" /> New Package
-          </button>
-        </div>
-      ) : (
-        <ul className="space-y-4">
-          {packages.map((pkg) => {
-            const isEditing = typeof mode === "object" && mode.edit === pkg.id;
-            return (
-              <li
-                key={pkg.id}
-                className={cn(
-                  "rounded-2xl border bg-surface transition",
-                  isEditing ? "border-gold/40" : "border-border",
-                )}
+            <div className="mb-5 flex items-center justify-between">
+              <h2 className="text-base font-semibold text-[#F5F1E8]">New Package</h2>
+              <button 
+                onClick={() => setMode("idle")} 
+                className="rounded-lg p-1.5 text-foreground-muted hover:text-foreground hover:bg-background-secondary transition-colors"
               >
-                {isEditing ? (
-                  <div className="p-6">
-                    <div className="mb-5 flex items-center justify-between">
-                      <h2 className="text-base font-semibold text-[#F5F1E8]">
-                        Edit — {pkg.name}
-                      </h2>
-                      <button
-                        onClick={() => setMode("idle")}
-                        className="rounded-lg p-1.5 text-foreground-muted hover:text-foreground"
-                      >
-                        <X className="h-4 w-4" />
-                      </button>
-                    </div>
-                    <PackageForm
-                      initial={pkgToForm(pkg)}
-                      onSave={(form) => handleUpdate(pkg.id, form)}
-                      onCancel={() => setMode("idle")}
-                      saving={saving}
-                      error={formError}
-                    />
-                  </div>
-                ) : (
-                  <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-start sm:justify-between">
-                    {/* Left: info */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="font-sans text-base font-semibold text-[#F5F1E8]">
-                          {pkg.name}
-                        </span>
-                        <span
-                          className={cn(
-                            "rounded-full px-2 py-0.5 text-[11px] font-medium",
-                            pkg.isActive
-                              ? "bg-success/10 text-success"
-                              : "bg-surface-elevated text-foreground-muted",
-                          )}
-                        >
-                          {pkg.isActive ? "Active" : "Inactive"}
-                        </span>
-                        <span className="rounded-full bg-gold-subtle px-2 py-0.5 text-[11px] font-medium text-gold">
-                          {pkg.retentionYears} yrs
-                        </span>
-                        <span className="text-xs text-foreground-muted">
-                          {pkg._count.profiles} memorial{pkg._count.profiles !== 1 ? "s" : ""}
-                        </span>
-                      </div>
-                      {pkg.description && (
-                        <p className="mt-1.5 text-sm text-foreground-secondary leading-6">
-                          {pkg.description}
-                        </p>
-                      )}
-                      {pkg.priceAmount != null && (
-                        <p className="mt-1 text-xs text-foreground-muted">
-                          {pkg.priceCurrency} {pkg.priceAmount.toLocaleString()}
-                        </p>
-                      )}
-                      {pkg.features.length > 0 && (
-                        <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
-                          {pkg.features.map((f) => (
-                            <li key={f} className="flex items-center gap-1 text-xs text-foreground-muted">
-                              <Check className="h-3 w-3 text-gold shrink-0" />
-                              {f}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-
-                    {/* Right: actions */}
-                    <div className="flex shrink-0 items-center gap-2">
-                      <button
-                        onClick={() => { setMode({ edit: pkg.id }); setFormError(null); }}
-                        className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-border px-3 text-xs font-medium text-foreground transition hover:border-gold/40 hover:text-gold"
-                      >
-                        <Edit2 className="h-3.5 w-3.5" />
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => { setDeleteTarget(pkg); setDeleteError(null); }}
-                        className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-border px-3 text-xs font-medium text-foreground-muted transition hover:border-error/40 hover:text-error"
-                        disabled={pkg._count.profiles > 0}
-                        title={pkg._count.profiles > 0 ? "Cannot delete — memorials exist" : "Delete"}
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </li>
-            );
-          })}
-        </ul>
-      )}
-
-      {/* Delete Confirmation Modal */}
-      {deleteTarget && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 px-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-2xl border border-border bg-surface p-6 shadow-2xl">
-            <h2 className="font-sans text-lg font-semibold text-[#F5F1E8]">
-              Delete package?
-            </h2>
-            <p className="mt-3 text-sm leading-6 text-foreground-secondary">
-              Are you sure you want to delete{" "}
-              <span className="font-medium text-foreground">{deleteTarget.name}</span>?
-              This cannot be undone.
-            </p>
-            {deleteError && (
-              <div className="mt-4 flex items-start gap-2 rounded-xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error">
-                <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
-                {deleteError}
-              </div>
-            )}
-            <div className="mt-6 flex gap-3">
-              <button
-                onClick={() => handleDelete(deleteTarget)}
-                disabled={deleting}
-                className={cn(
-                  "inline-flex h-10 flex-1 items-center justify-center gap-2 rounded-xl text-sm font-medium text-white transition",
-                  deleting ? "bg-foreground-muted cursor-not-allowed" : "bg-error hover:opacity-90",
-                )}
-              >
-                {deleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-                {deleting ? "Deleting…" : "Yes, delete"}
-              </button>
-              <button
-                onClick={() => { setDeleteTarget(null); setDeleteError(null); }}
-                disabled={deleting}
-                className="inline-flex h-10 flex-1 items-center justify-center rounded-xl border border-border text-sm font-medium text-foreground transition hover:bg-background-secondary"
-              >
-                Cancel
+                <X className="h-4 w-4" />
               </button>
             </div>
-          </div>
-        </div>
-      )}
+            <PackageForm
+              initial={EMPTY_FORM}
+              onSave={handleCreate}
+              onCancel={() => setMode("idle")}
+              saving={saving}
+              error={formError}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Packages List */}
+      <AnimatePresence mode="popLayout">
+        {packages.length === 0 && mode === "idle" ? (
+          <motion.div 
+            key="empty"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-surface py-20 text-center"
+          >
+            <Package className="h-10 w-10 text-foreground-muted" />
+            <p className="mt-4 text-sm font-medium text-foreground">No packages yet</p>
+            <p className="mt-1 text-sm text-foreground-secondary">Create your first package to start offering memorials.</p>
+            <button
+              onClick={() => { setMode("create"); setFormError(null); }}
+              className="mt-6 inline-flex h-10 items-center gap-2 rounded-xl bg-gold px-5 text-sm font-medium text-background transition-all hover:scale-105 active:scale-95"
+            >
+              <Plus className="h-4 w-4" /> New Package
+            </button>
+          </motion.div>
+        ) : (
+          <motion.ul 
+            key="list"
+            variants={listVariants}
+            initial="hidden"
+            animate="show"
+            className="space-y-4"
+          >
+            <AnimatePresence>
+              {packages.map((pkg) => {
+                const isEditing = typeof mode === "object" && mode.edit === pkg.id;
+                return (
+                  <motion.li
+                    layout
+                    key={pkg.id}
+                    variants={itemVariants}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    className={cn(
+                      "rounded-2xl border bg-surface transition-colors overflow-hidden relative",
+                      isEditing ? "border-gold/40 shadow-[0_0_25px_-5px_rgba(212,175,55,0.08)]" : "border-border hover:border-gold/20"
+                    )}
+                  >
+                    <AnimatePresence mode="wait">
+                      {isEditing ? (
+                        <motion.div 
+                          key="edit"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="p-6"
+                        >
+                          <div className="mb-5 flex items-center justify-between">
+                            <h2 className="text-base font-semibold text-[#F5F1E8]">
+                              Edit — {pkg.name}
+                            </h2>
+                            <button
+                              onClick={() => setMode("idle")}
+                              className="rounded-lg p-1.5 text-foreground-muted hover:text-foreground hover:bg-background-secondary transition-colors"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          </div>
+                          <PackageForm
+                            initial={pkgToForm(pkg)}
+                            onSave={(form) => handleUpdate(pkg.id, form)}
+                            onCancel={() => setMode("idle")}
+                            saving={saving}
+                            error={formError}
+                          />
+                        </motion.div>
+                      ) : (
+                        <motion.div 
+                          key="view"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="flex flex-col gap-4 p-5 sm:flex-row sm:items-start sm:justify-between group"
+                        >
+                          {/* Left: info */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="font-sans text-base font-semibold text-[#F5F1E8]">
+                                {pkg.name}
+                              </span>
+                              <span
+                                className={cn(
+                                  "rounded-full px-2 py-0.5 text-[11px] font-medium border",
+                                  pkg.isActive
+                                    ? "bg-success/10 text-success border-success/20"
+                                    : "bg-surface-elevated text-foreground-muted border-border",
+                                )}
+                              >
+                                {pkg.isActive ? "Active" : "Inactive"}
+                              </span>
+                              <span className="rounded-full bg-gold-subtle px-2 py-0.5 text-[11px] font-medium text-gold border border-gold/20">
+                                {pkg.retentionYears} yrs
+                              </span>
+                              <span className="text-xs text-foreground-muted">
+                                {pkg._count.profiles} memorial{pkg._count.profiles !== 1 ? "s" : ""}
+                              </span>
+                            </div>
+                            {pkg.description && (
+                              <p className="mt-1.5 text-sm text-foreground-secondary leading-6">
+                                {pkg.description}
+                              </p>
+                            )}
+                            {pkg.priceAmount != null && (
+                              <p className="mt-1 text-xs text-foreground-muted">
+                                {pkg.priceCurrency} {pkg.priceAmount.toLocaleString()}
+                              </p>
+                            )}
+                            {pkg.features.length > 0 && (
+                              <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
+                                {pkg.features.map((f) => (
+                                  <li key={f} className="flex items-center gap-1 text-xs text-foreground-muted">
+                                    <Check className="h-3 w-3 text-gold shrink-0" />
+                                    {f}
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </div>
+
+                          {/* Right: actions */}
+                          <div className="flex shrink-0 items-center gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                            <button
+                              onClick={() => { setMode({ edit: pkg.id }); setFormError(null); }}
+                              className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-border px-3 text-xs font-medium text-foreground transition-all hover:border-gold/40 hover:text-gold hover:bg-gold/5"
+                            >
+                              <Edit2 className="h-3.5 w-3.5" />
+                              Edit
+                            </button>
+                            <button
+                              onClick={() => { setDeleteTarget(pkg); setDeleteError(null); }}
+                              className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-border px-3 text-xs font-medium text-foreground-muted transition-all hover:border-error/40 hover:text-error hover:bg-error/10"
+                              disabled={pkg._count.profiles > 0}
+                              title={pkg._count.profiles > 0 ? "Cannot delete — memorials exist" : "Delete"}
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                              Delete
+                            </button>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.li>
+                );
+              })}
+            </AnimatePresence>
+          </motion.ul>
+        )}
+      </AnimatePresence>
+
+      {/* Delete Confirmation Modal */}
+      <AnimatePresence>
+        {deleteTarget && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 px-4 backdrop-blur-sm"
+          >
+            <motion.div 
+              initial={{ scale: 0.95, opacity: 0, y: 10 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 10 }}
+              className="w-full max-w-md rounded-2xl border border-border bg-surface p-6 shadow-2xl overflow-hidden"
+            >
+              <h2 className="font-sans text-lg font-semibold text-[#F5F1E8]">
+                Delete package?
+              </h2>
+              <p className="mt-3 text-sm leading-6 text-foreground-secondary">
+                Are you sure you want to delete{" "}
+                <span className="font-medium text-foreground">{deleteTarget.name}</span>?
+                This cannot be undone.
+              </p>
+
+              <AnimatePresence>
+                {deleteError && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                    animate={{ opacity: 1, height: "auto", marginTop: 16 }}
+                    exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="flex items-start gap-2 rounded-xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error">
+                      <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+                      {deleteError}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <div className="mt-6 flex gap-3">
+                <button
+                  onClick={() => handleDelete(deleteTarget)}
+                  disabled={deleting}
+                  className={cn(
+                    "inline-flex h-10 flex-1 items-center justify-center gap-2 rounded-xl text-sm font-medium text-white transition-all",
+                    deleting 
+                      ? "bg-foreground-muted cursor-not-allowed" 
+                      : "bg-error hover:opacity-90 hover:shadow-[0_0_20px_-5px_rgba(239,68,68,0.4)]",
+                  )}
+                >
+                  {deleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+                  {deleting ? "Deleting…" : "Yes, delete"}
+                </button>
+                <button
+                  onClick={() => { setDeleteTarget(null); setDeleteError(null); }}
+                  disabled={deleting}
+                  className="inline-flex h-10 flex-1 items-center justify-center rounded-xl border border-border text-sm font-medium text-foreground transition-colors hover:bg-background-secondary hover:text-[#F5F1E8]"
+                >
+                  Cancel
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

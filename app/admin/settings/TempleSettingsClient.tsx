@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Check, CheckCircle2, Loader2, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 
 type TempleSettings = {
   templeName: string;
@@ -63,21 +64,41 @@ export function TempleSettingsClient({
   }
 
   return (
-    <div className="space-y-5">
-      {/* Toast */}
-      {toast && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-xl border border-success/30 bg-surface px-4 py-3 text-sm font-medium text-success shadow-lg">
-          <CheckCircle2 className="h-4 w-4" />
-          {toast}
-        </div>
-      )}
+    <motion.div 
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="space-y-5"
+    >
+      <AnimatePresence>
+        {/* Toast */}
+        {toast && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-xl border border-success/30 bg-surface/90 px-4 py-3 text-sm font-medium text-success shadow-[0_0_30px_-5px_rgba(34,197,94,0.15)] backdrop-blur-md"
+          >
+            <CheckCircle2 className="h-4 w-4" />
+            {toast}
+          </motion.div>
+        )}
 
-      {error && (
-        <div className="flex items-start gap-2 rounded-xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error">
-          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
-          {error}
-        </div>
-      )}
+        {/* Error */}
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, height: 0, marginBottom: 0 }}
+            animate={{ opacity: 1, height: "auto", marginBottom: 20 }}
+            exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+            className="overflow-hidden"
+          >
+            <div className="flex items-start gap-2 rounded-xl border border-error/30 bg-error/10 px-4 py-3 text-sm text-error">
+              <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+              {error}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
@@ -88,7 +109,7 @@ export function TempleSettingsClient({
             value={form.templeName}
             onChange={(e) => set("templeName", e.target.value)}
             disabled={saving}
-            className="mt-1.5 h-10 w-full rounded-xl border border-border bg-background-secondary px-3 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:opacity-50"
+            className="mt-1.5 h-10 w-full rounded-xl border border-border bg-background-secondary px-3 text-sm text-foreground outline-none transition-all focus-visible:border-gold/50 focus-visible:ring-2 focus-visible:ring-gold/20 disabled:opacity-50"
           />
         </div>
         <div>
@@ -101,7 +122,7 @@ export function TempleSettingsClient({
             onChange={(e) => set("templeEmail", e.target.value)}
             placeholder="contact@example.com"
             disabled={saving}
-            className="mt-1.5 h-10 w-full rounded-xl border border-border bg-background-secondary px-3 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:opacity-50"
+            className="mt-1.5 h-10 w-full rounded-xl border border-border bg-background-secondary px-3 text-sm text-foreground outline-none transition-all focus-visible:border-gold/50 focus-visible:ring-2 focus-visible:ring-gold/20 disabled:opacity-50"
           />
         </div>
       </div>
@@ -116,7 +137,7 @@ export function TempleSettingsClient({
             onChange={(e) => set("templePhone", e.target.value)}
             placeholder="+94 XX XXX XXXX"
             disabled={saving}
-            className="mt-1.5 h-10 w-full rounded-xl border border-border bg-background-secondary px-3 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:opacity-50"
+            className="mt-1.5 h-10 w-full rounded-xl border border-border bg-background-secondary px-3 text-sm text-foreground outline-none transition-all focus-visible:border-gold/50 focus-visible:ring-2 focus-visible:ring-gold/20 disabled:opacity-50"
           />
         </div>
         <div>
@@ -128,7 +149,7 @@ export function TempleSettingsClient({
             onChange={(e) => set("templeAddress", e.target.value)}
             placeholder="Main Road, City"
             disabled={saving}
-            className="mt-1.5 h-10 w-full rounded-xl border border-border bg-background-secondary px-3 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-gold disabled:opacity-50"
+            className="mt-1.5 h-10 w-full rounded-xl border border-border bg-background-secondary px-3 text-sm text-foreground outline-none transition-all focus-visible:border-gold/50 focus-visible:ring-2 focus-visible:ring-gold/20 disabled:opacity-50"
           />
         </div>
       </div>
@@ -139,8 +160,10 @@ export function TempleSettingsClient({
           onClick={() => void handleSave()}
           disabled={saving}
           className={cn(
-            "inline-flex h-10 items-center gap-2 rounded-xl px-5 text-sm font-medium text-background transition",
-            saving ? "cursor-not-allowed bg-foreground-muted" : "bg-gold hover:opacity-90",
+            "relative inline-flex h-10 items-center gap-2 overflow-hidden rounded-xl px-5 text-sm font-medium text-background transition-all",
+            saving 
+              ? "cursor-not-allowed bg-foreground-muted" 
+              : "bg-gold shadow-[0_0_20px_-5px_rgba(212,175,55,0.4)] hover:shadow-[0_0_25px_-5px_rgba(212,175,55,0.6)] hover:scale-[1.02] active:scale-[0.98]",
           )}
         >
           {saving ? (
@@ -150,6 +173,6 @@ export function TempleSettingsClient({
           )}
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -43,7 +43,7 @@ export type ManageOwnerContent = {
     displayName: string;
     qrId: string;
     isPublicPinRequired: boolean;
-    packageTier: "A" | "B" | "C";
+    packageId: string;
   };
   statements: Array<{
     id: string;
@@ -124,7 +124,7 @@ export async function loadManageOwnerContent(
       displayName: profile.displayName,
       qrId: profile.qrId,
       isPublicPinRequired: profile.isPublicPinRequired,
-      packageTier: profile.packageId,
+      packageId: profile.packageId,
     },
     statements,
     media,

@@ -69,7 +69,6 @@ export async function POST(request: Request) {
   }
 
   const wordLimit = assertStatementWordLimit(
-    auth.profile.packageId,
     parsed.data.statements,
   );
   if (!wordLimit.ok) {

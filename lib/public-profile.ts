@@ -7,7 +7,7 @@ export type PublicProfileSummary = {
   displayName: string;
   qrId: string;
   isPublicPinRequired: boolean;
-  packageTier: "A" | "B" | "C";
+  packageId: string;
 };
 
 export type PublicStatementItem = {
@@ -121,7 +121,7 @@ export async function resolvePublicProfileGate(
       displayName: profile.displayName,
       qrId: profile.qrId,
       isPublicPinRequired: profile.isPublicPinRequired,
-      packageTier: profile.packageId,
+      packageId: profile.packageId,
     },
     access,
     pinLock,
@@ -177,7 +177,7 @@ export async function loadPublicMemorialContent(
     select: { packageId: true },
   });
 
-  const tier = profile?.packageTier ?? "A";
+
 
   const [statements, media, comments, commentQuota] = await Promise.all([
     prisma.statement.findMany({
@@ -195,7 +195,7 @@ export async function loadPublicMemorialContent(
       orderBy: { createdAt: "asc" },
       select: PUBLIC_COMMENT_SELECT,
     }),
-    getCommentQuota(profileId, tier),
+    getCommentQuota(profileId),
   ]);
 
   return { statements, media, comments, commentQuota };

@@ -1,6 +1,8 @@
 "use client";
 
 import { useId, useState } from "react";
+import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   AlertTriangle,
   Check,
@@ -67,6 +69,7 @@ export function CreateProfileWizard({ packages }: { packages: PackageInfo[] }) {
   const [fieldError, setFieldError] = useState<string | null>(null);
   const [state, setState] = useState<CreateState>({ status: "idle" });
   const [copied, setCopied] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
   function resetForm() {
     setName("");
@@ -144,6 +147,8 @@ export function CreateProfileWizard({ packages }: { packages: PackageInfo[] }) {
         packageId: success.packageId,
       });
       setWizardStep(3);
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 4000);
     } catch {
       setState({
         status: "error",
@@ -234,14 +239,36 @@ export function CreateProfileWizard({ packages }: { packages: PackageInfo[] }) {
             />
           </div>
 
-          <button
-            type="button"
-            onClick={resetForm}
-            className="mt-8 inline-flex h-11 items-center justify-center rounded-xl border border-border bg-surface px-5 text-sm font-medium text-foreground transition hover:bg-background-secondary"
-          >
-            Create another memorial
-          </button>
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
+            <button
+              type="button"
+              onClick={resetForm}
+              className="inline-flex h-11 items-center justify-center rounded-xl border border-border bg-surface px-5 text-sm font-medium text-foreground transition hover:bg-background-secondary"
+            >
+              Create another memorial
+            </button>
+            <Link
+              href="/admin/profiles"
+              className="inline-flex h-11 items-center justify-center rounded-xl bg-gold px-8 text-sm font-medium text-background transition hover:bg-gold-hover"
+            >
+              Done
+            </Link>
+          </div>
         </div>
+
+        <AnimatePresence>
+          {showToast && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 rounded-xl bg-success px-5 py-3.5 text-[#0B0D0F] shadow-[0_10px_30px_-10px_rgba(111,175,143,0.6)]"
+            >
+              <CheckCircle2 className="h-5 w-5 stroke-[2.5]" />
+              <p className="text-sm font-bold">Success! Memorial created.</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     );
   }

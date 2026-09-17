@@ -8,10 +8,7 @@ import {
 } from "@/lib/admin-profiles";
 import { ProfileQrCard } from "@/components/admin/ProfileQrCard";
 import { SetupStatusBadge } from "@/components/admin/SetupStatusBadge";
-import {
-  formatPackageAdminLabel,
-  getPackageDefinition,
-} from "@/lib/packages";
+import { SHARED_PACKAGE_LIMITS } from "@/lib/packages";
 
 type ProfileDetailPageProps = {
   params: Promise<{ id: string }>;
@@ -40,7 +37,7 @@ export default async function AdminProfileDetailPage({
 
   const status = getSetupStatus(profile);
   const publicUrl = getPublicProfileUrl(profile.qrId);
-  const pkg = getPackageDefinition(profile.packageId);
+  const limits = SHARED_PACKAGE_LIMITS;
 
   return (
     <div className="space-y-6">
@@ -58,7 +55,7 @@ export default async function AdminProfileDetailPage({
           </h1>
           <SetupStatusBadge label={status.label} tone={status.tone} />
           <span className="rounded-full bg-surface-elevated px-2.5 py-1 text-xs font-medium text-foreground-secondary">
-            {formatPackageAdminLabel(profile.packageId)}
+            {profile.package.name}
           </span>
         </div>
         <p className="mt-2 text-sm text-foreground-secondary">
@@ -71,10 +68,10 @@ export default async function AdminProfileDetailPage({
           <p className="text-xs font-medium uppercase tracking-wide text-foreground-muted">
             Package
           </p>
-          <p className="mt-1 text-sm text-foreground">{pkg.label}</p>
+          <p className="mt-1 text-sm text-foreground">{profile.package.name}</p>
           <p className="mt-1 text-xs text-foreground-muted">
-            {pkg.limits.maxImages} photos · {pkg.limits.maxVideoSeconds}s video ·{" "}
-            {pkg.limits.maxAudioSeconds}s audio · {pkg.limits.maxStatementWords}{" "}
+            {limits.maxImages} photos · {limits.maxVideoSeconds}s video ·{" "}
+            {limits.maxAudioSeconds}s audio · {limits.maxStatementWords}{" "}
             words
           </p>
         </div>

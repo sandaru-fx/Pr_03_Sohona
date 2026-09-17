@@ -37,6 +37,7 @@ export function getPackageLimits(): PackageLimits {
 
 /** Max words allowed for the Nth comment (1-based). Null if over maxComments. */
 export function getCommentMaxWordsForIndex(
+  oneBasedIndex: number
 ): number | null {
   const { maxComments, commentSlots } = SHARED_PACKAGE_LIMITS;
   if (oneBasedIndex < 1 || oneBasedIndex > maxComments) return null;

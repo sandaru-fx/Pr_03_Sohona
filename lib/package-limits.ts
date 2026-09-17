@@ -1,4 +1,4 @@
-import type { MediaKind, PackageTier } from "@prisma/client";
+import type { MediaKind } from "@prisma/client";
 import { getPackageLimits } from "@/lib/packages";
 import { prisma } from "@/lib/prisma";
 import { totalStatementWords } from "@/lib/word-count";
@@ -8,7 +8,6 @@ export type LimitCheckResult =
   | { ok: false; error: string; message: string };
 
 export function assertStatementWordLimit(
-  tier: PackageTier,
   statements: Array<{ body: string }>,
 ): LimitCheckResult & { usedWords?: number; maxWords?: number } {
   const { maxStatementWords } = getPackageLimits();
@@ -80,7 +79,6 @@ export function assertAvDurationWithinLimit(input: {
  */
 export async function assertMediaUploadAllowed(input: {
   profileId: string;
-  tier: PackageTier;
   kind: MediaKind;
   durationSeconds?: number | null;
 }): Promise<LimitCheckResult> {

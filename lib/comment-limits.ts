@@ -1,4 +1,4 @@
-import type { PackageTier } from "@prisma/client";
+
 import {
   getCommentMaxWordsForIndex,
   getPackageLimits,
@@ -18,8 +18,7 @@ export type CommentLimitResult =
   | { ok: false; error: string; message: string };
 
 export async function getCommentQuota(
-  profileId: string,
-  tier: PackageTier,
+  profileId: string
 ): Promise<CommentQuota> {
   const { maxComments } = getPackageLimits();
   const used = await prisma.comment.count({ where: { profileId } });
@@ -37,7 +36,6 @@ export async function getCommentQuota(
  */
 export async function assertCanCreateComment(input: {
   profileId: string;
-  tier: PackageTier;
   body: string;
 }): Promise<CommentLimitResult> {
   const { maxComments } = getPackageLimits();

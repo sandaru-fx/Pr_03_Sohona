@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "framer-motion";
 import { MemorialComments } from "@/components/public/MemorialComments";
 import { MemorialMediaItem } from "@/components/public/MemorialMediaItem";
 import { Alert } from "@/components/ui/Alert";
@@ -11,7 +14,7 @@ import type {
 type MemorialViewProps = {
   displayName: string;
   qrId: string;
-  packageTier?: "A" | "B" | "C";
+  packageId: string;
   statements: PublicStatementItem[];
   media: PublicMediaMetaItem[];
   comments: PublicCommentItem[];
@@ -27,7 +30,7 @@ type MemorialViewProps = {
 export function MemorialView({
   displayName,
   qrId,
-  packageTier = "A",
+  packageId = "",
   statements,
   media,
   comments,
@@ -41,11 +44,16 @@ export function MemorialView({
 
   return (
     <div className="w-full max-w-2xl space-y-10 sm:space-y-12">
-      <header className="px-2 py-8 text-center sm:py-12">
+      <motion.header 
+        initial={{ opacity: 0, y: 20, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="px-2 py-8 text-center sm:py-12"
+      >
         <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">
           In remembrance
         </p>
-        <h1 className="mt-5 font-sans text-4xl font-medium tracking-tight text-[#F5F1E8] sm:text-5xl sm:leading-tight">
+        <h1 className="mt-5 font-serif text-4xl font-medium tracking-tight text-[#F5F1E8] sm:text-5xl sm:leading-tight">
           {displayName}
         </h1>
         <p className="mx-auto mt-5 max-w-md text-base leading-8 text-gray-400">
@@ -56,15 +64,15 @@ export function MemorialView({
             Unlocked with PIN for this device session.
           </p>
         ) : null}
-      </header>
+      </motion.header>
 
-      <section className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 sm:px-8 sm:py-10">
-        <h2 className="font-sans text-2xl font-medium tracking-tight text-[#F5F1E8]">
+      <section className="px-2 sm:px-0">
+        <h2 className="font-serif text-2xl font-medium tracking-tight text-center text-gold">
           Memories
         </h2>
         {statements.length === 0 ? (
           <EmptyState
-            className="mt-6"
+            className="mt-6 glass-panel rounded-2xl"
             title="No statements have been added yet."
             description="When the family is ready, words of remembrance will appear here."
           />
@@ -73,17 +81,25 @@ export function MemorialView({
             {statements.map((item) => (
               <li
                 key={item.id}
-                className="border-l border-gold/40 pl-5 text-base leading-8 text-[#F5F1E8]"
+                className="relative glass-panel rounded-2xl p-8 sm:p-10 text-center"
               >
-                {item.body}
+                <span className="absolute left-4 top-4 text-6xl font-serif text-gold-subtle select-none">
+                  "
+                </span>
+                <p className="relative z-10 text-lg sm:text-xl font-serif italic leading-relaxed text-[#F5F1E8]">
+                  {item.body}
+                </p>
+                <span className="absolute right-4 bottom-[-10px] text-6xl font-serif text-gold-subtle select-none">
+                  "
+                </span>
               </li>
             ))}
           </ul>
         )}
       </section>
 
-      <section className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 sm:px-8 sm:py-10">
-        <h2 className="font-sans text-2xl font-medium tracking-tight text-[#F5F1E8]">
+      <section className="glass-panel rounded-2xl px-6 py-8 sm:px-8 sm:py-10">
+        <h2 className="font-serif text-2xl font-medium tracking-tight text-[#F5F1E8]">
           Photographs & media
         </h2>
         <p className="mt-3 text-sm leading-7 text-gray-400">
@@ -136,7 +152,7 @@ export function MemorialView({
 
       <MemorialComments
         qrId={qrId}
-        packageTier={packageTier}
+        packageId={packageId}
         initialComments={comments.map((item) => ({
           ...item,
           createdAt: item.createdAt,

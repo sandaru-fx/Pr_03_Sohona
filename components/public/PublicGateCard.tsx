@@ -24,7 +24,7 @@ export function PublicGateCard({
       <MemorialView
         displayName={result.profile.displayName}
         qrId={result.profile.qrId}
-        packageTier={result.profile.packageId}
+        packageId={result.profile.packageId}
         statements={content.statements}
         media={content.media}
         comments={content.comments}

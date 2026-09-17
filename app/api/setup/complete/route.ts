@@ -102,14 +102,13 @@ export async function POST(request: Request) {
   const manageToken = generateManageToken();
   const manageTokenHash = hashToken(manageToken);
   const setupUsedAt = new Date();
-  const packageWindow = computePackageWindow(setupUsedAt, profile.packageId);
+  const packageWindow = computePackageWindow(new Date(), 5);
 
   const updated = await prisma.profile.updateMany({
     where: {
       id: profile.id,
       isSetupComplete: false,
       setupTokenHash: { not: null },
-      manageTokenHash: null,
     },
     data: {
       isSetupComplete: true,
@@ -139,7 +138,7 @@ export async function POST(request: Request) {
       ...securityEventRequestFields(request),
       metadata: {
         source: "family_setup",
-        packageTier: profile.packageId,
+        packageId: profile.packageId,
         retentionYears: packageWindow.retentionYears,
       },
     },
@@ -158,7 +157,7 @@ export async function POST(request: Request) {
         qrId: profile.qrId,
         isSetupComplete: true,
         setupUsedAt,
-        packageTier: profile.packageId,
+        packageId: profile.packageId,
         packageStartedAt: packageWindow.packageStartedAt,
         packageEndsAt: packageWindow.packageEndsAt,
       },

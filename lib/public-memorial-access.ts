@@ -8,7 +8,7 @@ export type PublicMemorialAccessSuccess = {
     qrId: string;
     displayName: string;
     isPublicPinRequired: boolean;
-    packageTier: "A" | "B" | "C";
+    packageId: string;
   };
 };
 
@@ -77,7 +77,7 @@ export async function authorizePublicMemorialByQrId(
       qrId: profile.qrId,
       displayName: profile.displayName,
       isPublicPinRequired: profile.isPublicPinRequired,
-      packageTier: profile.packageId,
+      packageId: profile.packageId,
     },
   };
 }

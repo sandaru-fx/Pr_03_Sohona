@@ -15,7 +15,7 @@ type SetupFlowProps = {
   expiresLabel?: string | null;
   hasPin: boolean;
   r2Configured: boolean;
-  packageTier: "A" | "B" | "C";
+  packageId: string;
   initialStatements: Array<{ id: string; body: string }>;
   initialMedia: Array<{
     id: string;
@@ -42,7 +42,7 @@ export function SetupFlow({
   expiresLabel,
   hasPin,
   r2Configured,
-  packageTier,
+  packageId,
   initialStatements,
   initialMedia,
 }: SetupFlowProps) {
@@ -65,7 +65,7 @@ export function SetupFlow({
     in: { opacity: 1, y: 0, filter: "blur(0px)" },
     out: { opacity: 0, y: -15, filter: "blur(4px)" }
   };
-  const pageTransition = {
+  const pageTransition: any = {
     type: "spring", stiffness: 300, damping: 25
   };
 
@@ -150,7 +150,7 @@ export function SetupFlow({
               displayName={displayName}
               setupToken={setupToken}
               r2Configured={r2Configured}
-              packageTier={packageTier}
+              packageId={packageId}
               initialStatements={initialStatements}
               initialMedia={initialMedia}
               onComplete={setComplete}

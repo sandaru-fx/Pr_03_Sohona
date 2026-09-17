@@ -9,7 +9,7 @@ export type SetupGateProfile = {
   setupTokenExpiresAt: Date | null;
   setupUsedAt: Date | null;
   hasPin: boolean;
-  packageTier: "A" | "B" | "C";
+  packageId: string;
 };
 
 export type SetupStatementItem = {
@@ -105,7 +105,7 @@ export async function resolveSetupGate(
     setupTokenExpiresAt: profile.setupTokenExpiresAt,
     setupUsedAt: profile.setupUsedAt,
     hasPin: Boolean(profile.hashedPin),
-    packageTier: profile.packageId,
+    packageId: profile.packageId,
   };
 
   if (profile.isSetupComplete) {

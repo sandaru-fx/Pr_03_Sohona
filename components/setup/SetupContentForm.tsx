@@ -40,7 +40,7 @@ type SetupContentFormProps = {
   displayName: string;
   setupToken: string;
   r2Configured: boolean;
-  packageTier: "A" | "B" | "C";
+  packageId: string;
   initialStatements: Array<{ id: string; body: string }>;
   initialMedia: MediaItem[];
   onComplete: (result: SetupCompleteResult) => void;
@@ -67,7 +67,7 @@ export function SetupContentForm({
   displayName,
   setupToken,
   r2Configured,
-  packageTier,
+  packageId,
   initialStatements,
   initialMedia,
   onComplete,
@@ -167,6 +167,7 @@ export function SetupContentForm({
     setError(null);
     setMessage(null);
     setFinishing(true);
+    let success = false;
     try {
       await persistStatements(false);
 
@@ -184,12 +185,15 @@ export function SetupContentForm({
       };
 
       if (!response.ok || !data.manage?.url || !data.publicUrl) {
+        // If already complete, we should probably just transition?
+        // But for now, just show the error.
         setError(
           data.message ?? data.error ?? "Could not finish setup. Please try again.",
         );
         return;
       }
 
+      success = true;
       onComplete({
         manageUrl: data.manage.url,
         publicUrl: data.publicUrl,
@@ -202,7 +206,9 @@ export function SetupContentForm({
           : "Network error while finishing setup.",
       );
     } finally {
-      setFinishing(false);
+      if (!success) {
+        setFinishing(false);
+      }
     }
   }
 
@@ -359,7 +365,7 @@ export function SetupContentForm({
           You can save now and finish setup in the next step.
         </p>
         <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-gold/20 bg-gold/5 px-3 py-1 text-xs font-medium text-gold">
-          {packageTier} Tier Package Limits
+          {packageId} Tier Package Limits
         </div>
         <p className="mt-3 text-xs leading-5 text-foreground-muted">
           {limits.maxImages} photos · video ≤ {limits.maxVideoSeconds}s · audio ≤ {limits.maxAudioSeconds}s · statements ≤ {limits.maxStatementWords} words total.

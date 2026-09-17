@@ -19,7 +19,7 @@ export type MemorialCommentItem = {
 
 type MemorialCommentsProps = {
   qrId: string;
-  packageTier?: "A" | "B" | "C";
+  packageId?: string;
   initialComments: MemorialCommentItem[];
   used: number;
   max: number;
@@ -38,7 +38,7 @@ function formatCommentDate(value: string | Date) {
 
 export function MemorialComments({
   qrId,
-  packageTier = "A",
+  packageId,
   initialComments,
   used: initialUsed,
   max,

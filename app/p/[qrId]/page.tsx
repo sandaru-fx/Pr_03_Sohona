@@ -57,14 +57,14 @@ export default async function PublicProfilePage({
     <main
       className={
         isMemorial
-          ? "flex min-h-full flex-1 flex-col items-center bg-[#0B0D0F] px-5 py-12 text-[#F5F1E8] sm:px-6 sm:py-16"
+          ? "ambient-glow flex min-h-full flex-1 flex-col items-center bg-[#0B0D0F] px-5 py-12 text-[#F5F1E8] sm:px-6 sm:py-16 relative"
           : "relative flex min-h-full flex-1 flex-col items-center justify-center overflow-hidden bg-[#0B0D0F] px-5 py-16 text-[#F5F1E8] sm:px-6"
       }
     >
       {!isMemorial ? (
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_0%,rgba(201,164,92,0.08),transparent_55%)]"
+          className="ambient-glow pointer-events-none absolute inset-0"
         />
       ) : null}
       <div className="relative w-full max-w-2xl">

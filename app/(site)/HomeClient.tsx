@@ -26,7 +26,7 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
     },
   };
 
-  const fadeUp = {
+  const fadeUp: any = {
     hidden: { opacity: 0, y: 30 },
     show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
   };

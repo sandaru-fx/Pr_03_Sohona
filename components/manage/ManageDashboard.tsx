@@ -41,7 +41,7 @@ type ManageDashboardProps = {
   displayName: string;
   qrId: string;
   isPublicPinRequired: boolean;
-  packageTier: "A" | "B" | "C";
+  packageId: string;
   r2Configured: boolean;
   initialStatements: Array<{ id: string; body: string }>;
   initialMedia: MediaItem[];
@@ -72,7 +72,7 @@ export function ManageDashboard({
   displayName,
   qrId,
   isPublicPinRequired,
-  packageTier,
+  packageId,
   r2Configured,
   initialStatements,
   initialMedia,

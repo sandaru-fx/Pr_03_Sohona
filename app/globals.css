@@ -14,13 +14,13 @@
   --foreground-muted: #6b7280;
 
   /* Accent gold — use sparingly (~5%) */
-  --gold: #c9a45c;
-  --gold-hover: #d4b36e;
-  --gold-subtle: rgba(201, 164, 92, 0.1);
+  --gold: #dcb871;
+  --gold-hover: #e5c586;
+  --gold-subtle: rgba(220, 184, 113, 0.1);
 
   /* Subtle borders (no heavy shadows) */
-  --border: #2a2e33;
-  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border: #23272b;
+  --border-subtle: rgba(255, 255, 255, 0.05);
 
   /* Semantic */
   --success: #6faf8f;
@@ -50,10 +50,10 @@
   --color-warning: var(--warning);
   --color-info: var(--info);
 
-  /* Single UI font: DM Sans */
+  /* Single UI font: DM Sans for sans, Playfair for serif */
   --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-playfair), ui-serif, Georgia, serif;
+  --font-display: var(--font-playfair), ui-serif, Georgia, serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
@@ -113,3 +113,32 @@ body {
   animation: sohona-pulse 1.4s ease-in-out infinite;
   background: var(--surface-elevated);
 }
+
+/* Glassmorphism utilities */
+.glass-panel {
+  background: rgba(24, 28, 32, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Ambient glow background */
+.ambient-glow {
+  background: radial-gradient(
+    circle at 50% 10%,
+    rgba(220, 184, 113, 0.07) 0%,
+    transparent 50%
+  );
+  animation: ambient-drift 12s ease-in-out infinite alternate;
+}
+
+@keyframes ambient-drift {
+  0% {
+    background-position: center 0%;
+  }
+  100% {
+    background-position: center 5%;
+  }
+}
+

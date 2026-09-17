@@ -81,7 +81,6 @@ export async function POST(request: Request) {
   if (uploadCheck.kind === "PHOTO") {
     const photoLimit = await assertMediaUploadAllowed({
       profileId: auth.profile.id,
-      tier: auth.profile.packageId,
       kind: "PHOTO",
     });
     if (!photoLimit.ok) {

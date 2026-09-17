@@ -13,7 +13,7 @@ export type ManageAuthProfile = {
   displayName: string;
   isPublicPinRequired: boolean;
   isSetupComplete: boolean;
-  packageTier: "A" | "B" | "C";
+  packageId: string;
 };
 
 export type ManageAuthSuccess = {
@@ -93,7 +93,7 @@ export async function authorizeManageSession(): Promise<
       displayName: profile.displayName,
       isPublicPinRequired: profile.isPublicPinRequired,
       isSetupComplete: profile.isSetupComplete,
-      packageTier: profile.packageId,
+      packageId: profile.packageId,
     },
   };
 }

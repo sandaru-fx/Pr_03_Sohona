@@ -10,11 +10,11 @@ export function OrnamentalDivider({
   label?: string;
 }) {
   return (
-    <div className={`flex flex-col items-center justify-center gap-3 ${className}`} aria-hidden="true">
+    <div className={`flex flex-col items-center justify-center gap-4 ${className}`}>
       {label && (
-        <span className="text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.4em] text-gold">
+        <h2 className="text-[11px] sm:text-xs font-medium uppercase tracking-[0.3em] text-[#D7B878] text-center">
           {label}
-        </span>
+        </h2>
       )}
       
       <div className="flex items-center w-full max-w-sm">
@@ -24,6 +24,7 @@ export function OrnamentalDivider({
           height="12"
           viewBox="0 0 20 20"
           fill="none"
+          aria-hidden="true"
           className="shrink-0 text-gold/60 mx-3"
         >
           <path

@@ -17,6 +17,7 @@ export function FloatingParticles({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -106,14 +107,15 @@ export function FloatingParticles({
     initParticles();
     animate();
 
-    window.addEventListener("resize", () => {
+    const handleResize = () => {
       resize();
       initParticles();
-    });
+    };
+    window.addEventListener("resize", handleResize);
 
     return () => {
       cancelAnimationFrame(animationFrameId);
-      window.removeEventListener("resize", resize);
+      window.removeEventListener("resize", handleResize);
     };
   }, [count]);
 

@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import { ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { MemorialMediaItem } from "@/components/public/MemorialMediaItem";
 import type { PublicMediaMetaItem } from "@/lib/public-profile";
 
@@ -18,11 +18,15 @@ export function MemorialPhotoCarousel({
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const totalSlides = photos.length;
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
 
   const updateActiveIndex = useCallback(() => {
     const el = scrollRef.current;
     if (!el) return;
     const scrollLeft = el.scrollLeft;
+    setAtStart(scrollLeft <= 2);
+    setAtEnd(scrollLeft + el.clientWidth >= el.scrollWidth - 2);
     const cardWidth = el.firstElementChild
       ? (el.firstElementChild as HTMLElement).offsetWidth
       : 300;
@@ -35,16 +39,18 @@ export function MemorialPhotoCarousel({
     const el = scrollRef.current;
     if (!el) return;
     el.addEventListener("scroll", updateActiveIndex, { passive: true });
-    return () => el.removeEventListener("scroll", updateActiveIndex);
+    const observer = new ResizeObserver(updateActiveIndex);
+    observer.observe(el);
+    return () => { el.removeEventListener("scroll", updateActiveIndex); observer.disconnect(); };
   }, [updateActiveIndex]);
 
-  function scrollNext() {
+  function scrollNext(direction = 1) {
     const el = scrollRef.current;
     if (!el) return;
     const cardWidth = el.firstElementChild
       ? (el.firstElementChild as HTMLElement).offsetWidth
       : 300;
-    el.scrollBy({ left: cardWidth + 24, behavior: "smooth" });
+    el.scrollBy({ left: (cardWidth + 24) * direction, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   }
 
   function scrollToIndex(index: number) {
@@ -53,7 +59,7 @@ export function MemorialPhotoCarousel({
     const cardWidth = el.firstElementChild
       ? (el.firstElementChild as HTMLElement).offsetWidth
       : 300;
-    el.scrollTo({ left: index * (cardWidth + 24), behavior: "smooth" });
+    el.scrollTo({ left: index * (cardWidth + 24), behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   }
 
   // Photo captions based on index
@@ -98,36 +104,14 @@ export function MemorialPhotoCarousel({
         ))}
       </div>
 
-      {/* Navigation arrow */}
-      {totalSlides > 1 && (
-        <button
-          type="button"
-          onClick={scrollNext}
-          className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border border-gold/20 bg-[#0A0A09]/80 text-gold/60 hover:text-gold hover:border-gold/40 transition-all backdrop-blur-sm"
-          aria-label="Next photo"
-        >
-          <ChevronRight className="h-5 w-5" />
-        </button>
-      )}
-
-      {/* Dot indicators */}
-      {totalSlides > 1 && (
-        <div className="flex justify-center gap-2 mt-6">
-          {photos.map((_, index) => (
-            <button
-              key={index}
-              type="button"
-              onClick={() => scrollToIndex(index)}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                index === activeIndex
-                  ? "w-6 bg-gold"
-                  : "w-1.5 bg-gold/20 hover:bg-gold/40"
-              }`}
-              aria-label={`Go to photo ${index + 1}`}
-            />
-          ))}
-        </div>
-      )}
+      {totalSlides > 1 && <div className="memorial-gallery-controls">
+        <button type="button" disabled={atStart} onClick={() => scrollNext(-1)} aria-label="Previous photographs"><ChevronLeft size={20} /></button>
+        <span>Browse {totalSlides} photographs</span>
+        <button type="button" disabled={atEnd} onClick={() => scrollNext(1)} aria-label="Next photographs"><ChevronRight size={20} /></button>
+      </div>}
+      {totalSlides > 1 && <div className="memorial-gallery-dots">
+        {photos.map((photo, index) => <button key={photo.id} type="button" onClick={() => scrollToIndex(index)} aria-label={`Go to photo ${index + 1}`} aria-pressed={index === activeIndex}><span /></button>)}
+      </div>}
     </div>
   );
 }

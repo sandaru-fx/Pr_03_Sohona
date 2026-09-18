@@ -1,0 +1,5 @@
+Generated using the built-in image_gen tool, then encoded as WebP (quality 88).
+Asset: public/memorial-sanctuary.webp
+
+Prompt:
+Create a premium photorealistic cinematic background artwork for a digital memorial website, landscape 1536x1024. Dark ancient Sri Lankan temple interior with warm amber candlelight and subtle golden dust. A single ornate dark stone memorial with a rounded pointed arch, delicate engraved botanical ornament and thin antique gold edging stands perfectly centered. Its blank face occupies x=40%-60%, y=15%-52%; absolutely NO letters or text anywhere. Small candles and botanical gold leaves around its base at y=58%. Large beautifully lit ivory and gold lotus on a stone pedestal on the right at x=82%, y=48%. Left area dark negative space for a quote. Upper central soft shaft of warm gold light. Bottom 30% fades naturally to nearly black for live website title text. Rich realistic stone detail, elegant restrained sacred atmosphere, luminous gold highlights, readable dimensional monument, not gloomy or flat. No people, no typography, no logo, no watermark. This is artwork only, not a screenshot or UI mockup.

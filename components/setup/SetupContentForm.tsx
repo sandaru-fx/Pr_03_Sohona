@@ -213,117 +213,84 @@ export function SetupContentForm({
   }
 
   async function onUpload(fileList: FileList | null) {
-    if (!fileList?.[0]) return;
+    if (!fileList || fileList.length === 0) return;
     if (!r2Configured) {
       setError("Media storage is not connected yet. You can still save statements.");
       return;
     }
 
-    const file = fileList[0];
     setError(null);
     setMessage(null);
     setUploading(true);
+    let currentPhotoCount = photoCount;
+    let uploadedCount = 0;
 
-    try {
-      if (kind === "PHOTO" && photoCount >= limits.maxImages) {
-        setError(`This package allows at most ${limits.maxImages} images.`);
-        return;
-      }
-
-      let durationSeconds: number | undefined;
-      if (kind === "VIDEO" || kind === "VOICE") {
-        const duration = await readFileDurationSeconds(file);
-        const rounded = Math.ceil(duration);
-        const maxSeconds =
-          kind === "VIDEO" ? limits.maxVideoSeconds : limits.maxAudioSeconds;
-        if (rounded > maxSeconds) {
-          setError(
-            kind === "VIDEO"
-              ? `Video must be ${limits.maxVideoSeconds}s or less (about ${rounded}s).`
-              : `Audio must be ${limits.maxAudioSeconds}s or less (about ${rounded}s).`,
-          );
-          return;
+    for (let i = 0; i < fileList.length; i++) {
+      const file = fileList[i];
+      try {
+        if (kind === "PHOTO" && currentPhotoCount >= limits.maxImages) {
+          setError(`This package allows at most ${limits.maxImages} images.`);
+          break;
         }
-        durationSeconds = rounded;
+
+        let durationSeconds: number | undefined;
+        if (kind === "VIDEO" || kind === "VOICE") {
+          const duration = await readFileDurationSeconds(file);
+          const rounded = Math.ceil(duration);
+          const maxSeconds =
+            kind === "VIDEO" ? limits.maxVideoSeconds : limits.maxAudioSeconds;
+          if (rounded > maxSeconds) {
+            setError(
+              kind === "VIDEO"
+                ? `Video must be ${limits.maxVideoSeconds}s or less (about ${rounded}s).`
+                : `Audio must be ${limits.maxAudioSeconds}s or less (about ${rounded}s).`,
+            );
+            break;
+          }
+          durationSeconds = rounded;
+        }
+
+        // Server-proxy upload: file goes Browser → Next.js → R2 (no CORS needed)
+        const formData = new FormData();
+        formData.append("profileId", profileId);
+        formData.append("setupToken", setupToken);
+        formData.append("kind", kind);
+        formData.append("file", file);
+        if (durationSeconds !== undefined) {
+          formData.append("durationSeconds", String(durationSeconds));
+        }
+
+        const response = await fetch("/api/media/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        const result = (await response.json().catch(() => ({}))) as {
+          media?: MediaItem;
+          message?: string;
+          error?: string;
+        };
+
+        if (!response.ok || !result.media) {
+          setError(result.message ?? result.error ?? "Could not upload file.");
+          break;
+        }
+
+        setMedia((current) => [...current, result.media as MediaItem]);
+        if (kind === "PHOTO") currentPhotoCount++;
+        uploadedCount++;
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Network error during upload.",
+        );
+        break;
       }
-
-      const presignResponse = await fetch("/api/media/presign", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          profileId,
-          setupToken,
-          kind,
-          contentType: file.type || "application/octet-stream",
-          sizeBytes: file.size,
-          fileName: file.name,
-        }),
-      });
-
-      const presign = (await presignResponse.json().catch(() => ({}))) as {
-        uploadUrl?: string;
-        r2ObjectKey?: string;
-        headers?: { "Content-Type"?: string };
-        message?: string;
-        error?: string;
-      };
-
-      if (!presignResponse.ok || !presign.uploadUrl || !presign.r2ObjectKey) {
-        setError(presign.message ?? presign.error ?? "Could not start upload.");
-        return;
-      }
-
-      const putResponse = await fetch(presign.uploadUrl, {
-        method: "PUT",
-        headers: {
-          "Content-Type":
-            presign.headers?.["Content-Type"] ||
-            file.type ||
-            "application/octet-stream",
-        },
-        body: file,
-      });
-
-      if (!putResponse.ok) {
-        setError("Upload to storage failed. Please try again.");
-        return;
-      }
-
-      const confirmResponse = await fetch("/api/media/confirm", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          profileId,
-          setupToken,
-          kind,
-          contentType: file.type || "application/octet-stream",
-          sizeBytes: file.size,
-          fileName: file.name,
-          r2ObjectKey: presign.r2ObjectKey,
-          ...(durationSeconds !== undefined ? { durationSeconds } : {}),
-        }),
-      });
-
-      const confirm = (await confirmResponse.json().catch(() => ({}))) as {
-        media?: MediaItem;
-        message?: string;
-        error?: string;
-      };
-
-      if (!confirmResponse.ok || !confirm.media) {
-        setError(confirm.message ?? confirm.error ?? "Could not confirm upload.");
-        return;
-      }
-
-      setMedia((current) => [...current, confirm.media as MediaItem]);
-      showMessage(`Uploaded ${file.name}`);
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Network error during upload.",
-      );
-    } finally {
-      setUploading(false);
     }
+
+    if (uploadedCount > 0) {
+      showMessage(`Successfully uploaded ${uploadedCount} file(s).`);
+    }
+    setUploading(false);
   }
 
   return (
@@ -546,6 +513,7 @@ export function SetupContentForm({
               {uploading ? "Uploading…" : `Upload ${kind.toLowerCase()}`}
               <input
                 type="file"
+                multiple
                 accept={accept}
                 className="sr-only"
                 disabled={uploading || finishing}

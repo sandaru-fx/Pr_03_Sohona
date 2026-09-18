@@ -182,7 +182,7 @@ export function ManageDashboard({
   }
 
   async function onUpload(fileList: FileList | null) {
-    if (!fileList?.[0]) return;
+    if (!fileList || fileList.length === 0) return;
     if (!r2Configured) {
       setError(
         "Media storage is not connected yet. You can still edit statements.",
@@ -190,110 +190,119 @@ export function ManageDashboard({
       return;
     }
 
-    const file = fileList[0];
     setError(null);
     setMessage(null);
     setUploading(true);
+    let currentPhotoCount = photoCount;
+    let uploadedCount = 0;
 
-    try {
-      if (kind === "PHOTO" && photoCount >= limits.maxImages) {
-        setError(`This package allows at most ${limits.maxImages} images.`);
-        return;
-      }
-
-      let durationSeconds: number | undefined;
-      if (kind === "VIDEO" || kind === "VOICE") {
-        const duration = await readFileDurationSeconds(file);
-        const rounded = Math.ceil(duration);
-        const maxSeconds =
-          kind === "VIDEO" ? limits.maxVideoSeconds : limits.maxAudioSeconds;
-        if (rounded > maxSeconds) {
-          setError(
-            kind === "VIDEO"
-              ? `Video must be ${limits.maxVideoSeconds}s or less (about ${rounded}s).`
-              : `Audio must be ${limits.maxAudioSeconds}s or less (about ${rounded}s).`,
-          );
-          return;
+    for (let i = 0; i < fileList.length; i++) {
+      const file = fileList[i];
+      try {
+        if (kind === "PHOTO" && currentPhotoCount >= limits.maxImages) {
+          setError(`This package allows at most ${limits.maxImages} images.`);
+          break;
         }
-        durationSeconds = rounded;
-      }
 
-      const presignResponse = await fetch("/api/manage/media/presign", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          kind,
-          contentType: file.type || "application/octet-stream",
-          sizeBytes: file.size,
-          fileName: file.name,
-        }),
-      });
+        let durationSeconds: number | undefined;
+        if (kind === "VIDEO" || kind === "VOICE") {
+          const duration = await readFileDurationSeconds(file);
+          const rounded = Math.ceil(duration);
+          const maxSeconds =
+            kind === "VIDEO" ? limits.maxVideoSeconds : limits.maxAudioSeconds;
+          if (rounded > maxSeconds) {
+            setError(
+              kind === "VIDEO"
+                ? `Video must be ${limits.maxVideoSeconds}s or less (about ${rounded}s).`
+                : `Audio must be ${limits.maxAudioSeconds}s or less (about ${rounded}s).`,
+            );
+            break;
+          }
+          durationSeconds = rounded;
+        }
 
-      const presign = (await presignResponse.json().catch(() => ({}))) as {
-        uploadUrl?: string;
-        r2ObjectKey?: string;
-        headers?: { "Content-Type"?: string };
-        message?: string;
-        error?: string;
-      };
+        const presignResponse = await fetch("/api/manage/media/presign", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            kind,
+            contentType: file.type || "application/octet-stream",
+            sizeBytes: file.size,
+            fileName: file.name,
+          }),
+        });
 
-      if (!presignResponse.ok || !presign.uploadUrl || !presign.r2ObjectKey) {
-        setError(presign.message ?? presign.error ?? "Could not start upload.");
-        return;
-      }
+        const presign = (await presignResponse.json().catch(() => ({}))) as {
+          uploadUrl?: string;
+          r2ObjectKey?: string;
+          headers?: { "Content-Type"?: string };
+          message?: string;
+          error?: string;
+        };
 
-      const putResponse = await fetch(presign.uploadUrl, {
-        method: "PUT",
-        headers: {
-          "Content-Type":
-            presign.headers?.["Content-Type"] ||
-            file.type ||
-            "application/octet-stream",
-        },
-        body: file,
-      });
+        if (!presignResponse.ok || !presign.uploadUrl || !presign.r2ObjectKey) {
+          setError(presign.message ?? presign.error ?? "Could not start upload.");
+          break;
+        }
 
-      if (!putResponse.ok) {
-        setError("Upload to storage failed. Please try again.");
-        return;
-      }
+        const putResponse = await fetch(presign.uploadUrl, {
+          method: "PUT",
+          headers: {
+            "Content-Type":
+              presign.headers?.["Content-Type"] ||
+              file.type ||
+              "application/octet-stream",
+          },
+          body: file,
+        });
 
-      const confirmResponse = await fetch("/api/manage/media/confirm", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          kind,
-          contentType: file.type || "application/octet-stream",
-          sizeBytes: file.size,
-          fileName: file.name,
-          r2ObjectKey: presign.r2ObjectKey,
-          ...(durationSeconds !== undefined ? { durationSeconds } : {}),
-        }),
-      });
+        if (!putResponse.ok) {
+          setError("Upload to storage failed. Please try again.");
+          break;
+        }
 
-      const confirm = (await confirmResponse.json().catch(() => ({}))) as {
-        media?: MediaItem;
-        message?: string;
-        error?: string;
-      };
+        const confirmResponse = await fetch("/api/manage/media/confirm", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            kind,
+            contentType: file.type || "application/octet-stream",
+            sizeBytes: file.size,
+            fileName: file.name,
+            r2ObjectKey: presign.r2ObjectKey,
+            ...(durationSeconds !== undefined ? { durationSeconds } : {}),
+          }),
+        });
 
-      if (!confirmResponse.ok || !confirm.media) {
+        const confirm = (await confirmResponse.json().catch(() => ({}))) as {
+          media?: MediaItem;
+          message?: string;
+          error?: string;
+        };
+
+        if (!confirmResponse.ok || !confirm.media) {
+          setError(
+            confirm.message ?? confirm.error ?? "Could not confirm upload.",
+          );
+          break;
+        }
+
+        setMedia((current) => [...current, confirm.media as MediaItem]);
+        if (kind === "PHOTO") currentPhotoCount++;
+        uploadedCount++;
+      } catch (err) {
         setError(
-          confirm.message ?? confirm.error ?? "Could not confirm upload.",
+          err instanceof Error ? err.message : "Network error during upload.",
         );
-        return;
+        break;
       }
-
-      setMedia((current) => [...current, confirm.media as MediaItem]);
-      setMessage(`Uploaded ${file.name}`);
-      router.refresh();
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Network error during upload.",
-      );
-    } finally {
-      setUploading(false);
     }
+
+    if (uploadedCount > 0) {
+      setMessage(`Successfully uploaded ${uploadedCount} file(s).`);
+      router.refresh();
+    }
+    setUploading(false);
   }
 
   async function onDeleteMedia(mediaId: string) {
@@ -599,6 +608,7 @@ export function ManageDashboard({
               {uploading ? "Uploading…" : `Upload ${kind.toLowerCase()}`}
               <input
                 type="file"
+                multiple
                 accept={accept}
                 className="sr-only"
                 disabled={busy}

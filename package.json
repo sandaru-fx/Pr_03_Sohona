@@ -26,7 +26,8 @@
     "day10:env-check": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day10-env-check.ts",
     "day10:wiring-check": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day10-wiring-check.ts",
 
-    "redis:check": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/redis-check.ts"
+    "redis:check": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/redis-check.ts",
+    "r2:set-cors": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/r2-set-cors.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.3",

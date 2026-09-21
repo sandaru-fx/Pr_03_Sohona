@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Phone, Mail, MapPin } from "lucide-react";
+import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
 
 export function SiteFooter() {
   return (
@@ -60,17 +60,21 @@ export function SiteFooter() {
           <div className="flex flex-col gap-6">
             <h3 className="text-lg font-semibold text-white drop-shadow-lg">Get in Touch</h3>
             <div className="flex flex-col gap-4 text-base font-medium text-gray-100 drop-shadow-lg">
-              <div className="flex items-center gap-3">
-                <Phone className="h-5 w-5 text-gold" />
-                <span>+94 76 804 6019</span>
+              <div className="flex items-start gap-3">
+                <Phone className="mt-1 h-5 w-5 shrink-0 text-gold" />
+                <span className="leading-tight">076 804 6019<br />077 488 0604<br />077 948 9397</span>
               </div>
               <div className="flex items-center gap-3">
-                <Mail className="h-5 w-5 text-gold" />
-                <span>hello@mathakaqr.com</span>
+                <MessageCircle className="h-5 w-5 shrink-0 text-gold" />
+                <span>076 894 6019 (WhatsApp)</span>
               </div>
               <div className="flex items-center gap-3">
-                <MapPin className="h-5 w-5 text-gold" />
-                <span>Colombo, Sri Lanka</span>
+                <Mail className="h-5 w-5 shrink-0 text-gold" />
+                <span>mathakaqr@gmail.com</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <MapPin className="h-5 w-5 shrink-0 text-gold" />
+                <span>Galigamuwa, Kegalle</span>
               </div>
             </div>
             {/* Social Icons 

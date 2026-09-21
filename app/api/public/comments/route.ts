@@ -66,12 +66,16 @@ export async function POST(request: Request) {
       profileId: auth.profile.id,
       body: parsed.data.body,
       wordCount: limit.wordCount,
+      // authorName: parsed.data.authorName,
+      // authorRelationship: parsed.data.authorRelationship,
       status: "VISIBLE",
     },
     select: {
       id: true,
       body: true,
       wordCount: true,
+      // authorName: true,
+      // authorRelationship: true,
       createdAt: true,
     },
   });

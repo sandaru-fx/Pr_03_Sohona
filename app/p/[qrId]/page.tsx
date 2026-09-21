@@ -57,7 +57,7 @@ export default async function PublicProfilePage({
     <main
       className={
         isMemorial
-          ? "flex min-h-full flex-1 flex-col items-center bg-[#0A0A09] text-[#F2EDE3] relative overflow-hidden"
+          ? "flex min-h-full flex-1 flex-col items-center bg-[#0A0A09] text-[#F2EDE3] relative"
           : "relative flex min-h-full flex-1 flex-col items-center justify-center overflow-hidden bg-[#0A0A09] px-5 py-16 text-[#F2EDE3] sm:px-6"
       }
     >

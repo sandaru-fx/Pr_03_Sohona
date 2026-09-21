@@ -28,6 +28,8 @@ export type PublicCommentItem = {
   id: string;
   body: string;
   wordCount: number;
+  authorName: string | null;
+  authorRelationship: string | null;
   createdAt: Date;
 };
 
@@ -156,6 +158,8 @@ export const PUBLIC_COMMENT_SELECT = {
   id: true,
   body: true,
   wordCount: true,
+  // authorName: true,
+  // authorRelationship: true,
   createdAt: true,
 } as const;
 

@@ -195,9 +195,10 @@ export function ManageDashboard({
     setUploading(true);
     let currentPhotoCount = photoCount;
     let uploadedCount = 0;
+    const files = Array.from(fileList);
 
-    for (let i = 0; i < fileList.length; i++) {
-      const file = fileList[i];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
       try {
         if (kind === "PHOTO" && currentPhotoCount >= limits.maxImages) {
           setError(`This package allows at most ${limits.maxImages} images.`);

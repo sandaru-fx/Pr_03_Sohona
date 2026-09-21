@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 type MemorialMediaItemProps = {
   item: PublicMediaMetaItem;
   enabled: boolean;
-  presentation?: "list" | "gallery" | "voice" | "video";
+  presentation?: "list" | "gallery" | "accordion" | "voice" | "video";
 };
 
 function formatBytes(size: number) {
@@ -151,6 +151,56 @@ export function MemorialMediaItem({
     } finally {
       setLoading(false);
     }
+  }
+
+  if (presentation === "accordion") {
+    return (
+      <div ref={rootRef} className="h-full w-full">
+        {!enabled && (
+          <div className="flex h-full items-center justify-center bg-black/50 p-4 text-center text-sm text-warning">
+            Media storage reconnecting...
+          </div>
+        )}
+        {enabled && loading && !url && (
+          <div className="flex h-full items-center justify-center bg-[#0B0D0F] text-sm text-gray-500">
+            <Loader2 className="mr-2 h-6 w-6 animate-spin" />
+          </div>
+        )}
+        {enabled && error && (
+          <div className="flex h-full flex-col items-center justify-center bg-[#0B0D0F] p-4 text-center text-sm text-error">
+            <p>Failed to load</p>
+            <button type="button" onClick={() => void retry()} className="mt-2 underline">Retry</button>
+          </div>
+        )}
+        {enabled && url && (
+          <>
+            <button 
+              type="button" 
+              className="group relative block h-full w-full overflow-hidden" 
+              onClick={() => dialogRef.current?.showModal()} 
+              aria-label={`Enlarge ${item.originalName ?? "memorial photo"}`}
+            >
+              <img 
+                src={url} 
+                alt={item.originalName ?? "Memorial photo"} 
+                className="h-full w-full object-cover transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-[1.03]" 
+                onError={() => void retry()} 
+              />
+              <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-700 group-hover:bg-black/20 group-hover:opacity-100">
+                <div className="rounded-full bg-black/40 p-4 text-white backdrop-blur-sm transition-transform duration-500 scale-90 group-hover:scale-100">
+                  <Maximize2 size={24} />
+                </div>
+              </div>
+            </button>
+            <dialog ref={dialogRef} className="memorial-lightbox" aria-label={item.originalName ?? "Enlarged memorial photograph"} onClick={event => { if (event.target === event.currentTarget) dialogRef.current?.close(); }}>
+              <button type="button" className="memorial-lightbox-close" aria-label="Close photograph" onClick={() => dialogRef.current?.close()}><X size={24} /></button>
+              <img src={url} alt={item.originalName ?? "Memorial photo"} />
+              <p>{item.originalName?.replace(/\.[^.]+$/, "") ?? "A cherished memory"}</p>
+            </dialog>
+          </>
+        )}
+      </div>
+    );
   }
 
   return (

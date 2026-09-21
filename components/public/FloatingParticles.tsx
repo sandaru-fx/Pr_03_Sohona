@@ -49,17 +49,17 @@ export function FloatingParticles({
       ctx!.scale(window.devicePixelRatio, window.devicePixelRatio);
     }
 
-    function initParticles() {
+      function initParticles() {
       particles.length = 0;
       for (let i = 0; i < count; i++) {
         particles.push({
           x: Math.random() * width,
           y: Math.random() * height,
-          radius: Math.random() * 1.8 + 0.6,
-          opacity: Math.random() * 0.4 + 0.1,
-          speedX: (Math.random() - 0.5) * 0.15,
-          speedY: -(Math.random() * 0.2 + 0.05),
-          pulseSpeed: Math.random() * 0.008 + 0.003,
+          radius: Math.random() * 2.5 + 1.2,
+          opacity: Math.random() * 0.6 + 0.3,
+          speedX: (Math.random() - 0.5) * 0.2,
+          speedY: -(Math.random() * 0.25 + 0.1),
+          pulseSpeed: Math.random() * 0.01 + 0.005,
           pulseOffset: Math.random() * Math.PI * 2,
         });
       }
@@ -91,11 +91,11 @@ export function FloatingParticles({
         ctx!.fillStyle = `rgba(220, 184, 113, ${currentOpacity})`;
         ctx!.fill();
 
-        // Subtle glow around larger particles
+        // Stronger glow around particles
         if (p.radius > 1.2) {
           ctx!.beginPath();
-          ctx!.arc(p.x, p.y, p.radius * 3, 0, Math.PI * 2);
-          ctx!.fillStyle = `rgba(220, 184, 113, ${currentOpacity * 0.15})`;
+          ctx!.arc(p.x, p.y, p.radius * 3.5, 0, Math.PI * 2);
+          ctx!.fillStyle = `rgba(220, 184, 113, ${currentOpacity * 0.25})`;
           ctx!.fill();
         }
       }

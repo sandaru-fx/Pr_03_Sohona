@@ -224,9 +224,11 @@ model Comment {
   profileId String  @db.ObjectId
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
-  body      String
-  wordCount Int
-  status    CommentStatus @default(VISIBLE)
+  body               String
+  wordCount          Int
+  authorName         String?
+  authorRelationship String?
+  status             CommentStatus @default(VISIBLE)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

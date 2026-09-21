@@ -10,6 +10,8 @@ import { OrnamentalDivider } from "@/components/public/OrnamentalDivider";
 import { MemorialPhotoCarousel } from "@/components/public/MemorialPhotoCarousel";
 import { MemorialMediaItem } from "@/components/public/MemorialMediaItem";
 import { Alert } from "@/components/ui/Alert";
+import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
+import { WhatsAppWidget } from "@/components/site/WhatsAppWidget";
 import type {
   PublicCommentItem,
   PublicMediaMetaItem,
@@ -53,21 +55,23 @@ export function MemorialView({
 
   return (
     <MotionConfig reducedMotion="user">
-    <div className="memorial-page relative w-full bg-[#0A0A09]">
-      {/* Ambient particles — very subtle, few */}
-      <FloatingParticles count={5} className="z-0 opacity-20" />
+    <div 
+      className="memorial-page relative w-full"
+      style={{ backgroundImage: 'radial-gradient(circle at 50% 50%, #171005 0%, #0A0A09 60%, #000000 100%)' }}
+    >
+      {/* Ambient particles — scattered across the whole page */}
+      <FloatingParticles count={25} className="z-0 opacity-40 mix-blend-screen" />
 
       {/* ═══════════════════════════════════════════════
           HERO SECTION — Full-width cinematic
           ═══════════════════════════════════════════════ */}
-      <MemorialHero displayName={displayName} pinProtected={pinProtected} />
+      <MemorialHero displayName={displayName} pinProtected={pinProtected} heroPhoto={photos[0] ?? null} r2Configured={r2Configured} />
       <MemorialNavigation story={statements.length > 0} photos={photos.length} voices={voices.length} videos={videos.length} />
 
       {/* ═══════════════════════════════════════════════
           CONTENT SECTIONS — max-width constrained
           ═══════════════════════════════════════════════ */}
       <div id="memories" className="memorial-content relative z-10">
-        <div className="memorial-welcome"><span aria-hidden="true">✦</span><p>A life remembered.<br /><em>A connection that never fades.</em></p><span className="memorial-welcome-note">Stories, moments and voices<br />kept close, across generations.</span></div>
         {/* THEIR STORY — two-column editorial */}
         {statements.length > 0 && (
           <motion.section id="story"
@@ -79,28 +83,40 @@ export function MemorialView({
           >
             <OrnamentalDivider label="Their Story" className="mb-12 sm:mb-14 max-w-lg mx-auto" />
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-              {/* Left — decorative heading */}
-              <div className="memorial-story-title flex flex-col gap-6">
-                <span className="memorial-chapter">01 / A life in memories</span>
-                <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-medium leading-tight text-[#F2EDE3]">
-                  A Life
-                  <br />
-                  Well Lived
-                </h2>
-                <div className="w-16 h-[2px] bg-gold/40" />
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+              {/* Left — decorative heading (Sticky on Desktop) */}
+              <div className="lg:col-span-4">
+                <div className="memorial-story-title flex flex-col gap-6 lg:sticky lg:top-32">
+                  <span className="memorial-chapter">01 / A life in memories</span>
+                  <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-medium leading-tight text-[#F2EDE3]">
+                    A Life
+                    <br />
+                    Well Lived
+                  </h2>
+                  <div className="w-16 h-[2px] bg-gold/40" />
+                </div>
               </div>
 
               {/* Right — body text */}
-              <div className="memorial-story-copy space-y-6">
-                <p className="font-sans text-base sm:text-lg leading-relaxed text-[#AAA398]">
-                  {statements[0].body}
-                </p>
-                {statements.length > 1 && statements[1] && (
-                  <p className="font-sans text-base sm:text-lg leading-relaxed text-[#AAA398]">
-                    {statements[1].body}
-                  </p>
-                )}
+              <div className="memorial-story-copy space-y-6 lg:col-span-8 memorial-glass-card p-8 sm:p-10 relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gold/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                {statements.slice(0, 2).map((stmt) => {
+                  const clean = stmt.body
+                    .replace(/#{1,6}\s?/g, "")
+                    .replace(/\*\*(.*?)\*\*/g, "$1")
+                    .replace(/\*(.*?)\*/g, "$1")
+                    .replace(/__(.*?)__/g, "$1")
+                    .replace(/_(.*?)_/g, "$1");
+                  
+                  return clean.split(/\n+/).map((para, i) => {
+                    if (!para.trim()) return null;
+                    return (
+                      <p key={`${stmt.id}-${i}`} className="font-sans text-base sm:text-lg leading-relaxed text-[#D4C3AD] relative z-10">
+                        {para.trim()}
+                      </p>
+                    );
+                  });
+                })}
               </div>
             </div>
           </motion.section>
@@ -117,20 +133,20 @@ export function MemorialView({
           >
             <OrnamentalDivider label="Words from Family" className="mb-16 max-w-lg mx-auto" />
 
-            <div className="text-center max-w-4xl mx-auto space-y-16 relative">
+            <div className="text-center max-w-4xl mx-auto space-y-16 relative memorial-glass-card p-10 sm:p-16">
               {/* Giant background quote mark */}
-              <div className="absolute -top-10 -left-4 sm:-left-12 text-[120px] sm:text-[180px] leading-none font-serif text-gold/[0.04] pointer-events-none select-none">
+              <div className="absolute -top-10 left-4 sm:left-12 text-[120px] sm:text-[180px] leading-none font-serif text-gold/[0.08] pointer-events-none select-none">
                 &ldquo;
               </div>
               
               {statements.slice(2).map((item) => (
                 <div key={item.id} className="relative z-10">
-                  <p className="font-serif text-2xl sm:text-3xl lg:text-4xl italic leading-relaxed text-[#F2EDE3]/90">
+                  <p className="font-serif text-2xl sm:text-3xl lg:text-4xl italic leading-relaxed text-[#F2EDE3]/90 drop-shadow-md">
                     &ldquo;{item.body}&rdquo;
                   </p>
                 </div>
               ))}
-              <p className="text-sm tracking-[0.2em] uppercase text-gold/50 relative z-10">
+              <p className="text-sm tracking-[0.2em] uppercase text-gold/60 relative z-10 font-medium">
                 — A Loving Family —
               </p>
             </div>
@@ -248,101 +264,59 @@ export function MemorialView({
         {/* ═══════════════════════════════════════════════
             FOOTER — richly decorated
             ═══════════════════════════════════════════════ */}
-        <footer className="memorial-photo-footer relative isolate overflow-hidden px-6 sm:px-12 pt-24 pb-12 sm:pt-36 sm:pb-20">
+        <footer className="memorial-photo-footer relative isolate overflow-hidden px-6 sm:px-12 pt-24 pb-12 sm:pt-36 sm:pb-20 min-h-[300px]">
           <div className="absolute inset-0 -z-20" aria-hidden="true">
-            <Image src="/images/memorial-footer-v2.webp" alt="" fill sizes="100vw" className="memorial-footer-image" />
+            <Image src="/images/ec0e42cd-5466-47aa-8064-c56c1f154779.png" alt="" fill sizes="100vw" className="memorial-footer-image" />
           </div>
           <div className="memorial-footer-shade absolute inset-0 -z-10" />
           {/* Decorative top border */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-xl">
             <OrnamentalDivider />
           </div>
-
-          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12 items-center text-center">
-            {/* Left decorative quote */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1 }}
-              className="hidden lg:block text-left"
-            >
-              <p className="text-[9px] uppercase tracking-[0.25em] leading-relaxed text-[#746F67]">
-                Some people
-                <br />
-                make the world
-                <br />
-                a kinder place
+          
+          {/* Contact Information */}
+          <div className="relative z-10 mx-auto max-w-3xl flex flex-col items-center justify-center text-center mt-12 pb-8">
+            <div className="inline-flex items-center gap-3 mb-8">
+              <Image
+                src="/mathaka-qr-mark.png"
+                alt=""
+                width={36}
+                height={36}
+                className="h-9 w-9 rounded-md object-contain drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]"
+              />
+              <p className="whitespace-nowrap font-sans text-2xl font-semibold tracking-tight text-[#e6d7bb] drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+                Mathaka <span className="text-[#e6c68a]">QR</span>
               </p>
-            </motion.div>
-
-            {/* Center — memorial info */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1 }}
-              className="flex flex-col items-center gap-4"
-            >
-              <p className="text-[10px] font-medium uppercase tracking-[0.3em] text-gold/60">
-                In Loving Remembrance
-              </p>
-              <p className="font-serif text-2xl sm:text-3xl text-[#F2EDE3]">
-                {displayName}
-              </p>
-              {shortLine && (
-                <p className="font-serif italic text-sm text-[#AAA398] max-w-xs">
-                  &ldquo;{shortLine}&rdquo;
-                </p>
-              )}
-
-              <div className="w-8 h-[1px] bg-gold/20 my-4" />
-
-              <div className="flex items-center justify-center gap-2 text-[10px] text-[#746F67]">
-                <svg
-                  width="10"
-                  height="10"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                </svg>
-                Memories preserved with love, for generations to come.
+            </div>
+            
+            <div className="flex flex-col sm:flex-row items-start justify-center gap-8 sm:gap-16 text-sm sm:text-base font-medium text-[#d1c4ad] drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+              <div className="flex flex-col gap-5">
+                <div className="flex items-start gap-3 text-left">
+                  <Phone className="mt-1 h-5 w-5 shrink-0 text-[#e6c68a]" />
+                  <span className="leading-tight">076 804 6019<br />077 488 0604<br />077 948 9397</span>
+                </div>
+                <div className="flex items-center gap-3 text-left">
+                  <MessageCircle className="h-5 w-5 shrink-0 text-[#e6c68a]" />
+                  <span>076 894 6019 (WhatsApp)</span>
+                </div>
               </div>
-
-              <div className="mt-6">
-                <p className="text-[10px] font-semibold tracking-[0.25em] text-[#F2EDE3]/80 uppercase">
-                  Sohona
-                </p>
-                <p className="text-[9px] tracking-wider text-[#746F67] mt-1">
-                  Digital memories, preserved with care.
-                </p>
+              
+              <div className="flex flex-col gap-5">
+                <div className="flex items-center gap-3 text-left">
+                  <Mail className="h-5 w-5 shrink-0 text-[#e6c68a]" />
+                  <span>mathakaqr@gmail.com</span>
+                </div>
+                <div className="flex items-center gap-3 text-left">
+                  <MapPin className="h-5 w-5 shrink-0 text-[#e6c68a]" />
+                  <span>Galigamuwa, Kegalle</span>
+                </div>
               </div>
-            </motion.div>
-
-            {/* Right decorative quote */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1 }}
-              className="hidden lg:block text-right"
-            >
-              <p className="text-[9px] uppercase tracking-[0.25em] leading-relaxed text-[#746F67]">
-                Memories
-                <br />
-                connect us
-                <br />
-                always
-              </p>
-            </motion.div>
+            </div>
           </div>
         </footer>
+        
+        {/* Floating Live Chat Widget */}
+        <WhatsAppWidget />
       </div>
     </div>
     </MotionConfig>

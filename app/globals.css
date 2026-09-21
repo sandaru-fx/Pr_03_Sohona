@@ -188,13 +188,13 @@ body {
 .memorial-content section { scroll-margin-top: 28px; }
 .memorial-content p { overflow-wrap: anywhere; }
 .memorial-page .memorial-glass-card { background: linear-gradient(130deg, #26201666, #11100e); border-color: #c69f592b; box-shadow: 0 16px 50px #0002; }
-.memorial-footer-image { object-fit: cover; object-position: center 62%; filter: sepia(.5) saturate(.65); }
-.memorial-footer-shade { background: linear-gradient(180deg, #0a0a09 0%, #0a0a0955 27%, #100d098c 65%, #0a0a09ed 100%), linear-gradient(90deg, #0a0a0966, #0a0a0977 50%, #0a0a0922); }
+.memorial-footer-image { object-fit: cover; object-position: center 62%; }
+.memorial-footer-shade { background: linear-gradient(180deg, #0a0a09 0%, transparent 25%, transparent 40%, #0a0a09fa 85%, #0a0a09 100%); }
 .memorial-photo-footer p, .memorial-photo-footer .flex.items-center.justify-center { text-shadow: 0 2px 12px #000; }
 .memorial-photo-footer p { color: #e6d7bb; }
 .memorial-photo-footer .text-gold\/60 { color: #e6c68a; }
 .memorial-photo-footer .text-\[\#746F67\] { color: #d1c4ad; }
-@media (max-width: 640px) { .memorial-footer-image { object-position: 72% center; } .memorial-footer-shade { background: linear-gradient(180deg, #0a0a09, #0a0a0988 25%, #0a0a0999 75%, #0a0a09ee); } }
+@media (max-width: 640px) { .memorial-footer-image { object-position: 72% center; } .memorial-footer-shade { background: linear-gradient(180deg, #0a0a09 0%, transparent 20%, transparent 40%, #0a0a09fa 85%, #0a0a09 100%); } }
 @media (max-width: 600px) { .memorial-nav { gap: 0 20px; padding: 12px 18px; } .memorial-nav a { font-size: 10px; } }
 @media (prefers-reduced-motion: reduce) { .memorial-page *, .memorial-page *::before, .memorial-page *::after { animation: none !important; scroll-behavior: auto !important; } }
 

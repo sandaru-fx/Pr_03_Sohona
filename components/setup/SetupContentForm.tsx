@@ -85,6 +85,7 @@ export function SetupContentForm({
   const [finishing, setFinishing] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [localPreviews, setLocalPreviews] = useState<Record<string, string>>({});
 
   const usedWords = useMemo(
     () => totalStatementWords(statements.map((item) => ({ body: item.body }))),
@@ -212,7 +213,7 @@ export function SetupContentForm({
     }
   }
 
-  async function onUpload(fileList: FileList | null) {
+  async function onUpload(fileList: FileList | null, asProfilePhoto = false) {
     if (!fileList || fileList.length === 0) return;
     if (!r2Configured) {
       setError("Media storage is not connected yet. You can still save statements.");
@@ -224,24 +225,32 @@ export function SetupContentForm({
     setUploading(true);
     let currentPhotoCount = photoCount;
     let uploadedCount = 0;
+    const files = Array.from(fileList);
 
-    for (let i = 0; i < fileList.length; i++) {
-      const file = fileList[i];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const uploadKind = asProfilePhoto ? "PHOTO" : kind;
+
+      if (uploadKind === "PHOTO") {
+        const objectUrl = URL.createObjectURL(file);
+        setLocalPreviews((prev) => ({ ...prev, [file.name]: objectUrl }));
+      }
+
       try {
-        if (kind === "PHOTO" && currentPhotoCount >= limits.maxImages) {
+        if (uploadKind === "PHOTO" && currentPhotoCount >= limits.maxImages) {
           setError(`This package allows at most ${limits.maxImages} images.`);
           break;
         }
 
         let durationSeconds: number | undefined;
-        if (kind === "VIDEO" || kind === "VOICE") {
+        if (uploadKind === "VIDEO" || uploadKind === "VOICE") {
           const duration = await readFileDurationSeconds(file);
           const rounded = Math.ceil(duration);
           const maxSeconds =
-            kind === "VIDEO" ? limits.maxVideoSeconds : limits.maxAudioSeconds;
+            uploadKind === "VIDEO" ? limits.maxVideoSeconds : limits.maxAudioSeconds;
           if (rounded > maxSeconds) {
             setError(
-              kind === "VIDEO"
+              uploadKind === "VIDEO"
                 ? `Video must be ${limits.maxVideoSeconds}s or less (about ${rounded}s).`
                 : `Audio must be ${limits.maxAudioSeconds}s or less (about ${rounded}s).`,
             );
@@ -254,7 +263,7 @@ export function SetupContentForm({
         const formData = new FormData();
         formData.append("profileId", profileId);
         formData.append("setupToken", setupToken);
-        formData.append("kind", kind);
+        formData.append("kind", uploadKind);
         formData.append("file", file);
         if (durationSeconds !== undefined) {
           formData.append("durationSeconds", String(durationSeconds));
@@ -276,8 +285,10 @@ export function SetupContentForm({
           break;
         }
 
-        setMedia((current) => [...current, result.media as MediaItem]);
-        if (kind === "PHOTO") currentPhotoCount++;
+        setMedia((current) => 
+          asProfilePhoto ? [result.media as MediaItem, ...current] : [...current, result.media as MediaItem]
+        );
+        if (uploadKind === "PHOTO") currentPhotoCount++;
         uploadedCount++;
       } catch (err) {
         setError(
@@ -299,6 +310,7 @@ export function SetupContentForm({
       <AnimatePresence>
         {message && (
           <motion.div 
+            key="success-message"
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -310,6 +322,7 @@ export function SetupContentForm({
         )}
         {error && (
           <motion.div 
+            key="error-message"
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -338,6 +351,84 @@ export function SetupContentForm({
           {limits.maxImages} photos · video ≤ {limits.maxVideoSeconds}s · audio ≤ {limits.maxAudioSeconds}s · statements ≤ {limits.maxStatementWords} words total.
         </p>
       </div>
+
+      <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-6 py-8 shadow-none sm:px-8 sm:py-10 backdrop-blur-md">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="text-sm font-medium text-[#F5F1E8]">Profile Photo</h2>
+        </div>
+        <p className="mt-1 text-sm text-foreground-secondary mb-6">
+          This photo will appear in the main hero archway of the memorial page.
+        </p>
+        
+        {/* Profile Photo Live Preview inside an archway */}
+        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8">
+          <div className="relative w-[200px] h-[280px] rounded-t-[100px] rounded-b-xl border-2 border-dashed border-[#2A2E33] bg-background-secondary/30 flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
+            {media.find(m => m.kind === "PHOTO") ? (() => {
+              const heroPhoto = media.find(m => m.kind === "PHOTO")!;
+              const previewUrl = heroPhoto.originalName ? localPreviews[heroPhoto.originalName] : null;
+
+              if (previewUrl) {
+                return (
+                  <div className="absolute inset-0 w-full h-full">
+                    <img src={previewUrl} alt="Hero Photo Preview" className="w-full h-full object-cover" />
+                  </div>
+                );
+              }
+
+              return (
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-surface/90 text-center p-4">
+                   <FileImage className="h-10 w-10 text-gold mb-3" />
+                   <p className="text-sm font-medium text-[#F5F1E8]">Hero Photo Set</p>
+                   <p className="text-xs text-foreground-muted mt-1 break-all line-clamp-2">
+                     {heroPhoto.originalName || "Photo"}
+                   </p>
+                   <div className="mt-4 text-[10px] uppercase tracking-wider text-gold/60 border border-gold/20 rounded-full px-3 py-1">
+                     Preview ready on memorial
+                   </div>
+                </div>
+              );
+            })() : (
+              <div className="text-center p-4">
+                <FileImage className="h-8 w-8 text-foreground-muted mx-auto mb-2 opacity-50" />
+                <p className="text-xs text-foreground-muted">No photo selected</p>
+              </div>
+            )}
+          </div>
+          
+          <div className="flex-1 space-y-4 w-full text-center sm:text-left">
+            {!r2Configured ? (
+              <div className="inline-flex items-start gap-2 rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-warning">
+                <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+                <p>Media storage is not connected yet.</p>
+              </div>
+            ) : (
+              <div>
+                <label className="inline-flex h-12 cursor-pointer items-center gap-2 rounded-xl border border-gold/30 bg-gold/5 px-6 text-sm font-medium text-gold transition-all hover:bg-gold/10 hover:border-gold/50 hover:shadow-[0_0_15px_-3px_rgba(212,175,55,0.2)]">
+                  {uploading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                  ) : (
+                    <Upload className="h-4 w-4" aria-hidden />
+                  )}
+                  {uploading ? "Uploading…" : "Upload Profile Photo"}
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    className="sr-only"
+                    disabled={uploading || finishing}
+                    onChange={(event) => {
+                      void onUpload(event.target.files, true);
+                      event.target.value = "";
+                    }}
+                  />
+                </label>
+                <p className="mt-3 text-xs text-foreground-muted">
+                  Use a clear, high-quality photo. This will be automatically masked into the hero archway shape.
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
 
       <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-6 py-8 shadow-none sm:px-8 sm:py-10 backdrop-blur-md">
         <div className="flex flex-wrap items-baseline justify-between gap-2">

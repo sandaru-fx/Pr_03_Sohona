@@ -29,8 +29,8 @@ export function SiteHeader({ pathname }: SiteHeaderProps) {
           aria-label="Mathaka QR home"
         >
           <Image
-            src="/mathaka-qr-mark.png"
-            alt=""
+            src="/logo.jpeg"
+            alt="Mathaka QR Logo"
             width={48}
             height={48}
             priority

@@ -35,6 +35,79 @@ type SetupCompleteResult = {
   displayName: string;
 };
 
+function MediaDescriptionInput({
+  item,
+  onSave,
+}: {
+  item: MediaItem & { description?: string };
+  onSave: (newDesc: string) => Promise<void>;
+}) {
+  const [desc, setDesc] = useState(item.description || "");
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  async function handleSave() {
+    if (desc === (item.description || "")) return;
+    setSaving(true);
+    setSaved(false);
+    try {
+      await onSave(desc);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <div className="mt-1 flex items-center gap-2 w-full">
+      <input
+        type="text"
+        placeholder="Optional: Add details or a story about this media..."
+        value={desc}
+        onChange={(e) => {
+          setDesc(e.target.value);
+          setSaved(false);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            void handleSave();
+          }
+        }}
+        onBlur={() => void handleSave()}
+        className="flex-1 rounded-xl border border-[#2A2E33] bg-background/50 px-3 py-2 text-sm text-foreground shadow-none outline-none transition-all focus:border-gold/50 focus:ring-1 focus:ring-gold/50"
+      />
+      <button
+        type="button"
+        onClick={() => void handleSave()}
+        disabled={saving || desc === (item.description || "")}
+        className={cn(
+          "inline-flex h-[38px] shrink-0 items-center justify-center gap-1.5 rounded-xl border px-4 text-xs font-medium transition-all",
+          saved
+            ? "border-success/30 bg-success/10 text-success"
+            : desc !== (item.description || "")
+              ? "border-gold/30 bg-gold/10 text-gold hover:bg-gold/20 hover:border-gold/50"
+              : "border-[#2A2E33] bg-background text-foreground-muted opacity-50 cursor-not-allowed"
+        )}
+      >
+        {saving ? (
+          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+        ) : saved ? (
+          <>
+            <CheckCircle2 className="h-3.5 w-3.5" />
+            Saved
+          </>
+        ) : (
+          "Save"
+        )}
+      </button>
+    </div>
+  );
+}
+
 type SetupContentFormProps = {
   profileId: string;
   displayName: string;
@@ -636,7 +709,7 @@ export function SetupContentForm({
                   exit={{ opacity: 0, y: -10, scale: 0.98 }}
                   transition={{ type: "spring", stiffness: 300, damping: 25 }}
                   key={item.id}
-                  className="flex items-center justify-between gap-3 rounded-2xl border border-[#2A2E33] bg-background-secondary/30 px-5 py-4 transition-colors hover:border-gold/20"
+                  className="flex flex-col gap-3 rounded-2xl border border-[#2A2E33] bg-background-secondary/30 px-5 py-4 transition-colors hover:border-gold/20"
                 >
                   <div className="flex items-center gap-4 min-w-0">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface border border-border shrink-0">
@@ -653,6 +726,29 @@ export function SetupContentForm({
                       </p>
                     </div>
                   </div>
+                  <MediaDescriptionInput
+                    item={item as any}
+                    onSave={async (newDesc) => {
+                      setMedia((curr) =>
+                        curr.map((m) =>
+                          m.id === item.id ? ({ ...m, description: newDesc } as any) : m
+                        )
+                      );
+                      try {
+                        await fetch(`/api/media/${item.id}`, {
+                          method: "PATCH",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({
+                            profileId,
+                            setupToken,
+                            description: newDesc,
+                          }),
+                        });
+                      } catch (err) {
+                        console.error("Failed to save description", err);
+                      }
+                    }}
+                  />
                 </motion.li>
               ))
             )}

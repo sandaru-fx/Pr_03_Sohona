@@ -52,6 +52,8 @@ export async function POST(request: Request) {
   const kind = formData.get("kind");
   const file = formData.get("file");
   const durationSecondsRaw = formData.get("durationSeconds");
+  const descriptionRaw = formData.get("description");
+  const description = typeof descriptionRaw === "string" ? descriptionRaw : null;
 
   if (typeof kind !== "string" || !(file instanceof File)) {
     return NextResponse.json(
@@ -136,6 +138,7 @@ export async function POST(request: Request) {
         sizeBytes: uploadCheck.sizeBytes,
         durationSeconds,
         originalName: uploadCheck.fileName,
+        description,
         sortOrder: 0,
       },
       select: {
@@ -146,6 +149,7 @@ export async function POST(request: Request) {
         sizeBytes: true,
         durationSeconds: true,
         originalName: true,
+        description: true,
         sortOrder: true,
         createdAt: true,
       },

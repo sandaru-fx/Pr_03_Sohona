@@ -22,6 +22,7 @@ export type PublicMediaMetaItem = {
   originalName: string | null;
   sizeBytes: number;
   contentType: string;
+  description: string | null;
 };
 
 export type PublicCommentItem = {
@@ -152,6 +153,7 @@ export const PUBLIC_MEDIA_META_SELECT = {
   originalName: true,
   sizeBytes: true,
   contentType: true,
+  description: true,
 } as const;
 
 export const PUBLIC_COMMENT_SELECT = {

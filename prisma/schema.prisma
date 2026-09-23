@@ -210,6 +210,7 @@ model MediaAsset {
   /// Duration for VIDEO/VOICE (seconds, ceil). Null for PHOTO.
   durationSeconds Int?
   originalName String?
+  description  String?
   sortOrder    Int       @default(0)
 
   createdAt DateTime @default(now())

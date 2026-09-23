@@ -11,6 +11,7 @@ import {
   Plus,
   Trash2,
   Upload,
+  CheckCircle2,
 } from "lucide-react";
 import { readFileDurationSeconds } from "@/lib/browser-media-duration";
 import { getPackageLimits } from "@/lib/packages";
@@ -36,6 +37,79 @@ type CommentItem = {
   status: "VISIBLE" | "HIDDEN";
   createdAt: string | Date;
 };
+
+function MediaDescriptionInput({
+  item,
+  onSave,
+}: {
+  item: MediaItem & { description?: string };
+  onSave: (newDesc: string) => Promise<void>;
+}) {
+  const [desc, setDesc] = useState(item.description || "");
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  async function handleSave() {
+    if (desc === (item.description || "")) return;
+    setSaving(true);
+    setSaved(false);
+    try {
+      await onSave(desc);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <div className="mt-1 flex items-center gap-2 w-full">
+      <input
+        type="text"
+        placeholder="Optional: Add details or a story about this media..."
+        value={desc}
+        onChange={(e) => {
+          setDesc(e.target.value);
+          setSaved(false);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            void handleSave();
+          }
+        }}
+        onBlur={() => void handleSave()}
+        className="flex-1 rounded-xl border border-[#2A2E33] bg-background-secondary/50 px-3 py-2 text-sm text-foreground shadow-none outline-none transition-all focus:border-gold/50 focus:ring-1 focus:ring-gold/50"
+      />
+      <button
+        type="button"
+        onClick={() => void handleSave()}
+        disabled={saving || desc === (item.description || "")}
+        className={cn(
+          "inline-flex h-[38px] shrink-0 items-center justify-center gap-1.5 rounded-xl border px-4 text-xs font-medium transition-all",
+          saved
+            ? "border-success/30 bg-success/10 text-success"
+            : desc !== (item.description || "")
+              ? "border-gold/30 bg-gold/10 text-gold hover:bg-gold/20 hover:border-gold/50"
+              : "border-[#2A2E33] bg-background text-foreground-muted opacity-50 cursor-not-allowed"
+        )}
+      >
+        {saving ? (
+          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+        ) : saved ? (
+          <>
+            <CheckCircle2 className="h-3.5 w-3.5" />
+            Saved
+          </>
+        ) : (
+          "Save"
+        )}
+      </button>
+    </div>
+  );
+}
 
 type ManageDashboardProps = {
   displayName: string;
@@ -631,35 +705,56 @@ export function ManageDashboard({
             media.map((item) => (
               <li
                 key={item.id}
-                className="flex items-center justify-between gap-3 px-4 py-3 text-sm"
+                className="flex flex-col gap-3 px-4 py-3 text-sm"
               >
-                <div className="min-w-0">
-                  <p className="truncate font-medium text-foreground">
-                    {item.originalName ?? item.kind}
-                  </p>
-                  <p className="text-xs text-foreground-muted">
-                    {item.kind} · {formatBytes(item.sizeBytes)}
-                  </p>
+                <div className="flex items-center justify-between gap-3 w-full">
+                  <div className="min-w-0">
+                    <p className="truncate font-medium text-foreground">
+                      {item.originalName ?? item.kind}
+                    </p>
+                    <p className="text-xs text-foreground-muted">
+                      {item.kind} · {formatBytes(item.sizeBytes)}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    aria-label={`Delete ${item.originalName ?? item.kind}`}
+                    disabled={busy}
+                    onClick={() =>
+                      setConfirmDelete({
+                        type: "media",
+                        id: item.id,
+                        label: item.originalName ?? item.kind,
+                      })
+                    }
+                    className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-xl border border-[#2A2E33] text-foreground-muted transition hover:bg-error/10 hover:text-error disabled:opacity-40"
+                  >
+                    {deletingId === item.id ? (
+                      <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                    ) : (
+                      <Trash2 className="h-4 w-4" aria-hidden />
+                    )}
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  aria-label={`Delete ${item.originalName ?? item.kind}`}
-                  disabled={busy}
-                  onClick={() =>
-                    setConfirmDelete({
-                      type: "media",
-                      id: item.id,
-                      label: item.originalName ?? item.kind,
-                    })
-                  }
-                  className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-xl border border-[#2A2E33] text-foreground-muted transition hover:bg-error/10 hover:text-error disabled:opacity-40"
-                >
-                  {deletingId === item.id ? (
-                    <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                  ) : (
-                    <Trash2 className="h-4 w-4" aria-hidden />
-                  )}
-                </button>
+                <MediaDescriptionInput
+                  item={item as any}
+                  onSave={async (newDesc) => {
+                    setMedia((curr) =>
+                      curr.map((m) =>
+                        m.id === item.id ? ({ ...m, description: newDesc } as any) : m
+                      )
+                    );
+                    try {
+                      await fetch(`/api/manage/media/${item.id}`, {
+                        method: "PATCH",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ description: newDesc }),
+                      });
+                    } catch (err) {
+                      console.error("Failed to save description in manage", err);
+                    }
+                  }}
+                />
               </li>
             ))
           )}

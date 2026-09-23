@@ -22,8 +22,8 @@ export function SiteFooter() {
           <div className="flex flex-col gap-6">
             <div className="inline-flex items-center gap-3">
               <Image
-                src="/mathaka-qr-mark.png"
-                alt=""
+                src="/logo.jpeg"
+                alt="Mathaka QR Logo"
                 width={44}
                 height={44}
                 className="h-11 w-11 rounded-lg object-contain drop-shadow-lg"

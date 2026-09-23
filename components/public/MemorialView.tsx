@@ -278,8 +278,8 @@ export function MemorialView({
           <div className="relative z-10 mx-auto max-w-3xl flex flex-col items-center justify-center text-center mt-12 pb-8">
             <div className="inline-flex items-center gap-3 mb-8">
               <Image
-                src="/mathaka-qr-mark.png"
-                alt=""
+                src="/logo.jpeg"
+                alt="Mathaka QR Logo"
                 width={36}
                 height={36}
                 className="h-9 w-9 rounded-md object-contain drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]"

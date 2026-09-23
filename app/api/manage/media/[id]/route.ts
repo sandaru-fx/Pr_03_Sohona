@@ -94,3 +94,47 @@ export async function DELETE(request: Request, context: RouteContext) {
     },
   );
 }
+
+/**
+ * PATCH /api/manage/media/[id]
+ * Update media metadata (e.g. description).
+ */
+export async function PATCH(request: Request, context: RouteContext) {
+  const ipLimited = await enforceIpRateLimit(request, "manageIp");
+  if (ipLimited) return ipLimited;
+
+  const auth = await authorizeManageSession();
+  if (!auth.ok) return manageAuthErrorResponse(auth);
+
+  const { id } = await context.params;
+  if (!isMongoObjectId(id)) {
+    return NextResponse.json(
+      { error: "InvalidMediaId", message: "media id must be a valid id." },
+      { status: 400 },
+    );
+  }
+
+  let body: { description?: string };
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "InvalidJSON" }, { status: 400 });
+  }
+
+  try {
+    const media = await prisma.mediaAsset.updateMany({
+      where: { id, profileId: auth.profile.id },
+      data: { description: body.description },
+    });
+
+    if (media.count === 0) {
+      return NextResponse.json({ error: "NotFound" }, { status: 404 });
+    }
+
+    return NextResponse.json({ ok: true }, { status: 200 });
+  } catch (error) {
+    console.error("Failed to update media description in manage", error);
+    return NextResponse.json({ error: "ServerError" }, { status: 500 });
+  }
+}
+

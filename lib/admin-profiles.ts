@@ -21,6 +21,7 @@ export const adminProfileSelect = {
   packageEndsAt: true,
   createdAt: true,
   updatedAt: true,
+  viewCount: true,
 } as const;
 
 /** Runtime guard used by Day 3 verify + accidental select drift. */
@@ -52,6 +53,7 @@ export type AdminProfileListItem = {
   packageEndsAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
+  viewCount: number;
 };
 
 export async function listAdminProfiles(): Promise<AdminProfileListItem[]> {

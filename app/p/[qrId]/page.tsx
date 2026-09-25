@@ -3,6 +3,7 @@ import {
   canViewPublicContent,
   loadPublicMemorialContent,
   resolvePublicProfileGate,
+  incrementViewCount,
 } from "@/lib/public-profile";
 import { hasValidPublicViewSession } from "@/lib/public-view-session";
 import { isR2Configured } from "@/lib/r2-config";
@@ -45,6 +46,12 @@ export default async function PublicProfilePage({
       : false;
 
   const allowed = canViewPublicContent(result, hasViewSession);
+  
+  if (allowed && result.status === "ready") {
+    // Only increment when the user actually views the content
+    await incrementViewCount(result.profile.id);
+  }
+
   const content =
     allowed && result.status === "ready"
       ? await loadPublicMemorialContent(result.profile.id)

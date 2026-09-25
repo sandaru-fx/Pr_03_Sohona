@@ -25,7 +25,6 @@
     "day9:verify": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day9-verify.ts",
     "day10:env-check": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day10-env-check.ts",
     "day10:wiring-check": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/day10-wiring-check.ts",
-
     "redis:check": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/redis-check.ts",
     "r2:set-cors": "node --env-file=.env ./node_modules/tsx/dist/cli.mjs scripts/r2-set-cors.ts"
   },
@@ -46,6 +45,7 @@
     "qrcode": "^1.5.4",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "recharts": "^3.10.1",
     "tailwind-merge": "^3.6.0",
     "zod": "^4.5.4"
   },

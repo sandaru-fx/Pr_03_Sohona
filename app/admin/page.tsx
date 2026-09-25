@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { PlusCircle, Users } from "lucide-react";
 import { listAdminProfiles, getSetupStatus } from "@/lib/admin-profiles";
+import { MemorialsChart } from "@/components/admin/MemorialsChart";
 
 export default async function AdminDashboardPage() {
   const profiles = await listAdminProfiles();
@@ -22,6 +23,32 @@ export default async function AdminDashboardPage() {
     return acc;
   }, {} as Record<string, number>);
 
+  const totalScans = profiles.reduce((sum, p) => sum + (p.viewCount || 0), 0);
+  const mostViewed = [...profiles].filter(p => p.viewCount > 0).sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0)).slice(0, 5);
+
+  const chartDataMap = new Map<string, number>();
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  
+  const currentDate = new Date();
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1);
+    const monthKey = monthNames[d.getMonth()];
+    chartDataMap.set(monthKey, 0);
+  }
+
+  profiles.forEach(profile => {
+    const d = new Date(profile.createdAt);
+    const monthsDiff = (currentDate.getFullYear() - d.getFullYear()) * 12 + (currentDate.getMonth() - d.getMonth());
+    if (monthsDiff >= 0 && monthsDiff <= 5) {
+      const monthKey = monthNames[d.getMonth()];
+      if (chartDataMap.has(monthKey)) {
+        chartDataMap.set(monthKey, chartDataMap.get(monthKey)! + 1);
+      }
+    }
+  });
+  
+  const chartData = Array.from(chartDataMap.entries()).map(([month, count]) => ({ month, count }));
+
   return (
     <div className="space-y-8">
       <div>
@@ -34,11 +61,12 @@ export default async function AdminDashboardPage() {
         </p>
       </div>
 
-      <div className="grid gap-px overflow-hidden rounded-2xl border border-[#2A2E33] bg-[#2A2E33] sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-px overflow-hidden rounded-2xl border border-[#2A2E33] bg-[#2A2E33] sm:grid-cols-3 lg:grid-cols-5">
         {[
           { label: "Total memorials", value: profiles.length },
           { label: "Active memorials", value: complete },
           { label: "Pending family setup", value: pending },
+          { label: "Total QR Scans", value: totalScans },
           { label: "Expiring soon", value: expiringSoon },
         ].map((item) => (
           <div key={item.label} className="bg-[#181C20] px-5 py-6">
@@ -50,6 +78,16 @@ export default async function AdminDashboardPage() {
             </p>
           </div>
         ))}
+      </div>
+
+      {/* Chart Section */}
+      <div className="overflow-hidden rounded-2xl border border-[#2A2E33] bg-[#181C20]">
+        <div className="border-b border-[#2A2E33] px-6 py-5">
+          <h2 className="text-base font-medium text-[#F5F1E8]">Memorials Growth (Last 6 Months)</h2>
+        </div>
+        <div className="px-6 py-8">
+          <MemorialsChart data={chartData} />
+        </div>
       </div>
 
       <div className="grid gap-8 lg:grid-cols-3">
@@ -93,6 +131,29 @@ export default async function AdminDashboardPage() {
         </div>
 
         <div className="space-y-8">
+          {/* Most Viewed Memorials */}
+          <div className="overflow-hidden rounded-2xl border border-[#2A2E33] bg-[#181C20]">
+            <div className="border-b border-[#2A2E33] px-6 py-5">
+              <h2 className="text-base font-medium text-[#F5F1E8]">Most Viewed Memorials</h2>
+            </div>
+            <div className="divide-y divide-[#2A2E33]">
+              {mostViewed.length === 0 ? (
+                <div className="px-6 py-8 text-center text-sm text-gray-400">
+                  No views recorded yet.
+                </div>
+              ) : (
+                mostViewed.map((profile) => (
+                  <div key={profile.id} className="flex items-center justify-between px-6 py-4">
+                    <span className="text-sm font-medium text-[#F5F1E8] truncate max-w-[140px]">{profile.displayName}</span>
+                    <span className="inline-flex items-center rounded-md bg-[#2A2E33] px-2 py-1 text-xs font-medium text-gray-300">
+                      {profile.viewCount} scans
+                    </span>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
           {/* Package Breakdown */}
           <div className="overflow-hidden rounded-2xl border border-[#2A2E33] bg-[#181C20]">
             <div className="border-b border-[#2A2E33] px-6 py-5">

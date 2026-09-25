@@ -217,3 +217,14 @@ export function canViewPublicContent(
   if (result.access === "open") return true;
   return hasViewSession;
 }
+
+export async function incrementViewCount(profileId: string) {
+  try {
+    await prisma.profile.update({
+      where: { id: profileId },
+      data: { viewCount: { increment: 1 } },
+    });
+  } catch (error) {
+    console.error("Failed to increment view count", error);
+  }
+}

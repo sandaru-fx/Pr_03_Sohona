@@ -27,6 +27,7 @@ type MediaItem = {
   sizeBytes: number;
   contentType: string;
   durationSeconds?: number | null;
+  isProfilePhoto?: boolean;
 };
 
 type SetupCompleteResult = {
@@ -165,7 +166,7 @@ export function SetupContentForm({
     [statements],
   );
   const photoCount = useMemo(
-    () => media.filter((item) => item.kind === "PHOTO").length,
+    () => media.filter((item) => item.kind === "PHOTO" && !item.isProfilePhoto).length,
     [media],
   );
 
@@ -310,7 +311,7 @@ export function SetupContentForm({
       }
 
       try {
-        if (uploadKind === "PHOTO" && currentPhotoCount >= limits.maxImages) {
+        if (uploadKind === "PHOTO" && !asProfilePhoto && currentPhotoCount >= limits.maxImages) {
           setError(`This package allows at most ${limits.maxImages} images.`);
           break;
         }
@@ -341,6 +342,9 @@ export function SetupContentForm({
         if (durationSeconds !== undefined) {
           formData.append("durationSeconds", String(durationSeconds));
         }
+        if (asProfilePhoto) {
+          formData.append("isProfilePhoto", "true");
+        }
 
         const response = await fetch("/api/media/upload", {
           method: "POST",
@@ -359,9 +363,9 @@ export function SetupContentForm({
         }
 
         setMedia((current) => 
-          asProfilePhoto ? [result.media as MediaItem, ...current] : [...current, result.media as MediaItem]
+          asProfilePhoto ? [result.media as MediaItem, ...current.filter(m => !m.isProfilePhoto)] : [...current, result.media as MediaItem]
         );
-        if (uploadKind === "PHOTO") currentPhotoCount++;
+        if (uploadKind === "PHOTO" && !asProfilePhoto) currentPhotoCount++;
         uploadedCount++;
       } catch (err) {
         setError(
@@ -436,8 +440,8 @@ export function SetupContentForm({
         {/* Profile Photo Live Preview inside an archway */}
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8">
           <div className="relative w-[200px] h-[280px] rounded-t-[100px] rounded-b-xl border-2 border-dashed border-[#2A2E33] bg-background-secondary/30 flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
-            {media.find(m => m.kind === "PHOTO") ? (() => {
-              const heroPhoto = media.find(m => m.kind === "PHOTO")!;
+            {media.find(m => m.isProfilePhoto) ? (() => {
+              const heroPhoto = media.find(m => m.isProfilePhoto)!;
               const previewUrl = heroPhoto.originalName ? localPreviews[heroPhoto.originalName] : null;
 
               if (previewUrl) {
@@ -692,7 +696,7 @@ export function SetupContentForm({
 
         <ul className="mt-8 space-y-2">
           <AnimatePresence mode="popLayout">
-            {media.length === 0 ? (
+            {media.filter((m) => !m.isProfilePhoto).length === 0 ? (
               <motion.li 
                 key="empty"
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -701,7 +705,7 @@ export function SetupContentForm({
                 No media uploaded yet.
               </motion.li>
             ) : (
-              media.map((item) => (
+              media.filter((m) => !m.isProfilePhoto).map((item) => (
                 <motion.li
                   layout
                   initial={{ opacity: 0, y: 10, scale: 0.98 }}

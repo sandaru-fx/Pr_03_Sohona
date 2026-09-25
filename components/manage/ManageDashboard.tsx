@@ -28,6 +28,7 @@ type MediaItem = {
   sizeBytes: number;
   contentType: string;
   durationSeconds?: number | null;
+  isProfilePhoto?: boolean;
 };
 
 type CommentItem = {
@@ -188,7 +189,7 @@ export function ManageDashboard({
     [statements],
   );
   const photoCount = useMemo(
-    () => media.filter((item) => item.kind === "PHOTO").length,
+    () => media.filter((item) => item.kind === "PHOTO" && !item.isProfilePhoto).length,
     [media],
   );
 
@@ -697,12 +698,12 @@ export function ManageDashboard({
         )}
 
         <ul className="mt-6 divide-y divide-border rounded-xl border border-[#2A2E33]">
-          {media.length === 0 ? (
+          {media.filter((m) => !m.isProfilePhoto).length === 0 ? (
             <li className="px-4 py-6 text-sm text-foreground-muted">
               No media on this memorial yet.
             </li>
           ) : (
-            media.map((item) => (
+            media.filter((m) => !m.isProfilePhoto).map((item) => (
               <li
                 key={item.id}
                 className="flex flex-col gap-3 px-4 py-3 text-sm"

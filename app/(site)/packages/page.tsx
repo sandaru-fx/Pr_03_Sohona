@@ -180,34 +180,65 @@ export default function PackagesPage() {
 
           
           {/* DESCRIPTIVE CONTENT SECTION */}
-          <div className="mx-auto mt-32 max-w-4xl text-center">
-            <h2 className="font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-4xl">
+          <div className="mx-auto mt-32 max-w-6xl text-center">
+            <div className="inline-flex items-center gap-2 rounded-full border border-gold/20 bg-gold/5 px-4 py-1.5 mb-6">
+              <Sparkles className="h-4 w-4 text-gold" />
+              <span className="text-sm font-medium uppercase tracking-widest text-gold">Our Promise</span>
+            </div>
+            <h2 className="font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-5xl">
               Preserving Memories with Dignity
             </h2>
-            <div className="mt-12 grid gap-12 sm:grid-cols-2 text-left">
-              <div>
-                <h3 className="text-xl font-semibold text-gold">Uncompromising Quality</h3>
-                <p className="mt-4 text-base leading-relaxed text-gray-400">
-                  Every package at Mathaka QR is carefully crafted to honor your loved ones. 
-                  While the remembrance horizons vary—from a meaningful 25 years to an enduring century—the 
-                  quality of the memorial remains exactly the same. Your photos, videos, and audio clips are preserved securely.
-                </p>
+            <p className="mt-6 text-lg text-gray-400 max-w-2xl mx-auto">
+              We ensure every memory is treated with the utmost respect and care, creating a lasting legacy for your loved ones.
+            </p>
+            
+            <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 text-left">
+              {/* Card 1 */}
+              <div className="group relative overflow-hidden rounded-3xl border border-[#2A2E33] bg-gradient-to-b from-[#121518] to-[#0A0C0E] p-8 transition-all duration-300 hover:-translate-y-1 hover:border-gold/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)]">
+                <div className="absolute inset-0 bg-gradient-to-b from-gold/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                <div className="relative z-10">
+                  <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gold/10 border border-gold/20 text-gold shadow-[0_0_15px_rgba(201,162,112,0.15)] group-hover:scale-110 transition-transform duration-300">
+                    <Sparkles className="h-6 w-6" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-[#F5F1E8] group-hover:text-gold transition-colors">Uncompromising Quality</h3>
+                  <p className="mt-4 text-base leading-relaxed text-gray-400 group-hover:text-gray-300 transition-colors">
+                    Every package at Mathaka QR is carefully crafted to honor your loved ones. 
+                    While the remembrance horizons vary—from a meaningful 25 years to an enduring century—the 
+                    quality of the memorial remains exactly the same. Your photos, videos, and audio clips are preserved securely.
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-xl font-semibold text-gold">Absolute Privacy</h3>
-                <p className="mt-4 text-base leading-relaxed text-gray-400">
-                  Your family's privacy is our highest priority. All media, statements, and comments are protected 
-                  by a secure family PIN. This ensures that the digital space remains a calm, respectful sanctuary 
-                  for those who truly matter.
-                </p>
+
+              {/* Card 2 */}
+              <div className="group relative overflow-hidden rounded-3xl border border-[#2A2E33] bg-gradient-to-b from-[#121518] to-[#0A0C0E] p-8 transition-all duration-300 hover:-translate-y-1 hover:border-gold/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)]">
+                <div className="absolute inset-0 bg-gradient-to-b from-gold/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                <div className="relative z-10">
+                  <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gold/10 border border-gold/20 text-gold shadow-[0_0_15px_rgba(201,162,112,0.15)] group-hover:scale-110 transition-transform duration-300">
+                    <ShieldCheck className="h-6 w-6" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-[#F5F1E8] group-hover:text-gold transition-colors">Absolute Privacy</h3>
+                  <p className="mt-4 text-base leading-relaxed text-gray-400 group-hover:text-gray-300 transition-colors">
+                    Your family's privacy is our highest priority. All media, statements, and comments are protected 
+                    by a secure family PIN. This ensures that the digital space remains a calm, respectful sanctuary 
+                    for those who truly matter.
+                  </p>
+                </div>
               </div>
-              <div className="sm:col-span-2">
-                <h3 className="text-xl font-semibold text-gold text-center">Thoughtful Tributes</h3>
-                <p className="mt-4 text-base leading-relaxed text-gray-400 text-center max-w-2xl mx-auto">
-                  Our structured comment sections are designed to encourage profound, considered tributes. 
-                  By guiding visitors with thoughtful word limits, we foster a respectful environment free from 
-                  the noise of public social media. Every word left behind becomes a cherished part of the legacy.
-                </p>
+
+              {/* Card 3 */}
+              <div className="group relative overflow-hidden rounded-3xl border border-[#2A2E33] bg-gradient-to-b from-[#121518] to-[#0A0C0E] p-8 transition-all duration-300 hover:-translate-y-1 hover:border-gold/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)] sm:col-span-2 lg:col-span-1">
+                <div className="absolute inset-0 bg-gradient-to-b from-gold/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                <div className="relative z-10">
+                  <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gold/10 border border-gold/20 text-gold shadow-[0_0_15px_rgba(201,162,112,0.15)] group-hover:scale-110 transition-transform duration-300">
+                    <MessageCircle className="h-6 w-6" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-[#F5F1E8] group-hover:text-gold transition-colors">Thoughtful Tributes</h3>
+                  <p className="mt-4 text-base leading-relaxed text-gray-400 group-hover:text-gray-300 transition-colors">
+                    Our structured comment sections are designed to encourage profound, considered tributes. 
+                    By guiding visitors with thoughtful word limits, we foster a respectful environment free from 
+                    the noise of public social media. Every word left behind becomes a cherished part of the legacy.
+                  </p>
+                </div>
               </div>
             </div>
           </div>

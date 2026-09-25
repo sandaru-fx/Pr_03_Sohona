@@ -25,6 +25,7 @@ export type SetupMediaItem = {
   sizeBytes: number;
   contentType: string;
   durationSeconds: number | null;
+  isProfilePhoto: boolean;
   createdAt: Date;
 };
 
@@ -83,6 +84,7 @@ export async function resolveSetupGate(
           sizeBytes: true,
           contentType: true,
           durationSeconds: true,
+          isProfilePhoto: true,
           createdAt: true,
         },
       },

@@ -50,6 +50,8 @@ export async function POST(request: Request) {
   const durationSecondsRaw = formData.get("durationSeconds");
   const descriptionRaw = formData.get("description");
   const description = typeof descriptionRaw === "string" ? descriptionRaw : null;
+  const isProfilePhotoRaw = formData.get("isProfilePhoto");
+  const isProfilePhoto = isProfilePhotoRaw === "true";
 
   if (
     typeof profileId !== "string" ||
@@ -103,6 +105,7 @@ export async function POST(request: Request) {
     profileId: auth.profile.id,
     kind: uploadCheck.kind,
     durationSeconds,
+    isProfilePhoto,
   });
   if (!limitCheck.ok) {
     return NextResponse.json(
@@ -148,6 +151,7 @@ export async function POST(request: Request) {
       data: {
         profileId: auth.profile.id,
         kind: uploadCheck.kind,
+        isProfilePhoto,
         r2ObjectKey,
         contentType: uploadCheck.contentType,
         sizeBytes: uploadCheck.sizeBytes,
@@ -160,6 +164,7 @@ export async function POST(request: Request) {
         id: true,
         profileId: true,
         kind: true,
+        isProfilePhoto: true,
         contentType: true,
         sizeBytes: true,
         durationSeconds: true,

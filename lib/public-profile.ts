@@ -23,6 +23,7 @@ export type PublicMediaMetaItem = {
   sizeBytes: number;
   contentType: string;
   description: string | null;
+  isProfilePhoto: boolean;
 };
 
 export type PublicCommentItem = {
@@ -154,14 +155,15 @@ export const PUBLIC_MEDIA_META_SELECT = {
   sizeBytes: true,
   contentType: true,
   description: true,
+  isProfilePhoto: true,
 } as const;
 
 export const PUBLIC_COMMENT_SELECT = {
   id: true,
   body: true,
   wordCount: true,
-  // authorName: true,
-  // authorRelationship: true,
+  authorName: true,
+  authorRelationship: true,
   createdAt: true,
 } as const;
 

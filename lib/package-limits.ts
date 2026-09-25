@@ -81,12 +81,27 @@ export async function assertMediaUploadAllowed(input: {
   profileId: string;
   kind: MediaKind;
   durationSeconds?: number | null;
+  isProfilePhoto?: boolean;
 }): Promise<LimitCheckResult> {
   const limits = getPackageLimits();
 
   if (input.kind === "PHOTO") {
+    if (input.isProfilePhoto) {
+      const heroCount = await prisma.mediaAsset.count({
+        where: { profileId: input.profileId, isProfilePhoto: true },
+      });
+      if (heroCount >= 1) {
+        return {
+          ok: false,
+          error: "PhotoLimit",
+          message: `You can only upload 1 profile photo.`,
+        };
+      }
+      return { ok: true };
+    }
+
     const photoCount = await prisma.mediaAsset.count({
-      where: { profileId: input.profileId, kind: "PHOTO" },
+      where: { profileId: input.profileId, kind: "PHOTO", isProfilePhoto: false },
     });
     return assertPhotoCountWithinLimit(photoCount, limits.maxImages);
   }

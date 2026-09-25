@@ -55,7 +55,7 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
             variants={staggerContainer}
             initial="hidden"
             animate="show"
-            className="max-w-2xl rounded-3xl bg-white/[0.03] p-8 sm:p-10 backdrop-blur-md border border-white/10 shadow-2xl [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]"
+            className="max-w-xl rounded-3xl bg-white/[0.03] p-8 sm:p-10 backdrop-blur-md border border-white/10 shadow-2xl [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]"
           >
             <motion.p variants={fadeUp} className="whitespace-nowrap font-sans text-5xl font-bold tracking-tight text-white drop-shadow-lg sm:text-6xl md:text-7xl">
               Mathaka <span className="text-gold">QR</span>

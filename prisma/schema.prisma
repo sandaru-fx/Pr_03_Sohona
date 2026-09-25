@@ -203,6 +203,7 @@ model MediaAsset {
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
   kind         MediaKind
+  isProfilePhoto Boolean   @default(false)
   /// Private R2 object key only — never a public URL
   r2ObjectKey  String    @unique
   contentType  String

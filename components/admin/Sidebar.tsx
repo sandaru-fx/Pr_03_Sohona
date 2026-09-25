@@ -55,7 +55,7 @@ export function Sidebar({
       <aside
         id="admin-sidebar"
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-[#2A2E33] bg-[#181C20] transition-transform duration-300 ease-in-out lg:static lg:z-auto lg:translate-x-0 shadow-2xl lg:shadow-none",
+          "fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-[#2A2E33] bg-[#181C20] transition-transform duration-300 ease-in-out lg:sticky lg:top-0 lg:h-screen lg:z-auto lg:translate-x-0 shadow-2xl lg:shadow-none",
           mobileOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >

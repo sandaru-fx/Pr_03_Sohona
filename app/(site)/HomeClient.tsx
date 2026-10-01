@@ -50,39 +50,39 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
         <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-[#0B0D0F]/90 via-[#0B0D0F]/60 to-[#0B0D0F]/10 sm:w-[60%]" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-40 bg-gradient-to-t from-[#0B0D0F] to-transparent" />
 
-        <div className="relative z-10 mx-auto flex min-h-[calc(100vh-6rem)] w-full max-w-7xl flex-col justify-center px-10 pt-20 sm:px-14 lg:px-20 sm:pt-24">
+        <div className="relative z-10 mx-auto flex min-h-[calc(100vh-6rem)] w-full max-w-7xl flex-col justify-center px-6 pt-12 sm:px-14 lg:px-20 sm:pt-20">
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             animate="show"
-            className="max-w-xl rounded-3xl bg-white/[0.03] p-8 sm:p-10 backdrop-blur-md border border-white/10 shadow-2xl [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]"
+            className="max-w-xl rounded-3xl bg-white/[0.03] p-6 sm:p-10 backdrop-blur-md border border-white/10 shadow-2xl [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]"
           >
-            <motion.p variants={fadeUp} className="whitespace-nowrap font-sans text-5xl font-bold tracking-tight text-white drop-shadow-lg sm:text-6xl md:text-7xl">
+            <motion.p variants={fadeUp} className="whitespace-nowrap font-sans text-4xl font-bold tracking-tight text-white drop-shadow-lg sm:text-6xl md:text-7xl">
               Mathaka <span className="text-gold">QR</span>
             </motion.p>
             <motion.h1
               variants={fadeUp}
-              className="mt-6 font-sans text-2xl font-medium leading-snug tracking-tight text-gray-100 sm:text-3xl md:text-4xl md:leading-snug"
+              className="mt-4 font-sans text-xl font-medium leading-snug tracking-tight text-gray-100 sm:mt-6 sm:text-3xl md:text-4xl md:leading-snug"
             >
               Digital remembrance.<br/>Private by design.
             </motion.h1>
             <motion.p
               variants={fadeUp}
-              className="mt-6 max-w-lg font-sans text-lg leading-8 text-gray-300 drop-shadow-md sm:text-xl"
+              className="mt-4 max-w-lg font-sans text-base leading-relaxed text-gray-300 drop-shadow-md sm:mt-6 sm:text-xl sm:leading-8"
             >
               A respectful digital place for organizations and families — private memories stay under family control.
             </motion.p>
-            <motion.div variants={fadeUp} className="mt-10 flex flex-wrap gap-4">
+            <motion.div variants={fadeUp} className="mt-6 flex flex-wrap gap-4 sm:mt-10">
               <Link
                 href="/contact"
-                className="group relative inline-flex h-14 items-center justify-center overflow-hidden rounded-full bg-gold px-8 font-sans text-base font-semibold text-black transition-all hover:scale-105"
+                className="group relative inline-flex h-12 sm:h-14 items-center justify-center overflow-hidden rounded-full bg-gold px-6 sm:px-8 font-sans text-sm sm:text-base font-semibold text-black transition-all hover:scale-105"
               >
                 <span className="relative z-10">Create a Memorial</span>
                 <div className="absolute inset-0 z-0 bg-white/20 opacity-0 transition-opacity group-hover:opacity-100" />
               </Link>
               <Link
                 href="/about"
-                className="inline-flex h-14 items-center justify-center rounded-full border border-white/20 bg-black/40 px-8 font-sans text-base font-medium text-white backdrop-blur-md transition-all hover:border-gold hover:bg-white/10"
+                className="inline-flex h-12 sm:h-14 items-center justify-center rounded-full border border-white/20 bg-black/40 px-6 sm:px-8 font-sans text-sm sm:text-base font-medium text-white backdrop-blur-md transition-all hover:border-gold hover:bg-white/10"
               >
                 Learn More
               </Link>

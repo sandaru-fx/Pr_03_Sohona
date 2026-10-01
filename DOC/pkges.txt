@@ -1,0 +1,36 @@
+A
+1 Minute Video Spec
+2 Minutes Audio Spec
+5 Images
+Word 500 Spec
+
+Comment Section
+ Word 100*5
+ (After that Word 150*5 Spec)
+
+B
+1 Minute Video Spec
+2 Minutes Audio Spec
+5 Images
+Word 500 Spec
+
+Comment Section
+ Word 100*5
+ (After that Word 150*5 Spec)
+
+C
+1 Minute Video Spec
+2 Minutes Audio Spec
+5 Images
+Word 500 Spec
+
+Comment Section
+ Word 100*5
+ ( After that Word 150*5 Spec)
+
+Design 
+A. 25 Years
+B. 50 Years
+C. 100 Years
+
+(A, B, C) After Comment Section (ON) Admin Board

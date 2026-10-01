@@ -1,0 +1,30 @@
+එල මචන්, ඔයා approve කරපු final architecture එකට අනුව අපි පාවිච්චි කරන සම්පූර්ණ Technology Stack එක මෙන්න. මේක ඔයාගේ portfolio එකටත් පට්ට වටින solid industry-standard tech stack එකක්.
+
+| අංශය (Category) | තාක්ෂණය (Technology) | ප්‍රධාන භාවිතය (Main Purpose) |
+| --- | --- | --- |
+| **Core Framework** | Next.js (App Router) + TypeScript | සම්පූර්ණ Web App එකේ Frontend සහ Backend API routes handle කරන්න. |
+
+| **UI / Styling** | Tailwind CSS | ලස්සන, responsive User Interface එක ඉක්මනින් design කරන්න. |
+
+| **Database** | MongoDB Atlas | Profiles, Setup Tokens, PIN hashes සහ Media Object Keys store කරන්න. |
+
+| **ORM** | Prisma | Database එකත් එක්ක type-safe විදිහට කතා කරන්න (Schema සහ Queries). |
+
+| **File Storage** | Cloudflare R2 | Videos, Photos, Voice records ලාබෙට සහ secure විදිහට store කරන්න. |
+
+| **Hosting** | Vercel | සම්පූර්ණ Next.js Project එකම CI/CD හරහා ලේසියෙන් deploy කරන්න. |
+
+| **Admin Auth** | NextAuth (Auth.js) | Temple Admin ගේ Google OAuth login එක හදන්න. |
+
+| **Security (Hashing)** | Argon2id හෝ bcrypt | Client ගේ PIN එක secure විදිහට hash කරලා DB එකට යවන්න. |
+
+| **Rate Limiting** | Upstash Redis | වැරදි PIN attempts 5කට පස්සේ විනාඩි 15කට lock කරන brute-force protection එකට. |
+
+| **Data Validation** | Zod | Forms වලින් සහ API වලින් එන inputs හරියටම validate කරන්න. |
+
+| **QR Generation** | `qrcode` (NPM Package) | අලුත් Profile එකක් හැදුවම automatically Unique QR එක generate කරන්න. |
+
+| **Infrastructure** | GitHub & Cloudflare | Code management (Version Control) සහ Custom Domain/SSL setup කරන්න. |
+
+
+මේ ටික Cursor AI එකට දෙන Master Prompt එකේ `Technologies` section එකට කෙලින්ම copy-paste කරලා දාන්න පුළුවන්.

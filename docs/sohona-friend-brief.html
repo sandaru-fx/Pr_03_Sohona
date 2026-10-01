@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sohona — Project Brief (Friend Overview)</title>
+  <style>
+    :root {
+      --ink: #1c1917;
+      --muted: #57534e;
+      --line: #e7e5e4;
+      --bg: #fafaf9;
+      --card: #ffffff;
+      --accent: #0f766e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Noto Sans Sinhala", "Iskoola Pota", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.55;
+    }
+    .wrap {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 4rem;
+    }
+    header.top {
+      margin-bottom: 1.5rem;
+    }
+    header.top p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    header.top h1 {
+      margin: 0.35rem 0 0;
+      font-size: 1.85rem;
+      letter-spacing: -0.02em;
+    }
+    .hint {
+      margin-top: 0.75rem;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .slide {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1.35rem 1.4rem 1.5rem;
+      margin-top: 1rem;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .slide .num {
+      font-size: 0.8rem;
+      color: var(--accent);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .slide h2 {
+      margin: 0.35rem 0 0.75rem;
+      font-size: 1.25rem;
+    }
+    .slide p, .slide li {
+      color: var(--ink);
+      font-size: 0.98rem;
+    }
+    .slide ul, .slide ol {
+      margin: 0.4rem 0 0;
+      padding-left: 1.2rem;
+    }
+    .slide li { margin: 0.28rem 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+      margin-top: 0.5rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.65rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: #f5f5f4; font-weight: 600; }
+    code, .tech {
+      font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+      font-size: 0.88em;
+      background: #f5f5f4;
+      padding: 0.05em 0.35em;
+      border-radius: 4px;
+    }
+    .one-liner {
+      border-left: 4px solid var(--accent);
+      padding-left: 0.9rem;
+      margin: 0.6rem 0 0;
+      font-size: 1.02rem;
+    }
+    footer {
+      margin-top: 1.5rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    @media print {
+      body { background: #fff; }
+      .hint { display: none; }
+      .wrap { padding: 0; max-width: none; }
+      .slide {
+        border: 1px solid #ddd;
+        border-radius: 0;
+        margin-top: 0;
+        margin-bottom: 0.8rem;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <p>Sohona · Digital Legacy / Memorial</p>
+      <h1>යාළුවට explain කරන short brief</h1>
+      <p class="hint">
+        Browser එකෙන් මේ file එක open කරලා → <strong>Ctrl+P</strong> →
+        Destination: <strong>Save as PDF</strong>. Slide-style sections පහළින්.
+      </p>
+    </header>
+
+    <section class="slide">
+      <div class="num">Slide 01 · Idea</div>
+      <h2>Project එක මොකක්ද?</h2>
+      <p>
+        <strong>Sohona</strong> කියන්නේ temple එකකට හදපු
+        <strong>privacy-first Digital Legacy / Memorial</strong> web app එකක්.
+      </p>
+      <ul>
+        <li>Family එකට අහවල් වුණා කෙනාගේ memories digital විදිහට තියාගන්න පුළුවන්</li>
+        <li>Statements, photos, video, voice + QR memorial page</li>
+        <li><strong>Temple admin ට private content බලන්න බැහැ</strong> — ඒක core promise එක</li>
+      </ul>
+      <p class="one-liner">
+        Admin = profiles / QR / packages · Family = PIN එකෙන් private memories ·
+        Visitors = QR page.
+      </p>
+    </section>
+
+    <section class="slide">
+      <div class="num">Slide 02 · Who uses it</div>
+      <h2>Roles 3ක්</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>කවුද</th>
+            <th>මොකද කරන්නේ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Temple admin</strong></td>
+            <td>Temple staff</td>
+            <td>Google login + allow-list · profile create · package තෝරනවා · QR/links දෙනවා</td>
+          </tr>
+          <tr>
+            <td><strong>Family</strong></td>
+            <td>Relatives</td>
+            <td>Setup/manage URL + 6-digit <strong>PIN</strong> · content add/edit (email නැහැ)</td>
+          </tr>
+          <tr>
+            <td><strong>Visitor</strong></td>
+            <td>QR scan කරන කෙනා</td>
+            <td>Public memorial බලනවා · comments දානවා (PIN rule අනුව)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="slide">
+      <div class="num">Slide 03 · Main functions</div>
+      <h2>Core features</h2>
+      <ul>
+        <li><strong>Admin:</strong> Google auth, create memorial (name-only), Package A/B/C, QR + setup link</li>
+        <li><strong>Family setup:</strong> one-time setup token → PIN set → statements/media → manage link</li>
+        <li><strong>Family manage:</strong> PIN session · edit content · delete comments · public PIN toggle</li>
+        <li><strong>Public QR page:</strong> view memorial · optional PIN gate · signed media playback · comments</li>
+        <li><strong>Light site:</strong> <code>/</code>, <code>/about</code>, <code>/packages</code>, <code>/contact</code></li>
+      </ul>
+    </section>
+
+    <section class="slide">
+      <div class="num">Slide 04 · Packages A / B / C</div>
+      <h2>Content limits එකම · years වෙනස්</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Package</th>
+            <th>Retention</th>
+            <th>Shared limits</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>A</strong></td>
+            <td>25 years</td>
+            <td rowspan="3">
+              Video ≤ 60s · Audio ≤ 120s · Photos ≤ 5 · Statements ≤ 500 words (SI/EN) ·
+              Comments ≤ 10 (5×100 then 5×150 words)
+            </td>
+          </tr>
+          <tr>
+            <td><strong>B</strong></td>
+            <td>50 years</td>
+          </tr>
+          <tr>
+            <td><strong>C</strong></td>
+            <td>100 years</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="margin-top:0.75rem;color:var(--muted);font-size:0.92rem;">
+        Retention clock ආරම්භ වෙන්නේ family <strong>setup complete</strong> වුණාම.
+        Admin comments/statements/media කිසිදාක බලන්නේ නැහැ.
+      </p>
+    </section>
+
+    <section class="slide">
+      <div class="num">Slide 05 · Technology stack</div>
+      <h2>Use කරන tech</h2>
+      <table>
+        <thead>
+          <tr><th>Layer</th><th>Tech</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>App</td><td><span class="tech">Next.js 16</span> App Router · <span class="tech">React 19</span> · <span class="tech">TypeScript</span> · <span class="tech">Tailwind CSS 4</span></td></tr>
+          <tr><td>Validation</td><td><span class="tech">Zod</span></td></tr>
+          <tr><td>Database</td><td><span class="tech">Prisma</span> + <span class="tech">MongoDB Atlas</span></td></tr>
+          <tr><td>Admin auth</td><td><span class="tech">Auth.js / NextAuth</span> + Google OAuth + email allow-list</td></tr>
+          <tr><td>Family auth</td><td>URL tokens + 6-digit <span class="tech">PIN</span> (<span class="tech">Argon2id</span>)</td></tr>
+          <tr><td>Media</td><td><span class="tech">Cloudflare R2</span> private bucket · presigned upload · signed GET URLs</td></tr>
+          <tr><td>Security</td><td><span class="tech">Upstash Redis</span> rate limits · hashed tokens · IP hashing</td></tr>
+          <tr><td>QA / deploy</td><td><span class="tech">Playwright</span> smoke · target <span class="tech">Vercel</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="slide">
+      <div class="num">Slide 06 · Privacy model</div>
+      <h2>ඇයි මේක special?</h2>
+      <ul>
+        <li>Admin APIs <strong>never select</strong> statements / media / comments</li>
+        <li>Media DB එකේ <code>r2ObjectKey</code> විතරක් — permanent public URL නැහැ</li>
+        <li>PIN plain-text store නෑ — Argon2id hash only</li>
+        <li>Setup/manage tokens DB එකේ hashed</li>
+        <li>Wrong PIN ×5 → temporary lock · Redis rate limits abuse අඩු කරනවා</li>
+      </ul>
+    </section>
+
+    <section class="slide">
+      <div class="num">Slide 07 · User flow</div>
+      <h2>End-to-end flow</h2>
+      <ol>
+        <li>Admin Google login → memorial create + Package A/B/C</li>
+        <li>Family ට <strong>setup link</strong> යවනවා</li>
+        <li>Family PIN set → memories add → setup complete</li>
+        <li>System <strong>manage link</strong> දෙනවා + retention years start</li>
+        <li>Visitors QR / <code>/p/[qrId]</code> එකෙන් memorial බලනවා</li>
+        <li>Family later manage + PIN එකෙන් edit කරනවා</li>
+      </ol>
+    </section>
+
+    <section class="slide">
+      <div class="num">Slide 08 · 10-day plan</div>
+      <h2>Build plan (Day 1–10)</h2>
+      <table>
+        <thead>
+          <tr><th>Day</th><th>Focus</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>1</strong></td><td>Foundation — env, Prisma schema, MongoDB</td></tr>
+          <tr><td><strong>2</strong></td><td>Admin Google auth + allow-list dashboard</td></tr>
+          <tr><td><strong>3</strong></td><td>Profile create, admin list, QR codes</td></tr>
+          <tr><td><strong>4</strong></td><td>Private Cloudflare R2 upload plumbing</td></tr>
+          <tr><td><strong>5</strong></td><td>Family setup flow (PIN, content, manage token)</td></tr>
+          <tr><td><strong>6</strong></td><td>Public memorial view + PIN session/lock</td></tr>
+          <tr><td><strong>7</strong></td><td>Signed media playback on QR page</td></tr>
+          <tr><td><strong>8</strong></td><td>Redis rate limiting + security hardening</td></tr>
+          <tr><td><strong>9</strong></td><td>Owner manage dashboard + light public site</td></tr>
+          <tr><td><strong>10</strong></td><td>Deploy readiness, env checks, Playwright smoke</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:0.75rem;font-size:0.92rem;color:var(--muted);">
+        ඊට පස්සේ Packages feature: schema → admin picker → limit enforce → QR comments → hardening verify.
+      </p>
+    </section>
+
+    <section class="slide">
+      <div class="num">Slide 09 · One-liner</div>
+      <h2>යාළුවට කෙටියෙන් කියන්නේ මෙහෙම</h2>
+      <p class="one-liner">
+        “Sohona කියන්නේ temple-managed, privacy-first digital memorial platform එකක් —
+        admin කරන්නේ profiles/QR/packages; family කරන්නේ PIN එකෙන් private memories;
+        visitors බලන්නේ QR page එක. Stack එක Next.js + Prisma/MongoDB + Auth.js +
+        Cloudflare R2 + Redis.”
+      </p>
+      <p style="margin-top:1rem;font-size:0.92rem;">
+        Repo: <a href="https://github.com/sandaru-fx/Pr_03_Sohona">https://github.com/sandaru-fx/Pr_03_Sohona</a>
+      </p>
+    </section>
+
+    <footer>
+      Sohona friend brief · print/PDF friendly · generated for sharing
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,86 @@
+import { PublicGateCard } from "@/components/public/PublicGateCard";
+import {
+  canViewPublicContent,
+  loadPublicMemorialContent,
+  resolvePublicProfileGate,
+  incrementViewCount,
+} from "@/lib/public-profile";
+import { hasValidPublicViewSession } from "@/lib/public-view-session";
+import { isR2Configured } from "@/lib/r2-config";
+
+type PublicProfilePageProps = {
+  params: Promise<{ qrId: string }>;
+};
+
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }: PublicProfilePageProps) {
+  const { qrId: rawQrId } = await params;
+  const result = await resolvePublicProfileGate(decodeURIComponent(rawQrId));
+
+  if (result.status === "ready") {
+    return {
+      title: `${result.profile.displayName} · Sohona`,
+      robots: { index: false, follow: false },
+    };
+  }
+
+  return {
+    title: "Memorial · Sohona",
+    robots: { index: false, follow: false },
+  };
+}
+
+/**
+ * Public QR gate, PIN session, view-only memorial + secure media.
+ */
+export default async function PublicProfilePage({
+  params,
+}: PublicProfilePageProps) {
+  const { qrId: rawQrId } = await params;
+  const qrId = decodeURIComponent(rawQrId);
+  const result = await resolvePublicProfileGate(qrId);
+  const hasViewSession =
+    result.status === "ready" && result.access === "pin_required"
+      ? await hasValidPublicViewSession(qrId)
+      : false;
+
+  const allowed = canViewPublicContent(result, hasViewSession);
+  
+  if (allowed && result.status === "ready") {
+    // Only increment when the user actually views the content
+    await incrementViewCount(result.profile.id);
+  }
+
+  const content =
+    allowed && result.status === "ready"
+      ? await loadPublicMemorialContent(result.profile.id)
+      : null;
+
+  const isMemorial =
+    result.status === "ready" && content !== null;
+
+  return (
+    <main
+      className={
+        isMemorial
+          ? "flex min-h-full flex-1 flex-col items-center bg-[#0A0A09] text-[#F2EDE3] relative"
+          : "relative flex min-h-full flex-1 flex-col items-center justify-center overflow-hidden bg-[#0A0A09] px-5 py-16 text-[#F2EDE3] sm:px-6"
+      }
+    >
+      {!isMemorial ? (
+        <div
+          aria-hidden
+          className="ambient-glow pointer-events-none absolute inset-0"
+        />
+      ) : null}
+      <div className={isMemorial ? "relative w-full z-10" : "relative w-full max-w-5xl z-10"}>
+        <PublicGateCard
+          result={result}
+          content={content}
+          r2Configured={isR2Configured()}
+        />
+      </div>
+    </main>
+  );
+}

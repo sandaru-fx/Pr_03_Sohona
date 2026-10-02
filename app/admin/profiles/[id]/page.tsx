@@ -10,6 +10,8 @@ import { ProfileQrCard } from "@/components/admin/ProfileQrCard";
 import { SetupStatusBadge } from "@/components/admin/SetupStatusBadge";
 import { SHARED_PACKAGE_LIMITS } from "@/lib/packages";
 
+import { RegenerateSetupLinkButton } from "@/components/admin/RegenerateSetupLinkButton";
+
 type ProfileDetailPageProps = {
   params: Promise<{ id: string }>;
 };
@@ -135,25 +137,29 @@ export default async function AdminProfileDetailPage({
         </div>
       ) : status.tone === "expired" ? (
         <div
-          className="flex gap-3 rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-foreground"
+          className="flex flex-col gap-3 rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-foreground"
           role="status"
         >
-          <Info className="mt-0.5 h-5 w-5 shrink-0 text-warning" aria-hidden />
-          <p className="text-sm leading-6">
-            The setup link has expired. Regenerating setup links will be added
-            in a later phase.
-          </p>
+          <div className="flex gap-3">
+            <Info className="mt-0.5 h-5 w-5 shrink-0 text-warning" aria-hidden />
+            <p className="text-sm leading-6">
+              The setup link has expired. You can regenerate a new one-time setup link below.
+            </p>
+          </div>
+          <RegenerateSetupLinkButton profileId={profile.id} />
         </div>
       ) : (
         <div
-          className="flex gap-3 rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-foreground"
+          className="flex flex-col gap-3 rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-foreground"
           role="status"
         >
-          <Info className="mt-0.5 h-5 w-5 shrink-0 text-warning" aria-hidden />
-          <p className="text-sm leading-6">
-            Waiting for the family to open the one-time setup link. That link
-            was shown only at creation time and is not stored in plaintext here.
-          </p>
+          <div className="flex gap-3">
+            <Info className="mt-0.5 h-5 w-5 shrink-0 text-warning" aria-hidden />
+            <p className="text-sm leading-6">
+              Waiting for the family to open the one-time setup link. If they lost it, you can regenerate a new one below (which will invalidate the old link).
+            </p>
+          </div>
+          <RegenerateSetupLinkButton profileId={profile.id} />
         </div>
       )}
 

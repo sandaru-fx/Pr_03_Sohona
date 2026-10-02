@@ -411,25 +411,53 @@ export function SetupContentForm({
         )}
       </AnimatePresence>
 
-      <div className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-8 py-10 shadow-none sm:px-12 sm:py-14 backdrop-blur-md">
-        <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">Mathaka QR</p>
-        <h1 className="mt-2 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8]">
-          Add memories
+      <div className="relative overflow-hidden rounded-3xl border border-gold/20 bg-surface/80 px-10 py-12 sm:px-16 sm:py-16 backdrop-blur-md shadow-[0_0_40px_-10px_rgba(212,175,55,0.05)]">
+        {/* Decorative gradient blob */}
+        <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-gold/5 blur-[80px] pointer-events-none" />
+        
+        <p className="relative z-10 text-xs font-medium uppercase tracking-[0.18em] text-gold">Mathaka QR</p>
+        <h1 className="relative z-10 mt-2 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8]">
+          Add Memories
         </h1>
-        <p className="mt-3 text-base leading-7 text-foreground-secondary">
+        <p className="relative z-10 mt-3 text-base leading-7 text-foreground-secondary">
           Add statements and media for{" "}
           <span className="font-medium text-[#F5F1E8]">{displayName}</span>.
           You can save now and finish setup in the next step.
         </p>
-        <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-gold/20 bg-gold/5 px-3 py-1 text-xs font-medium text-gold">
-          {packageId} Tier Package Limits
+        
+        <div className="relative z-10 mt-8">
+          <div className="inline-flex items-center gap-2 mb-4">
+            <div className="h-px w-8 bg-gold/30"></div>
+            <p className="text-xs font-medium uppercase tracking-wider text-gold/80">Your Plan Limits</p>
+            <div className="h-px w-8 bg-gold/30"></div>
+          </div>
+          
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-[#2A2E33] bg-background/50 p-4 text-center transition-colors hover:border-gold/30 hover:bg-gold/5">
+              <FileImage className="h-5 w-5 text-gold/80 mb-2" />
+              <span className="text-sm font-medium text-[#F5F1E8]">{limits.maxImages}</span>
+              <span className="text-xs text-foreground-muted mt-0.5">Photos</span>
+            </div>
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-[#2A2E33] bg-background/50 p-4 text-center transition-colors hover:border-gold/30 hover:bg-gold/5">
+              <FileVideo className="h-5 w-5 text-gold/80 mb-2" />
+              <span className="text-sm font-medium text-[#F5F1E8]">{limits.maxVideoSeconds}s</span>
+              <span className="text-xs text-foreground-muted mt-0.5">Video</span>
+            </div>
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-[#2A2E33] bg-background/50 p-4 text-center transition-colors hover:border-gold/30 hover:bg-gold/5">
+              <FileAudio className="h-5 w-5 text-gold/80 mb-2" />
+              <span className="text-sm font-medium text-[#F5F1E8]">{limits.maxAudioSeconds}s</span>
+              <span className="text-xs text-foreground-muted mt-0.5">Audio</span>
+            </div>
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-[#2A2E33] bg-background/50 p-4 text-center transition-colors hover:border-gold/30 hover:bg-gold/5">
+              <span className="font-serif text-lg font-bold text-gold/80 mb-1 leading-none">Aa</span>
+              <span className="text-sm font-medium text-[#F5F1E8]">{limits.maxStatementWords}</span>
+              <span className="text-xs text-foreground-muted mt-0.5">Words</span>
+            </div>
+          </div>
         </div>
-        <p className="mt-3 text-xs leading-5 text-foreground-muted">
-          {limits.maxImages} photos · video ≤ {limits.maxVideoSeconds}s · audio ≤ {limits.maxAudioSeconds}s · statements ≤ {limits.maxStatementWords} words total.
-        </p>
       </div>
 
-      <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-8 py-10 shadow-none sm:px-12 sm:py-14 backdrop-blur-md">
+      <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-10 py-12 shadow-none sm:px-16 sm:py-16 backdrop-blur-md">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="text-sm font-medium text-[#F5F1E8]">Profile Photo</h2>
         </div>
@@ -439,7 +467,7 @@ export function SetupContentForm({
         
         {/* Profile Photo Live Preview inside an archway */}
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8">
-          <div className="relative w-[200px] h-[280px] rounded-t-[100px] rounded-b-xl border-2 border-dashed border-[#2A2E33] bg-background-secondary/30 flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
+          <div className="group relative w-[200px] h-[280px] rounded-t-[100px] rounded-b-xl border-2 border-dashed border-gold/30 bg-gold/5 flex items-center justify-center overflow-hidden shrink-0 shadow-inner transition-all hover:border-gold/60 hover:bg-gold/10">
             {media.find(m => m.isProfilePhoto) ? (() => {
               const heroPhoto = media.find(m => m.isProfilePhoto)!;
               const previewUrl = heroPhoto.originalName ? localPreviews[heroPhoto.originalName] : null;
@@ -447,39 +475,56 @@ export function SetupContentForm({
               if (previewUrl) {
                 return (
                   <div className="absolute inset-0 w-full h-full">
-                    <img src={previewUrl} alt="Hero Photo Preview" className="w-full h-full object-cover" />
+                    <img src={previewUrl} alt="Hero Photo Preview" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                   </div>
                 );
               }
 
               return (
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-surface/90 text-center p-4">
-                   <FileImage className="h-10 w-10 text-gold mb-3" />
+                   <FileImage className="h-10 w-10 text-gold mb-3 animate-pulse" />
                    <p className="text-sm font-medium text-[#F5F1E8]">Hero Photo Set</p>
                    <p className="text-xs text-foreground-muted mt-1 break-all line-clamp-2">
                      {heroPhoto.originalName || "Photo"}
                    </p>
-                   <div className="mt-4 text-[10px] uppercase tracking-wider text-gold/60 border border-gold/20 rounded-full px-3 py-1">
+                   <div className="mt-4 text-[10px] uppercase tracking-wider text-gold/60 border border-gold/20 rounded-full px-3 py-1 bg-gold/5">
                      Preview ready on memorial
                    </div>
                 </div>
               );
             })() : (
-              <div className="text-center p-4">
-                <FileImage className="h-8 w-8 text-foreground-muted mx-auto mb-2 opacity-50" />
-                <p className="text-xs text-foreground-muted">No photo selected</p>
+              <div className="text-center p-4 transition-transform group-hover:-translate-y-1">
+                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-background-secondary shadow-sm ring-1 ring-[#2A2E33]">
+                  <Upload className="h-6 w-6 text-gold/80" />
+                </div>
+                <p className="text-sm font-medium text-[#F5F1E8]">Upload Photo</p>
+                <p className="text-xs text-foreground-muted mt-1">Drag & drop or click</p>
               </div>
             )}
+            
+            {/* Overlay link for clicking */}
+            <label className="absolute inset-0 cursor-pointer z-10">
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                className="sr-only"
+                disabled={uploading || finishing || !r2Configured}
+                onChange={(event) => {
+                  void onUpload(event.target.files, true);
+                  event.target.value = "";
+                }}
+              />
+            </label>
           </div>
           
-          <div className="flex-1 space-y-4 w-full text-center sm:text-left">
+          <div className="flex-1 space-y-4 w-full text-center sm:text-left pt-4">
             {!r2Configured ? (
               <div className="inline-flex items-start gap-2 rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-warning">
                 <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
                 <p>Media storage is not connected yet.</p>
               </div>
             ) : (
-              <div>
+              <div className="space-y-4">
                 <label className="inline-flex h-12 cursor-pointer items-center gap-2 rounded-xl border border-gold/30 bg-gold/5 px-6 text-sm font-medium text-gold transition-all hover:bg-gold/10 hover:border-gold/50 hover:shadow-[0_0_15px_-3px_rgba(212,175,55,0.2)]">
                   {uploading ? (
                     <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
@@ -507,7 +552,7 @@ export function SetupContentForm({
         </div>
       </section>
 
-      <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-8 py-10 shadow-none sm:px-12 sm:py-14 backdrop-blur-md">
+      <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-10 py-12 shadow-none sm:px-16 sm:py-16 backdrop-blur-md">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="text-sm font-medium text-[#F5F1E8]">Statements</h2>
           <p
@@ -613,7 +658,7 @@ export function SetupContentForm({
         </div>
       </section>
 
-      <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-8 py-10 shadow-none sm:px-12 sm:py-14 backdrop-blur-md">
+      <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-10 py-12 shadow-none sm:px-16 sm:py-16 backdrop-blur-md">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="text-sm font-medium text-[#F5F1E8]">
             Photos, videos & voice
@@ -760,7 +805,7 @@ export function SetupContentForm({
         </ul>
       </section>
 
-      <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-8 py-10 shadow-[0_0_40px_-10px_rgba(212,175,55,0.05)] sm:px-12 sm:py-14 backdrop-blur-md text-center">
+      <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-10 py-12 shadow-[0_0_40px_-10px_rgba(212,175,55,0.05)] sm:px-16 sm:py-16 backdrop-blur-md text-center">
         <h2 className="text-lg font-medium text-[#F5F1E8]">Finish setup</h2>
         <p className="mt-2 text-sm text-foreground-secondary max-w-lg mx-auto">
           This locks the setup link forever and shows your private manage link

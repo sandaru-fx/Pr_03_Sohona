@@ -77,7 +77,7 @@ export function SetupGateCard({
       initial={{ opacity: 0, scale: 0.95, y: 15 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 25 }}
-      className="w-full max-w-md mx-auto rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-8 py-10 sm:px-12 sm:py-14 shadow-[0_0_40px_-10px_rgba(0,0,0,0.5)] backdrop-blur-md"
+      className="w-full max-w-md mx-auto rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-10 py-12 sm:px-16 sm:py-16 shadow-[0_0_40px_-10px_rgba(0,0,0,0.5)] backdrop-blur-md"
     >
       <div
         className={cn(

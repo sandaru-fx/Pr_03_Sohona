@@ -94,7 +94,7 @@ export function SetupPinForm({
 
   if (saved) {
     return (
-      <div className="w-full max-w-lg rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-6 py-10 sm:px-8 sm:py-12 shadow-[0_0_40px_-10px_rgba(212,175,55,0.05)] backdrop-blur-md">
+      <div className="w-full max-w-lg rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-8 py-10 sm:px-12 sm:py-14 shadow-[0_0_40px_-10px_rgba(212,175,55,0.05)] backdrop-blur-md">
         <motion.div 
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}

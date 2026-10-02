@@ -411,7 +411,7 @@ export function SetupContentForm({
         )}
       </AnimatePresence>
 
-      <div className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-6 py-8 shadow-none sm:px-8 sm:py-10 backdrop-blur-md">
+      <div className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-8 py-10 shadow-none sm:px-12 sm:py-14 backdrop-blur-md">
         <p className="text-xs font-medium uppercase tracking-[0.18em] text-gold">Mathaka QR</p>
         <h1 className="mt-2 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8]">
           Add memories
@@ -429,7 +429,7 @@ export function SetupContentForm({
         </p>
       </div>
 
-      <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-6 py-8 shadow-none sm:px-8 sm:py-10 backdrop-blur-md">
+      <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-8 py-10 shadow-none sm:px-12 sm:py-14 backdrop-blur-md">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="text-sm font-medium text-[#F5F1E8]">Profile Photo</h2>
         </div>
@@ -507,7 +507,7 @@ export function SetupContentForm({
         </div>
       </section>
 
-      <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-6 py-8 shadow-none sm:px-8 sm:py-10 backdrop-blur-md">
+      <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-8 py-10 shadow-none sm:px-12 sm:py-14 backdrop-blur-md">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="text-sm font-medium text-[#F5F1E8]">Statements</h2>
           <p
@@ -613,7 +613,7 @@ export function SetupContentForm({
         </div>
       </section>
 
-      <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-6 py-8 shadow-none sm:px-8 sm:py-10 backdrop-blur-md">
+      <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-8 py-10 shadow-none sm:px-12 sm:py-14 backdrop-blur-md">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="text-sm font-medium text-[#F5F1E8]">
             Photos, videos & voice
@@ -760,7 +760,7 @@ export function SetupContentForm({
         </ul>
       </section>
 
-      <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-6 py-8 shadow-[0_0_40px_-10px_rgba(212,175,55,0.05)] sm:px-8 sm:py-10 backdrop-blur-md text-center">
+      <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-8 py-10 shadow-[0_0_40px_-10px_rgba(212,175,55,0.05)] sm:px-12 sm:py-14 backdrop-blur-md text-center">
         <h2 className="text-lg font-medium text-[#F5F1E8]">Finish setup</h2>
         <p className="mt-2 text-sm text-foreground-secondary max-w-lg mx-auto">
           This locks the setup link forever and shows your private manage link

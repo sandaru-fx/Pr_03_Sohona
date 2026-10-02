@@ -165,7 +165,7 @@ export function ContactClient() {
             <motion.div variants={itemVariants} className="mt-8 flex items-center gap-4">
               <div className="relative h-16 w-16 overflow-hidden rounded-full border-2 border-gold/30 bg-white p-1 shadow-[0_0_15px_rgba(232,201,133,0.15)]">
                 <Image
-                  src="/logo-mathaka.jpg"
+                  src="/logo.jpeg"
                   alt="Mathaka QR Logo"
                   fill
                   className="object-contain p-1"

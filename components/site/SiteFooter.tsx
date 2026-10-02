@@ -21,13 +21,14 @@ export function SiteFooter() {
           {/* Brand & Tagline */}
           <div className="flex flex-col gap-6">
             <div className="inline-flex items-center gap-3">
-              <Image
-                src="/logo.jpeg"
-                alt="Mathaka QR Logo"
-                width={44}
-                height={44}
-                className="h-11 w-11 rounded-lg object-contain drop-shadow-lg"
-              />
+              <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full border-2 border-gold/30 bg-white shadow-[0_0_15px_rgba(232,201,133,0.15)] drop-shadow-lg">
+                <Image
+                  src="/logo.jpeg"
+                  alt="Mathaka QR Logo"
+                  fill
+                  className="object-contain p-1"
+                />
+              </div>
               <p className="whitespace-nowrap font-sans text-2xl font-semibold tracking-tight text-white drop-shadow-lg sm:text-3xl">
                 Mathaka <span className="text-gold">QR</span>
               </p>

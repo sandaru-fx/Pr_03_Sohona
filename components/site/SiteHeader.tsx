@@ -28,14 +28,15 @@ export function SiteHeader({ pathname }: SiteHeaderProps) {
           className="group inline-flex shrink-0 items-center gap-3 transition-opacity duration-300 hover:opacity-90"
           aria-label="Mathaka QR home"
         >
-          <Image
-            src="/logo.jpeg"
-            alt="Mathaka QR Logo"
-            width={48}
-            height={48}
-            priority
-            className="h-11 w-11 rounded-lg object-contain sm:h-12 sm:w-12"
-          />
+          <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full border-2 border-gold/30 bg-white shadow-[0_0_15px_rgba(232,201,133,0.15)] sm:h-12 sm:w-12">
+            <Image
+              src="/logo.jpeg"
+              alt="Mathaka QR Logo"
+              fill
+              priority
+              className="object-contain p-1"
+            />
+          </div>
           <span className="whitespace-nowrap font-sans text-2xl font-semibold tracking-tight text-[#F5F1E8] sm:text-3xl">
             Mathaka <span className="text-gold">QR</span>
           </span>

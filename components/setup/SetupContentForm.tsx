@@ -149,8 +149,8 @@ export function SetupContentForm({
   const limits = getPackageLimits();
   const [statements, setStatements] = useState<StatementDraft[]>(
     initialStatements.length > 0
-      ? initialStatements.map((item) => newDraft(item.body))
-      : [newDraft()],
+      ? initialStatements.map((item) => ({ key: item.id, body: item.body }))
+      : [{ key: "initial-draft", body: "" }],
   );
   const [media, setMedia] = useState<MediaItem[]>(initialMedia);
   const [kind, setKind] = useState<"PHOTO" | "VIDEO" | "VOICE">("PHOTO");
@@ -214,8 +214,8 @@ export function SetupContentForm({
     if (data.statements) {
       setStatements(
         data.statements.length > 0
-          ? data.statements.map((item) => newDraft(item.body))
-          : [newDraft()],
+          ? data.statements.map((item) => ({ key: item.id, body: item.body }))
+          : [{ key: "initial-draft", body: "" }],
       );
     }
     if (showSuccessMessage) {

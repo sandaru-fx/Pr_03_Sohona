@@ -51,7 +51,7 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
         <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-[#0B0D0F]/90 via-[#0B0D0F]/60 to-[#0B0D0F]/10 sm:w-[60%]" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-40 bg-gradient-to-t from-[#0B0D0F] to-transparent" />
 
-        <div className="relative z-10 mx-auto flex min-h-[calc(100vh-6rem)] w-full max-w-7xl flex-col justify-center px-6 pt-12 sm:px-14 lg:px-20 sm:pt-20">
+        <div className="relative z-10 mx-auto flex min-h-[calc(100vh-6rem)] w-full max-w-7xl flex-col justify-center px-6 pt-12 pb-16 sm:px-14 lg:px-20 sm:pt-20 sm:pb-32">
           <m.div
             variants={staggerContainer}
             initial="hidden"
@@ -73,7 +73,7 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
             >
               A respectful digital place for organizations and families — private memories stay under family control.
             </m.p>
-            <m.div variants={fadeUp} className="mt-6 flex flex-wrap gap-4 sm:mt-10">
+            <m.div variants={fadeUp} className="mt-6 flex flex-wrap gap-4 sm:mt-6">
               <Link
                 href="/contact"
                 className="group relative inline-flex h-12 sm:h-14 items-center justify-center overflow-hidden rounded-full bg-gold px-6 sm:px-8 font-sans text-sm sm:text-base font-semibold text-black transition-all hover:scale-105"

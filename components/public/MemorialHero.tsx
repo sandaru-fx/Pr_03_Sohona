@@ -53,8 +53,10 @@ export function MemorialHero({ displayName, pinProtected, heroPhoto, r2Configure
         <Image src="/images/90f9b40d-d30c-46e9-91f5-23b22b6bff19.png" alt="" fill sizes="(max-width: 1100px) 1100px, 100vw" preload className={styles.image} />
         {photoUrl ? (
           <div className={styles.heroProfileWrapper}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={photoUrl} alt={`Profile photo of ${displayName}`} className={styles.heroProfilePhoto} />
+            <div className={styles.photoContainer}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={photoUrl} alt={`Profile photo of ${displayName}`} className={styles.heroProfilePhoto} />
+            </div>
           </div>
         ) : (
           <div className={styles.monogram}><span>{initial}</span><LotusOrnament /></div>

@@ -173,7 +173,7 @@ export function SetupContentForm({
   const accept = useMemo(() => {
     if (kind === "PHOTO") return "image/jpeg,image/png,image/webp";
     if (kind === "VIDEO") return "video/mp4,video/webm";
-    return "audio/mpeg,audio/mp4,audio/wav,audio/webm,.mp3,.m4a,.wav";
+    return "audio/mpeg,audio/mp4,audio/wav,audio/webm,audio/ogg,.mp3,.m4a,.wav,.ogg";
   }, [kind]);
 
   function showMessage(msg: string) {

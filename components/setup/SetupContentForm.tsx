@@ -382,7 +382,7 @@ export function SetupContentForm({
   }
 
   return (
-    <div className="w-full max-w-2xl space-y-6">
+    <div className="w-full max-w-[900px] space-y-12">
       {/* Toast Notifications */}
       <AnimatePresence>
         {message && (
@@ -411,7 +411,7 @@ export function SetupContentForm({
         )}
       </AnimatePresence>
 
-      <div className="relative overflow-hidden rounded-3xl border border-gold/20 bg-surface/80 px-10 py-12 sm:px-16 sm:py-16 backdrop-blur-md shadow-[0_0_40px_-10px_rgba(212,175,55,0.05)]">
+      <div className="setup-glass-card relative overflow-hidden rounded-3xl px-8 py-14 sm:px-16 sm:py-16 shadow-[0_0_40px_-10px_rgba(212,175,55,0.05)]">
         {/* Decorative gradient blob */}
         <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-gold/5 blur-[80px] pointer-events-none" />
         
@@ -457,7 +457,7 @@ export function SetupContentForm({
         </div>
       </div>
 
-      <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-10 py-12 shadow-none sm:px-16 sm:py-16 backdrop-blur-md">
+      <section className="setup-glass-card rounded-3xl px-8 py-12 sm:px-16 sm:py-14">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="text-sm font-medium text-[#F5F1E8]">Profile Photo</h2>
         </div>
@@ -552,7 +552,7 @@ export function SetupContentForm({
         </div>
       </section>
 
-      <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-10 py-12 shadow-none sm:px-16 sm:py-16 backdrop-blur-md">
+      <section className="setup-glass-card rounded-3xl px-8 py-12 sm:px-16 sm:py-14">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="text-sm font-medium text-[#F5F1E8]">Statements</h2>
           <p
@@ -566,7 +566,15 @@ export function SetupContentForm({
             {usedWords} / {limits.maxStatementWords} words
           </p>
         </div>
-        <p className="mt-1 text-sm text-foreground-secondary">
+        {/* Visual word count progress bar */}
+        <div className="word-progress-track mt-3">
+          <div
+            className="word-progress-fill"
+            data-over={usedWords > limits.maxStatementWords}
+            style={{ width: `${Math.min((usedWords / limits.maxStatementWords) * 100, 100)}%` }}
+          />
+        </div>
+        <p className="mt-3 text-sm text-foreground-secondary">
           Sinhala or English. Word count is across all statements combined.
         </p>
 
@@ -599,7 +607,7 @@ export function SetupContentForm({
                     );
                   }}
                   placeholder="Write a memory or message..."
-                  className="min-h-24 w-full rounded-2xl border border-[#2A2E33] bg-background-secondary px-4 py-3.5 text-sm leading-relaxed text-foreground shadow-none outline-none transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/20 focus-visible:border-gold/50 disabled:opacity-50 resize-none"
+                  className="min-h-32 w-full rounded-2xl border border-[#2A2E33]/60 bg-surface/50 px-5 py-4 text-sm leading-relaxed text-foreground shadow-inner outline-none transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/20 focus-visible:border-gold/50 focus:bg-gold/5 disabled:opacity-50 resize-none placeholder:text-foreground-muted"
                 />
                 <button
                   type="button"
@@ -623,14 +631,14 @@ export function SetupContentForm({
           </AnimatePresence>
         </div>
 
-        <div className="mt-6 flex flex-wrap gap-3">
+        <div className="mt-8 flex flex-wrap items-center gap-4">
           <button
             type="button"
             onClick={() => setStatements((current) => [...current, newDraft()])}
             disabled={
               savingStatements || finishing || statements.length >= 30
             }
-            className="inline-flex h-11 items-center gap-2 rounded-xl border border-border bg-background-secondary/50 px-5 text-sm font-medium text-foreground transition-all hover:bg-background-secondary hover:border-gold/30 hover:text-[#F5F1E8]"
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-[#2A2E33] bg-transparent px-6 text-sm font-medium text-foreground-secondary transition-all hover:border-gold/40 hover:text-gold hover:bg-gold/5 disabled:opacity-50"
           >
             <Plus className="h-4 w-4" aria-hidden />
             Add statement
@@ -640,10 +648,10 @@ export function SetupContentForm({
             onClick={() => void saveStatements()}
             disabled={savingStatements || finishing}
             className={cn(
-              "inline-flex h-11 items-center gap-2 rounded-xl px-5 text-sm font-medium text-background transition-all shadow-[0_0_20px_-5px_rgba(212,175,55,0.4)]",
+              "inline-flex h-12 items-center justify-center gap-2 rounded-xl border-0 px-8 text-sm font-semibold text-[#0B0D0F] transition-all",
               savingStatements || finishing
-                ? "cursor-not-allowed bg-foreground-muted shadow-none"
-                : "bg-gold hover:scale-[1.02] active:scale-[0.98] hover:shadow-[0_0_25px_-5px_rgba(212,175,55,0.6)]",
+                ? "cursor-not-allowed bg-foreground-muted opacity-50"
+                : "bg-gradient-to-r from-gold/90 to-gold hover:from-gold hover:to-gold/90 hover:scale-105 hover:shadow-[0_0_25px_-5px_rgba(212,175,55,0.5)] hover:brightness-110",
             )}
           >
             {savingStatements ? (
@@ -658,7 +666,7 @@ export function SetupContentForm({
         </div>
       </section>
 
-      <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-10 py-12 shadow-none sm:px-16 sm:py-16 backdrop-blur-md">
+      <section className="setup-glass-card rounded-3xl px-8 py-12 sm:px-16 sm:py-14">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="text-sm font-medium text-[#F5F1E8]">
             Photos, videos & voice
@@ -682,7 +690,7 @@ export function SetupContentForm({
           </div>
         ) : (
           <div className="mt-6 space-y-5">
-            <div className="flex flex-wrap gap-2 p-1 bg-background-secondary rounded-xl w-fit">
+            <div className="flex flex-wrap gap-1 p-1.5 bg-[#181C20] border border-[#2A2E33]/50 rounded-2xl w-fit shadow-inner">
               {(
                 [
                   ["PHOTO", "Photo", FileImage],
@@ -697,7 +705,7 @@ export function SetupContentForm({
                     type="button"
                     onClick={() => setKind(value)}
                     className={cn(
-                      "relative inline-flex h-9 items-center gap-2 rounded-lg px-4 text-sm font-medium transition-colors",
+                      "relative inline-flex h-10 items-center gap-2.5 rounded-xl px-5 text-sm font-medium transition-colors",
                       isActive
                         ? "text-background"
                         : "text-foreground-secondary hover:text-foreground",
@@ -739,18 +747,24 @@ export function SetupContentForm({
           </div>
         )}
 
-        <ul className="mt-8 space-y-2">
+        <ul className="mt-10 space-y-3">
           <AnimatePresence mode="popLayout">
-            {media.filter((m) => !m.isProfilePhoto).length === 0 ? (
+            {media.filter((m) => !m.isProfilePhoto && m.kind === kind).length === 0 ? (
               <motion.li 
                 key="empty"
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                className="rounded-2xl border border-dashed border-[#2A2E33] px-4 py-8 text-center text-sm text-foreground-muted"
+                className="setup-dropzone-animated group relative flex flex-col items-center justify-center rounded-3xl bg-background-secondary/20 px-6 py-16 text-center transition-all hover:bg-gold/5"
               >
-                No media uploaded yet.
+                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-surface shadow-sm ring-1 ring-[#2A2E33] transition-transform group-hover:-translate-y-2 group-hover:ring-gold/30">
+                  <Upload className="h-7 w-7 text-gold/70" />
+                </div>
+                <p className="text-base font-medium text-[#F5F1E8]">No {kind.toLowerCase()}s uploaded yet</p>
+                <p className="mt-2 text-sm text-foreground-muted max-w-sm">
+                  Click the upload button above or drag and drop your {kind.toLowerCase()} files here to add them to the memorial.
+                </p>
               </motion.li>
             ) : (
-              media.filter((m) => !m.isProfilePhoto).map((item) => (
+              media.filter((m) => !m.isProfilePhoto && m.kind === kind).map((item) => (
                 <motion.li
                   layout
                   initial={{ opacity: 0, y: 10, scale: 0.98 }}
@@ -805,9 +819,10 @@ export function SetupContentForm({
         </ul>
       </section>
 
-      <section className="rounded-3xl border border-[#2A2E33]/60 bg-surface/80 px-10 py-12 shadow-[0_0_40px_-10px_rgba(212,175,55,0.05)] sm:px-16 sm:py-16 backdrop-blur-md text-center">
-        <h2 className="text-lg font-medium text-[#F5F1E8]">Finish setup</h2>
-        <p className="mt-2 text-sm text-foreground-secondary max-w-lg mx-auto">
+      <section className="relative overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-b from-surface/90 to-surface px-8 py-14 shadow-[0_0_50px_-15px_rgba(212,175,55,0.15)] sm:px-16 sm:py-20 backdrop-blur-md text-center hidden sm:block">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.05)_0%,transparent_70%)] pointer-events-none" />
+        <h2 className="relative z-10 text-2xl font-semibold tracking-tight text-gold">Finish Setup</h2>
+        <p className="relative z-10 mt-3 text-base text-foreground-secondary max-w-lg mx-auto leading-relaxed">
           This locks the setup link forever and shows your private manage link
           once. You can finish with statements only — media can wait until
           storage is connected.
@@ -817,10 +832,10 @@ export function SetupContentForm({
           onClick={() => void finishSetup()}
           disabled={finishing || savingStatements || uploading}
           className={cn(
-            "mt-6 inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl px-8 text-sm font-medium text-background transition-all sm:w-auto",
+            "relative z-10 mt-8 inline-flex h-14 w-full items-center justify-center gap-2 rounded-xl px-10 text-base font-bold text-[#0B0D0F] transition-all sm:w-auto",
             finishing || savingStatements || uploading
-              ? "cursor-not-allowed bg-foreground-muted"
-              : "bg-gold shadow-[0_0_20px_-5px_rgba(212,175,55,0.4)] hover:shadow-[0_0_25px_-5px_rgba(212,175,55,0.6)] hover:scale-[1.02] active:scale-[0.98]",
+              ? "cursor-not-allowed bg-foreground-muted opacity-50"
+              : "bg-gradient-to-r from-gold/90 to-gold shadow-[0_0_30px_-5px_rgba(212,175,55,0.6)] hover:shadow-[0_0_40px_-5px_rgba(212,175,55,0.8)] hover:scale-105 active:scale-95 hover:brightness-110",
           )}
         >
           {finishing ? (
@@ -833,6 +848,30 @@ export function SetupContentForm({
           )}
         </button>
       </section>
+
+      {/* Mobile sticky finish button */}
+      <div className="setup-sticky-finish">
+        <button
+          type="button"
+          onClick={() => void finishSetup()}
+          disabled={finishing || savingStatements || uploading}
+          className={cn(
+            "inline-flex h-14 w-full items-center justify-center gap-2 rounded-xl px-10 text-base font-bold text-[#0B0D0F] transition-all",
+            finishing || savingStatements || uploading
+              ? "cursor-not-allowed bg-foreground-muted opacity-50"
+              : "bg-gradient-to-r from-gold/90 to-gold shadow-[0_0_30px_-5px_rgba(212,175,55,0.6)] active:scale-95",
+          )}
+        >
+          {finishing ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+              Finishing…
+            </>
+          ) : (
+            "Finish setup"
+          )}
+        </button>
+      </div>
     </div>
   );
 }

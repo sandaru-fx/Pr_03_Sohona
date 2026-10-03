@@ -70,7 +70,7 @@ export function SetupFlow({
   };
 
   return (
-    <div className="w-full max-w-2xl flex flex-col items-center">
+    <div className="w-full max-w-[900px] flex flex-col items-center">
       <div className="w-full mb-8">
         <ProgressSteps steps={STEPS} current={progressIndex} />
       </div>

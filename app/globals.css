@@ -238,3 +238,92 @@ body {
 .memorial-audio-player p { font: italic 17px var(--font-playfair), Georgia, serif; color: #d3c3a5; margin-bottom: 18px; }
 .memorial-audio-player audio { width: 100%; color-scheme: dark; }
 @media (max-width: 640px) { .memorial-nav { padding: 6px 12px; gap: 8px; } .memorial-nav-links { justify-content: flex-start; } .memorial-nav-links a { padding: 0 10px; font-size: 10px; } .memorial-welcome { padding: 32px 24px; gap: 16px; } .memorial-welcome p { font-size: 22px; } .memorial-welcome-note { display: none; } .memorial-story-copy { padding-left: 20px; } }
+
+/* ─── Setup flow enhancements ─── */
+
+/* Animated rotating dashed border for dropzones */
+@keyframes dash-rotate {
+  0% { background-position: 0% 0%, 100% 0%, 100% 100%, 0% 100%; }
+  100% { background-position: 100% 0%, 100% 100%, 0% 100%, 0% 0%; }
+}
+
+.setup-dropzone-animated {
+  --dash-color: rgba(198, 161, 91, 0.35);
+  --dash-gap: rgba(198, 161, 91, 0);
+  background-image:
+    repeating-linear-gradient(90deg, var(--dash-color) 0px, var(--dash-color) 8px, var(--dash-gap) 8px, var(--dash-gap) 18px),
+    repeating-linear-gradient(180deg, var(--dash-color) 0px, var(--dash-color) 8px, var(--dash-gap) 8px, var(--dash-gap) 18px),
+    repeating-linear-gradient(270deg, var(--dash-color) 0px, var(--dash-color) 8px, var(--dash-gap) 8px, var(--dash-gap) 18px),
+    repeating-linear-gradient(0deg, var(--dash-color) 0px, var(--dash-color) 8px, var(--dash-gap) 8px, var(--dash-gap) 18px);
+  background-size: 100% 2px, 2px 100%, 100% 2px, 2px 100%;
+  background-position: 0% 0%, 100% 0%, 100% 100%, 0% 100%;
+  background-repeat: no-repeat;
+  border: none !important;
+}
+
+.setup-dropzone-animated:hover {
+  --dash-color: rgba(198, 161, 91, 0.6);
+  animation: dash-rotate 3s linear infinite;
+}
+
+/* Glassmorphism card for setup sections */
+.setup-glass-card {
+  background: rgba(21, 21, 18, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(198, 161, 91, 0.1);
+  box-shadow:
+    0 4px 30px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.setup-glass-card:hover {
+  border-color: rgba(198, 161, 91, 0.2);
+  box-shadow:
+    0 4px 30px rgba(0, 0, 0, 0.3),
+    0 0 25px -10px rgba(198, 161, 91, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* Word count progress bar */
+.word-progress-track {
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(42, 46, 51, 0.6);
+  overflow: hidden;
+}
+
+.word-progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--gold) 0%, #dfc17d 100%);
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(198, 161, 91, 0.4);
+}
+
+.word-progress-fill[data-over="true"] {
+  background: linear-gradient(90deg, var(--error) 0%, #e56767 100%);
+  box-shadow: 0 0 8px rgba(201, 120, 120, 0.4);
+}
+
+/* Mobile sticky finish button */
+.setup-sticky-finish {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  padding: 12px 16px;
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  background: linear-gradient(to top, #0B0D0F 70%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .setup-sticky-finish {
+    display: block;
+  }
+}

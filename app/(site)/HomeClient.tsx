@@ -252,7 +252,7 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
                 variants={fadeUp}
                 className="group relative flex flex-col items-center justify-center overflow-hidden rounded-3xl border border-white/5 bg-white/[0.02] p-10 backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 hover:border-gold/50 hover:bg-white/[0.04] hover:shadow-[0_20px_50px_rgba(201,164,92,0.3)]"
               >
-                <p className="text-lg font-medium text-gray-400 transition-colors group-hover:text-gold">{item.name}</p>
+                <p className="text-lg font-medium text-gray-400 transition-colors group-hover:text-gold">Plan {item.name}</p>
                 <div className="mt-4 flex items-baseline gap-2">
                   <span className="font-sans text-6xl font-bold tracking-tighter text-white">{item.retentionYears}</span>
                   <span className="text-xl font-medium text-gray-500">years</span>

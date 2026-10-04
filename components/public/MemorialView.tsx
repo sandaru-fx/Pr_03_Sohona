@@ -32,6 +32,7 @@ type MemorialViewProps = {
   };
   pinProtected: boolean;
   r2Configured: boolean;
+  heroPhotoUrl?: string | null;
 };
 
 export function MemorialView({
@@ -44,6 +45,7 @@ export function MemorialView({
   commentQuota,
   pinProtected,
   r2Configured,
+  heroPhotoUrl,
 }: MemorialViewProps) {
   const heroPhoto = media.find((item) => item.isProfilePhoto);
   const photos = media.filter((item) => item.kind === "PHOTO" && !item.isProfilePhoto);
@@ -66,7 +68,7 @@ export function MemorialView({
       {/* ═══════════════════════════════════════════════
           HERO SECTION — Full-width cinematic
           ═══════════════════════════════════════════════ */}
-      <MemorialHero displayName={displayName} pinProtected={pinProtected} heroPhoto={heroPhoto ?? null} r2Configured={r2Configured} />
+      <MemorialHero displayName={displayName} pinProtected={pinProtected} heroPhoto={heroPhoto ?? null} r2Configured={r2Configured} initialPhotoUrl={heroPhotoUrl} />
       <MemorialNavigation story={statements.length > 0} photos={photos.length} voices={voices.length} videos={videos.length} />
 
       {/* ═══════════════════════════════════════════════

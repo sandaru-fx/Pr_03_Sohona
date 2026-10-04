@@ -13,11 +13,12 @@ type MemorialHeroProps = {
   pinProtected: boolean;
   heroPhoto?: PublicMediaMetaItem | null;
   r2Configured?: boolean;
+  initialPhotoUrl?: string | null;
 };
 
-export function MemorialHero({ displayName, pinProtected, heroPhoto, r2Configured }: MemorialHeroProps) {
+export function MemorialHero({ displayName, pinProtected, heroPhoto, r2Configured, initialPhotoUrl }: MemorialHeroProps) {
   const initial = Array.from(displayName.trim())[0] ?? "✦";
-  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const [photoUrl, setPhotoUrl] = useState<string | null>(initialPhotoUrl ?? null);
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
@@ -27,6 +28,7 @@ export function MemorialHero({ displayName, pinProtected, heroPhoto, r2Configure
   }, []);
 
   useEffect(() => {
+    if (initialPhotoUrl) return; // Skip fetch if we already have it
     if (!heroPhoto || !r2Configured) return;
 
     let cancelled = false;
@@ -55,7 +57,7 @@ export function MemorialHero({ displayName, pinProtected, heroPhoto, r2Configure
           <div className={styles.heroProfileWrapper}>
             <div className={styles.photoContainer}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={photoUrl} alt={`Profile photo of ${displayName}`} className={styles.heroProfilePhoto} />
+              <img src={photoUrl} alt={`Profile photo of ${displayName}`} className={styles.heroProfilePhoto} fetchPriority="high" />
             </div>
           </div>
         ) : (

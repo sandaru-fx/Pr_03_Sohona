@@ -1,6 +1,8 @@
 import { getCommentQuota, type CommentQuota } from "@/lib/comment-limits";
 import { prisma } from "@/lib/prisma";
 import { isPinLocked } from "@/lib/public-pin-lock";
+import { getSignedR2GetUrl } from "@/lib/r2-signed-get";
+import { isR2Configured } from "@/lib/r2-config";
 
 export type PublicProfileSummary = {
   id: string;
@@ -40,6 +42,7 @@ export type PublicMemorialContent = {
   media: PublicMediaMetaItem[];
   comments: PublicCommentItem[];
   commentQuota: CommentQuota;
+  heroPhotoUrl: string | null;
 };
 
 export type PublicPinLockState = {
@@ -206,7 +209,23 @@ export async function loadPublicMemorialContent(
     getCommentQuota(profileId),
   ]);
 
-  return { statements, media, comments, commentQuota };
+  let heroPhotoUrl = null;
+  if (isR2Configured()) {
+    const heroPhoto = await prisma.mediaAsset.findFirst({
+      where: { profileId, isProfilePhoto: true },
+      select: { r2ObjectKey: true },
+    });
+    if (heroPhoto?.r2ObjectKey) {
+      try {
+        const signed = await getSignedR2GetUrl({ r2ObjectKey: heroPhoto.r2ObjectKey });
+        heroPhotoUrl = signed.url;
+      } catch (err) {
+        console.error("Failed to sign hero photo url", err);
+      }
+    }
+  }
+
+  return { statements, media, comments, commentQuota, heroPhotoUrl };
 }
 
 export function canViewPublicContent(

@@ -26,12 +26,19 @@ export const MEDIA_RULES: Record<MediaKind, MediaRule> = {
     maxBytes: 20 * 1024 * 1024, // 20 MB
     mimeTypes: [
       "audio/mpeg",
+      "audio/mp3",
       "audio/mp4",
       "audio/wav",
       "audio/webm",
       "audio/x-wav",
+      "audio/ogg",
+      "audio/opus",
+      "audio/aac",
+      "audio/x-m4a",
+      "video/mp4", // Sometimes m4a/voice notes are reported as video/mp4
+      "application/octet-stream"
     ],
-    extensions: [".mp3", ".m4a", ".wav", ".webm"],
+    extensions: [".mp3", ".m4a", ".wav", ".webm", ".ogg", ".opus", ".aac"],
   },
 };
 

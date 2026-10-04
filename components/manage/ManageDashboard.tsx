@@ -196,7 +196,7 @@ export function ManageDashboard({
   const accept = useMemo(() => {
     if (kind === "PHOTO") return "image/jpeg,image/png,image/webp";
     if (kind === "VIDEO") return "video/mp4,video/webm";
-    return "audio/mpeg,audio/mp4,audio/wav,audio/webm,.mp3,.m4a,.wav";
+    return "audio/mpeg,audio/mp4,audio/wav,audio/webm,audio/ogg,.mp3,.m4a,.wav,.ogg,.opus,.aac";
   }, [kind]);
 
   const busy =
@@ -698,12 +698,12 @@ export function ManageDashboard({
         )}
 
         <ul className="mt-6 divide-y divide-border rounded-xl border border-[#2A2E33]">
-          {media.filter((m) => !m.isProfilePhoto).length === 0 ? (
+          {media.filter((m) => !m.isProfilePhoto && m.kind === kind).length === 0 ? (
             <li className="px-4 py-6 text-sm text-foreground-muted">
-              No media on this memorial yet.
+              No {kind.toLowerCase()}s on this memorial yet.
             </li>
           ) : (
-            media.filter((m) => !m.isProfilePhoto).map((item) => (
+            media.filter((m) => !m.isProfilePhoto && m.kind === kind).map((item) => (
               <li
                 key={item.id}
                 className="flex flex-col gap-3 px-4 py-3 text-sm"
@@ -864,6 +864,33 @@ export function ManageDashboard({
           {message}
         </p>
       ) : null}
+
+      <section className="rounded-2xl border border-gold/30 bg-gold/5 px-6 py-8 shadow-none sm:px-8 sm:py-10 text-center">
+        <h2 className="text-lg font-medium text-foreground">Save your work</h2>
+        <p className="mt-2 text-sm text-foreground-secondary mb-6 max-w-md mx-auto">
+          Most changes like uploads and comments are saved automatically. Click here to save any pending text changes.
+        </p>
+        <button
+          type="button"
+          onClick={() => void saveStatements()}
+          disabled={busy}
+          className={cn(
+            "inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl px-8 text-base font-semibold text-background transition sm:w-auto",
+            busy
+              ? "cursor-not-allowed bg-foreground-muted"
+              : "bg-gradient-to-r from-gold/90 to-gold hover:from-gold hover:to-gold/90 hover:scale-105 hover:shadow-[0_0_25px_-5px_rgba(212,175,55,0.5)]",
+          )}
+        >
+          {savingStatements ? (
+            <>
+              <Loader2 className="h-5 w-5 animate-spin" aria-hidden />
+              Saving…
+            </>
+          ) : (
+            "Save All Changes"
+          )}
+        </button>
+      </section>
 
       <section className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 shadow-none sm:px-8 sm:py-10">
         <h2 className="text-sm font-medium text-foreground">Session</h2>

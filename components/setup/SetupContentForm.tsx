@@ -173,7 +173,7 @@ export function SetupContentForm({
   const accept = useMemo(() => {
     if (kind === "PHOTO") return "image/jpeg,image/png,image/webp";
     if (kind === "VIDEO") return "video/mp4,video/webm";
-    return "audio/mpeg,audio/mp4,audio/wav,audio/webm,audio/ogg,.mp3,.m4a,.wav,.ogg";
+    return "audio/mpeg,audio/mp4,audio/wav,audio/webm,audio/ogg,.mp3,.m4a,.wav,.ogg,.opus,.aac";
   }, [kind]);
 
   function showMessage(msg: string) {
@@ -754,6 +754,15 @@ export function SetupContentForm({
                 key="empty"
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                 className="setup-dropzone-animated group relative flex flex-col items-center justify-center rounded-3xl bg-background-secondary/20 px-6 py-16 text-center transition-all hover:bg-gold/5"
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  void onUpload(e.dataTransfer.files);
+                }}
               >
                 <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-surface shadow-sm ring-1 ring-[#2A2E33] transition-transform group-hover:-translate-y-2 group-hover:ring-gold/30">
                   <Upload className="h-7 w-7 text-gold/70" />

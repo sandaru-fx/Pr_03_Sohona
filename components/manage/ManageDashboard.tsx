@@ -123,12 +123,13 @@ type ManageDashboardProps = {
   initialComments: CommentItem[];
 };
 
-function newDraft(body = ""): StatementDraft {
+function newDraft(body = "", existingKey?: string): StatementDraft {
   return {
     key:
-      typeof crypto !== "undefined" && "randomUUID" in crypto
+      existingKey ||
+      (typeof crypto !== "undefined" && "randomUUID" in crypto
         ? crypto.randomUUID()
-        : `s-${Date.now()}-${Math.random()}`,
+        : `s-${Date.now()}-${Math.random()}`),
     body,
   };
 }
@@ -159,8 +160,8 @@ export function ManageDashboard({
 
   const [statements, setStatements] = useState<StatementDraft[]>(
     initialStatements.length > 0
-      ? initialStatements.map((item) => newDraft(item.body))
-      : [newDraft()],
+      ? initialStatements.map((item) => newDraft(item.body, item.id))
+      : [newDraft("", "empty-init-key")],
   );
   const [media, setMedia] = useState<MediaItem[]>(initialMedia);
   const [comments, setComments] = useState<CommentItem[]>(initialComments);
@@ -243,8 +244,8 @@ export function ManageDashboard({
       if (data.statements) {
         setStatements(
           data.statements.length > 0
-            ? data.statements.map((item) => newDraft(item.body))
-            : [newDraft()],
+            ? data.statements.map((item) => newDraft(item.body, item.id))
+            : [newDraft("", "empty-init-key")],
         );
       }
       setMessage("Statements saved.");
@@ -554,11 +555,11 @@ export function ManageDashboard({
         <div className="mt-5 space-y-3">
           {statements.map((item, index) => (
             <div key={item.key} className="flex gap-2">
-              <label className="sr-only" htmlFor={`manage-statement-${item.key}`}>
+              <label className="sr-only" htmlFor={`manage-statement-idx-${index}`}>
                 Statement {index + 1}
               </label>
               <textarea
-                id={`manage-statement-${item.key}`}
+                id={`manage-statement-idx-${index}`}
                 value={item.body}
                 rows={3}
                 disabled={busy}

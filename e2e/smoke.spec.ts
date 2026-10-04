@@ -25,18 +25,18 @@ test.describe("Mathaka QR public site smoke", () => {
 
     await page.goto("/packages");
     await expect(
-      page.getByRole("heading", { name: /three packages/i }),
+      page.getByRole("heading", { name: /choose the remembrance horizon/i }),
     ).toBeVisible();
-    await expect(page.getByText("Package A").first()).toBeVisible();
-    await expect(page.getByText("25 years").first()).toBeVisible();
-    await expect(page.getByText(/QR comments/i)).toBeVisible();
+    await expect(page.getByText("A", { exact: true }).first()).toBeVisible();
+    await expect(page.getByText("25").first()).toBeVisible();
+    await expect(page.getByText(/Comment Section/i).first()).toBeVisible();
     await expect(
       page.getByText(
-        /Temple admin never sees private statements, media, or comments/i,
+        /Your family's privacy is our highest priority/i,
       ),
     ).toBeVisible();
-    await expect(page.getByText("Package C").first()).toBeVisible();
-    await expect(page.getByText("100 years").first()).toBeVisible();
+    await expect(page.getByText("C", { exact: true }).first()).toBeVisible();
+    await expect(page.getByText("100").first()).toBeVisible();
 
     await page.goto("/contact");
     await expect(

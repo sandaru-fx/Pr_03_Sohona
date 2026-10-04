@@ -220,7 +220,7 @@ test.describe("Packages page", () => {
 
   test("shows QR comments label", async ({ page }) => {
     await page.goto("/packages");
-    await expect(page.getByText(/Comment Section/i)).toBeVisible();
+    await expect(page.getByText(/Comment Section/i).first()).toBeVisible();
   });
 
   test("shows privacy statement", async ({ page }) => {

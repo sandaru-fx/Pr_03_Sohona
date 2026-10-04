@@ -40,7 +40,7 @@ test.describe("Mathaka QR public site smoke", () => {
 
     await page.goto("/contact");
     await expect(
-      page.getByRole("heading", { name: /speak with the temple/i }),
+      page.getByRole("heading", { name: /speak with us/i }).first(),
     ).toBeVisible();
   });
 

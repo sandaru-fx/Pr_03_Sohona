@@ -155,10 +155,10 @@ test.describe("About page", () => {
     expect(res?.status()).toBe(200);
   });
 
-  test("renders Built for temples heading", async ({ page }) => {
+  test("renders Built for organizations heading", async ({ page }) => {
     await page.goto("/about");
     await expect(
-      page.getByRole("heading", { name: /built for temples/i }),
+      page.getByRole("heading", { name: /built for organizations/i }),
     ).toBeVisible();
   });
 
@@ -174,7 +174,7 @@ test.describe("About page", () => {
       .getByRole("link")
       .first();
     await homeLink.click();
-    await expect(page).toHaveURL(/^\//);
+    await expect(page).toHaveURL(/.*\/$/);
   });
 });
 
@@ -186,48 +186,48 @@ test.describe("Packages page", () => {
     expect(res?.status()).toBe(200);
   });
 
-  test("renders three packages heading", async ({ page }) => {
+  test("renders packages heading", async ({ page }) => {
     await page.goto("/packages");
     await expect(
-      page.getByRole("heading", { name: /three packages/i }),
+      page.getByRole("heading", { name: /choose the remembrance horizon/i }),
     ).toBeVisible();
   });
 
   test("shows Package A", async ({ page }) => {
     await page.goto("/packages");
-    await expect(page.getByText("Package A").first()).toBeVisible();
+    await expect(page.getByText("A", { exact: true }).first()).toBeVisible();
   });
 
   test("shows Package B", async ({ page }) => {
     await page.goto("/packages");
-    await expect(page.getByText("Package B").first()).toBeVisible();
+    await expect(page.getByText("B", { exact: true }).first()).toBeVisible();
   });
 
   test("shows Package C", async ({ page }) => {
     await page.goto("/packages");
-    await expect(page.getByText("Package C").first()).toBeVisible();
+    await expect(page.getByText("C", { exact: true }).first()).toBeVisible();
   });
 
   test("shows retention years — 25 years", async ({ page }) => {
     await page.goto("/packages");
-    await expect(page.getByText("25 years").first()).toBeVisible();
+    await expect(page.getByText("25").first()).toBeVisible();
   });
 
   test("shows retention years — 100 years", async ({ page }) => {
     await page.goto("/packages");
-    await expect(page.getByText("100 years").first()).toBeVisible();
+    await expect(page.getByText("100").first()).toBeVisible();
   });
 
   test("shows QR comments label", async ({ page }) => {
     await page.goto("/packages");
-    await expect(page.getByText(/QR comments/i)).toBeVisible();
+    await expect(page.getByText(/Comment Section/i)).toBeVisible();
   });
 
   test("shows privacy statement", async ({ page }) => {
     await page.goto("/packages");
     await expect(
       page.getByText(
-        /Temple admin never sees private statements, media, or comments/i,
+        /Your family's privacy is our highest priority/i,
       ),
     ).toBeVisible();
   });
@@ -241,10 +241,10 @@ test.describe("Contact page", () => {
     expect(res?.status()).toBe(200);
   });
 
-  test("renders speak with the temple heading", async ({ page }) => {
+  test("renders speak with us heading", async ({ page }) => {
     await page.goto("/contact");
     await expect(
-      page.getByRole("heading", { name: /speak with the temple/i }),
+      page.getByRole("heading", { name: /speak with us/i }).first(),
     ).toBeVisible();
   });
 

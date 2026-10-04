@@ -23,7 +23,7 @@ test.describe("Setup gate — invalid tokens", () => {
   test("invalid token shows descriptive message", async ({ page }) => {
     await page.goto("/setup/playwright-invalid-setup-token-zzzz");
     await expect(
-      page.getByText(/link|invalid|expired|not valid/i),
+      page.getByText(/link|invalid|expired|not valid/i).first(),
     ).toBeVisible();
   });
 
@@ -52,7 +52,7 @@ test.describe("Manage gate — invalid tokens (UI)", () => {
   test("shows error description text", async ({ page }) => {
     await page.goto("/manage/playwright-invalid-token-zzzz");
     await expect(
-      page.getByText(/invalid|expired|not found|unavailable/i),
+      page.getByText(/invalid|expired|not found|unavailable/i).first(),
     ).toBeVisible();
   });
 

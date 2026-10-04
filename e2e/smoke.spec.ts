@@ -20,7 +20,7 @@ test.describe("Mathaka QR public site smoke", () => {
   test("about / packages / contact pages load", async ({ page }) => {
     await page.goto("/about");
     await expect(
-      page.getByRole("heading", { name: /built for temples/i }),
+      page.getByRole("heading", { name: /built for organizations/i }),
     ).toBeVisible();
 
     await page.goto("/packages");

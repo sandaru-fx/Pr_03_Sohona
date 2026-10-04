@@ -50,7 +50,7 @@ export async function POST(request: Request) {
   } catch {
     return NextResponse.json(
       { error: "InvalidJSON", message: "Request body must be JSON." },
-      { status: 400 },
+      { status: 400, headers: { "Cache-Control": "no-store, max-age=0" } },
     );
   }
 
@@ -65,7 +65,7 @@ export async function POST(request: Request) {
           message: issue.message,
         })),
       },
-      { status: 400 },
+      { status: 400, headers: { "Cache-Control": "no-store, max-age=0" } },
     );
   }
 
@@ -89,7 +89,7 @@ export async function POST(request: Request) {
         error: "NotFound",
         message: "This memorial could not be found or is not ready.",
       },
-      { status: 404 },
+      { status: 404, headers: { "Cache-Control": "no-store, max-age=0" } },
     );
   }
 
@@ -105,7 +105,7 @@ export async function POST(request: Request) {
         error: "PinNotRequired",
         message: "This memorial does not require a PIN to view.",
       },
-      { status: 400 },
+      { status: 400, headers: { "Cache-Control": "no-store, max-age=0" } },
     );
   }
 
@@ -115,7 +115,7 @@ export async function POST(request: Request) {
         error: "PinNotConfigured",
         message: "This memorial is not ready for PIN entry yet.",
       },
-      { status: 400 },
+      { status: 400, headers: { "Cache-Control": "no-store, max-age=0" } },
     );
   }
 

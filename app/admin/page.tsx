@@ -69,11 +69,11 @@ export default async function AdminDashboardPage() {
           { label: "Total QR Scans", value: totalScans },
           { label: "Expiring soon", value: expiringSoon },
         ].map((item) => (
-          <div key={item.label} className="bg-[#181C20] px-5 py-6">
+          <div key={item.label} className="bg-[#181C20] px-5 py-6 flex flex-col justify-between gap-4">
             <p className="text-xs font-medium uppercase tracking-[0.14em] text-gray-500">
               {item.label}
             </p>
-            <p className="mt-3 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8]">
+            <p className="font-sans text-3xl font-medium tracking-tight text-[#F5F1E8]">
               {item.value}
             </p>
           </div>

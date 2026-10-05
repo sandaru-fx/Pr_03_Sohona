@@ -7,3 +7,9 @@ export async function signInWithGoogle(callbackUrl?: string) {
     redirectTo: callbackUrl && callbackUrl.startsWith("/") ? callbackUrl : "/admin",
   });
 }
+
+export async function signInWithDemo(callbackUrl?: string) {
+  await signIn("credentials", {
+    redirectTo: callbackUrl && callbackUrl.startsWith("/") ? callbackUrl : "/admin",
+  });
+}

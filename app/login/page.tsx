@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { isAdminSession } from "@/lib/auth-guards";
-import { signInWithGoogle } from "./actions";
+import { signInWithGoogle, signInWithDemo } from "./actions";
 
 function googleConfigured() {
   return Boolean(
@@ -89,15 +89,26 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           </p>
         ) : null}
 
-        <form className="mt-8" action={signInWithGoogle.bind(null, callbackUrl)}>
-          <button
-            type="submit"
-            disabled={!ready}
-            className="flex h-12 min-h-12 w-full items-center justify-center rounded-xl bg-gold px-5 text-sm font-medium text-[#0B0D0F] transition-opacity duration-300 hover:opacity-90 disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-[#0B0D0F]/70"
-          >
-            Continue with Google
-          </button>
-        </form>
+        <div className="mt-8 flex flex-col gap-4">
+          <form action={signInWithGoogle.bind(null, callbackUrl)}>
+            <button
+              type="submit"
+              disabled={!ready}
+              className="flex h-12 min-h-12 w-full items-center justify-center rounded-xl bg-gold px-5 text-sm font-medium text-[#0B0D0F] transition-opacity duration-300 hover:opacity-90 disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-[#0B0D0F]/70"
+            >
+              Continue with Google
+            </button>
+          </form>
+
+          <form action={signInWithDemo.bind(null, callbackUrl)}>
+            <button
+              type="submit"
+              className="flex h-12 min-h-12 w-full items-center justify-center rounded-xl border border-[#2A2E33] bg-transparent px-5 text-sm font-medium text-white transition-colors duration-300 hover:bg-[#2A2E33]"
+            >
+              Demo Admin Login (Testing)
+            </button>
+          </form>
+        </div>
 
         <p className="mt-8 text-center text-sm text-gray-500">
           <Link

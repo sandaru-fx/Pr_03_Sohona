@@ -1,5 +1,6 @@
 import type { NextAuthConfig } from "next-auth";
 import Google from "next-auth/providers/google";
+import Credentials from "next-auth/providers/credentials";
 import { isAdminEmailAllowed } from "@/lib/admin-allowlist";
 
 /**
@@ -22,9 +23,27 @@ function googleProvider() {
   ];
 }
 
+function demoProvider() {
+  return [
+    Credentials({
+      name: "Demo Login",
+      credentials: {},
+      async authorize() {
+        // Returns a dummy admin user based on the allowed email
+        return {
+          id: "demo-admin-id",
+          name: "Demo Admin",
+          email: "sandaruchamod62@gmail.com", 
+          image: "https://api.dicebear.com/7.x/avataaars/svg?seed=DemoAdmin"
+        };
+      }
+    })
+  ];
+}
+
 export const authConfig = {
   trustHost: true,
-  providers: [...googleProvider()],
+  providers: [...googleProvider(), ...demoProvider()],
   pages: {
     signIn: "/login",
     error: "/login",

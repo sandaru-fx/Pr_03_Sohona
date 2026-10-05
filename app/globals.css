@@ -179,15 +179,15 @@ body {
 }
 
 /* The memorial keeps its warm, quiet palette separate from the admin UI. */
-.memorial-page { color: #e9dfcc; overflow-wrap: break-word; }
-.memorial-nav { position: relative; z-index: 20; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 28px; padding: 18px 24px; border-block: 1px solid #c69f5929; background: #100f0c; }
-.memorial-nav a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: #d6c6a7; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; transition: color .2s; }
-.memorial-nav a:hover { color: #f9dfa4; }
-.memorial-nav span { font-size: 10px; color: #b9985b; }
-.memorial-content { background: radial-gradient(ellipse 65% 550px at 50% 0, #98703712, transparent); }
+.memorial-page { color: #f4f4f5; overflow-wrap: break-word; }
+.memorial-nav { position: relative; z-index: 20; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 28px; padding: 18px 24px; border-block: 1px solid #ffffff1a; background: #050505; }
+.memorial-nav a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: #f4f4f5; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; transition: color .2s; }
+.memorial-nav a:hover { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+.memorial-nav span { font-size: 10px; color: #a1a1aa; }
+.memorial-content { background: radial-gradient(ellipse 65% 550px at 50% 0, rgba(255,255,255,0.03), transparent); }
 .memorial-content section { scroll-margin-top: 28px; }
 .memorial-content p { overflow-wrap: anywhere; }
-.memorial-page .memorial-glass-card { background: linear-gradient(130deg, #26201666, #11100e); border-color: #c69f592b; box-shadow: 0 16px 50px #0002; }
+.memorial-page .memorial-glass-card { background: linear-gradient(130deg, rgba(30, 30, 30, 0.6), rgba(10, 10, 10, 0.8)); border-color: rgba(255,255,255,0.1); box-shadow: 0 16px 50px rgba(0,0,0,0.5); }
 .memorial-footer-image { object-fit: cover; object-position: center 62%; }
 .memorial-footer-shade { background: linear-gradient(180deg, #0a0a09 0%, transparent 25%, transparent 40%, #0a0a09fa 85%, #0a0a09 100%); }
 .memorial-photo-footer p, .memorial-photo-footer .flex.items-center.justify-center { text-shadow: 0 2px 12px #000; }

@@ -60,7 +60,7 @@ export function MemorialView({
     <MotionConfig reducedMotion="user">
     <div 
       className="memorial-page relative w-full"
-      style={{ backgroundImage: 'radial-gradient(circle at 50% 50%, #171005 0%, #0A0A09 60%, #000000 100%)' }}
+      style={{ backgroundImage: 'radial-gradient(circle at 50% 50%, #161616 0%, #050505 50%, #000000 100%)' }}
     >
       {/* Ambient particles — scattered across the whole page */}
       <FloatingParticles count={25} className="z-0 opacity-40 mix-blend-screen" />
@@ -91,12 +91,12 @@ export function MemorialView({
               <div className="lg:col-span-4">
                 <div className="memorial-story-title flex flex-col gap-6 lg:sticky lg:top-32">
                   <span className="memorial-chapter">01 / A life in memories</span>
-                  <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-medium leading-tight text-[#F2EDE3]">
+                  <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-medium leading-tight text-white drop-shadow-md">
                     A Life
                     <br />
                     Well Lived
                   </h2>
-                  <div className="w-16 h-[2px] bg-gold/40" />
+                  <div className="w-16 h-[2px] bg-white/40" />
                 </div>
               </div>
 
@@ -114,7 +114,7 @@ export function MemorialView({
                   return clean.split(/\n+/).map((para, i) => {
                     if (!para.trim()) return null;
                     return (
-                      <p key={`${stmt.id}-${i}`} className="font-sans text-base sm:text-lg leading-relaxed text-[#D4C3AD] relative z-10">
+                      <p key={`${stmt.id}-${i}`} className="font-sans text-base sm:text-lg leading-relaxed text-zinc-100 relative z-10 drop-shadow-sm">
                         {para.trim()}
                       </p>
                     );
@@ -144,12 +144,12 @@ export function MemorialView({
               
               {statements.slice(2).map((item) => (
                 <div key={item.id} className="relative z-10">
-                  <p className="font-serif text-2xl sm:text-3xl lg:text-4xl italic leading-relaxed text-[#F2EDE3]/90 drop-shadow-md">
+                  <p className="font-serif text-2xl sm:text-3xl lg:text-4xl italic leading-relaxed text-white drop-shadow-lg">
                     &ldquo;{item.body}&rdquo;
                   </p>
                 </div>
               ))}
-              <p className="text-sm tracking-[0.2em] uppercase text-gold/60 relative z-10 font-medium">
+              <p className="text-sm tracking-[0.2em] uppercase text-zinc-300 relative z-10 font-medium">
                 — A Loving Family —
               </p>
             </div>
@@ -285,32 +285,32 @@ export function MemorialView({
                 alt="Mathaka QR Logo"
                 width={36}
                 height={36}
-                className="h-9 w-9 rounded-md object-contain drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]"
+                className="h-9 w-9 rounded-md object-contain drop-shadow-[0_2px_12px_rgba(255,255,255,0.3)]"
               />
-              <p className="whitespace-nowrap font-sans text-2xl font-semibold tracking-tight text-[#e6d7bb] drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
-                Mathaka <span className="text-[#e6c68a]">QR</span>
+              <p className="whitespace-nowrap font-sans text-2xl font-semibold tracking-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+                Mathaka <span className="text-zinc-300">QR</span>
               </p>
             </div>
             
-            <div className="flex flex-col sm:flex-row items-start justify-center gap-8 sm:gap-16 text-sm sm:text-base font-medium text-[#d1c4ad] drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+            <div className="flex flex-col sm:flex-row items-start justify-center gap-8 sm:gap-16 text-sm sm:text-base font-medium text-zinc-200 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
               <div className="flex flex-col gap-5">
                 <div className="flex items-start gap-3 text-left">
-                  <Phone className="mt-1 h-5 w-5 shrink-0 text-[#e6c68a]" />
+                  <Phone className="mt-1 h-5 w-5 shrink-0 text-white" />
                   <span className="leading-tight">076 804 6019<br />077 488 0604<br />077 948 9397</span>
                 </div>
                 <div className="flex items-center gap-3 text-left">
-                  <MessageCircle className="h-5 w-5 shrink-0 text-[#e6c68a]" />
+                  <MessageCircle className="h-5 w-5 shrink-0 text-white" />
                   <span>076 894 6019 (WhatsApp)</span>
                 </div>
               </div>
               
               <div className="flex flex-col gap-5">
                 <div className="flex items-center gap-3 text-left">
-                  <Mail className="h-5 w-5 shrink-0 text-[#e6c68a]" />
+                  <Mail className="h-5 w-5 shrink-0 text-white" />
                   <span>mathakaqr@gmail.com</span>
                 </div>
                 <div className="flex items-center gap-3 text-left">
-                  <MapPin className="h-5 w-5 shrink-0 text-[#e6c68a]" />
+                  <MapPin className="h-5 w-5 shrink-0 text-white" />
                   <span>Galigamuwa, Kegalle</span>
                 </div>
               </div>

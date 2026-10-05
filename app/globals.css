@@ -237,7 +237,59 @@ body {
 .memorial-audio-player { padding: 24px; background: linear-gradient(110deg,#30271a66,#12110e); }
 .memorial-audio-player p { font: italic 17px var(--font-playfair), Georgia, serif; color: #d3c3a5; margin-bottom: 18px; }
 .memorial-audio-player audio { width: 100%; color-scheme: dark; }
-@media (max-width: 640px) { .memorial-nav { padding: 6px 12px; gap: 8px; } .memorial-nav-links { justify-content: flex-start; } .memorial-nav-links a { padding: 0 10px; font-size: 10px; } .memorial-welcome { padding: 32px 24px; gap: 16px; } .memorial-welcome p { font-size: 22px; } .memorial-welcome-note { display: none; } .memorial-story-copy { padding-left: 20px; } }
+@media (max-width: 640px) { 
+  .memorial-nav { 
+    position: fixed; 
+    top: auto; 
+    bottom: 24px; 
+    left: 16px; 
+    right: 16px; 
+    padding: 10px 12px; 
+    gap: 8px; 
+    border-radius: 24px;
+    background: rgba(24, 28, 32, 0.85);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(198, 159, 89, 0.2);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  } 
+  .memorial-nav-links { 
+    width: 100%;
+    justify-content: space-around; 
+    gap: 4px;
+  } 
+  .memorial-nav-links a { 
+    position: relative;
+    flex-direction: column;
+    padding: 4px 8px; 
+    font-size: 9px; 
+    gap: 4px;
+  }
+  .memorial-nav-count {
+    position: absolute;
+    top: 0px;
+    right: 8px;
+    font-size: 8px !important;
+    min-width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(198, 159, 89, 0.2);
+  }
+  .memorial-back-top {
+    display: none;
+  }
+  .memorial-page .memorial-glass-card {
+    background: linear-gradient(130deg, rgba(46, 38, 28, 0.7), rgba(24, 24, 22, 0.9));
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(198, 159, 89, 0.15);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+  }
+  .memorial-welcome { padding: 32px 24px; gap: 16px; } 
+  .memorial-welcome p { font-size: 22px; } 
+  .memorial-welcome-note { display: none; } 
+  .memorial-story-copy { padding-left: 20px; } 
+}
 
 /* ─── Setup flow enhancements ─── */
 

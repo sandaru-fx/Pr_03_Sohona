@@ -37,6 +37,8 @@ export function MemorialMediaItem({
   const [expiresAt, setExpiresAt] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const displayTitle = item.description || (item.kind === "VOICE" ? "Voice Tribute" : item.kind === "VIDEO" ? "Video Memory" : "Cherished Photograph");
   
 
   useEffect(() => {
@@ -178,11 +180,11 @@ export function MemorialMediaItem({
               type="button" 
               className="group relative block h-full w-full overflow-hidden" 
               onClick={() => dialogRef.current?.showModal()} 
-              aria-label={`Enlarge ${item.originalName ?? "memorial photo"}`}
+              aria-label={`Enlarge ${displayTitle}`}
             >
               <img 
                 src={url} 
-                alt={item.originalName ?? "Memorial photo"} 
+                alt={displayTitle} 
                 className="h-full w-full object-cover transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-[1.03]" 
                 onError={() => void retry()} 
               />
@@ -192,10 +194,10 @@ export function MemorialMediaItem({
                 </div>
               </div>
             </button>
-            <dialog ref={dialogRef} className="memorial-lightbox" aria-label={item.originalName ?? "Enlarged memorial photograph"} onClick={event => { if (event.target === event.currentTarget) dialogRef.current?.close(); }}>
+            <dialog ref={dialogRef} className="memorial-lightbox" aria-label={`Enlarged ${displayTitle}`} onClick={event => { if (event.target === event.currentTarget) dialogRef.current?.close(); }}>
               <button type="button" className="memorial-lightbox-close" aria-label="Close photograph" onClick={() => dialogRef.current?.close()}><X size={24} /></button>
-              <img src={url} alt={item.originalName ?? "Memorial photo"} />
-              <p>{item.originalName?.replace(/\.[^.]+$/, "") ?? "A cherished memory"}</p>
+              <img src={url} alt={displayTitle} />
+              <p>{displayTitle}</p>
             </dialog>
           </>
         )}
@@ -220,7 +222,7 @@ export function MemorialMediaItem({
         </span>
         <div className="min-w-0 flex-1">
           <p className="truncate font-medium text-[#F5F1E8]">
-            {item.originalName ?? item.kind}
+            {displayTitle}
           </p>
           <p className="text-xs text-gray-500">
             {item.kind} · {formatBytes(item.sizeBytes)}
@@ -258,21 +260,21 @@ export function MemorialMediaItem({
         <div className="overflow-hidden rounded-xl bg-[#0B0D0F]">
           {item.kind === "PHOTO" ? (
             <>
-              <button type="button" className="memorial-photo-open" onClick={() => dialogRef.current?.showModal()} aria-label={`Enlarge ${item.originalName ?? "memorial photo"}`}>
+              <button type="button" className="memorial-photo-open" onClick={() => dialogRef.current?.showModal()} aria-label={`Enlarge ${displayTitle}`}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={url} alt={item.originalName ?? "Memorial photo"} className="memorial-gallery-image" onError={() => void retry()} />
+                <img src={url} alt={displayTitle} className="memorial-gallery-image" onError={() => void retry()} />
                 <span><Maximize2 size={16} /> View photograph</span>
               </button>
-              <dialog ref={dialogRef} className="memorial-lightbox" aria-label={item.originalName ?? "Enlarged memorial photograph"} onClick={event => { if (event.target === event.currentTarget) dialogRef.current?.close(); }}>
+              <dialog ref={dialogRef} className="memorial-lightbox" aria-label={`Enlarged ${displayTitle}`} onClick={event => { if (event.target === event.currentTarget) dialogRef.current?.close(); }}>
                 <button type="button" className="memorial-lightbox-close" aria-label="Close photograph" onClick={() => dialogRef.current?.close()}><X size={24} /></button>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={url} alt={item.originalName ?? "Memorial photo"} />
-                <p>{item.originalName?.replace(/\.[^.]+$/, "") ?? "A cherished memory"}</p>
+                <img src={url} alt={displayTitle} />
+                <p>{displayTitle}</p>
               </dialog>
             </>
           ) : null}
-          {item.kind === "VIDEO" && <video key={url} playsInline controls preload="metadata" className="max-h-[32rem] w-full bg-black" aria-label={item.originalName ?? "Memorial film"} onError={() => void retry()}><source src={url} type={item.contentType} /></video>}
-          {item.kind === "VOICE" && <div className="memorial-audio-player"><p>A familiar voice. A lasting memory.</p><audio key={url} controls preload="metadata" aria-label={item.originalName ?? "Voice memory"} onError={() => void retry()}><source src={url} type={item.contentType} /></audio></div>}
+          {item.kind === "VIDEO" && <video key={url} playsInline controls preload="metadata" className="max-h-[32rem] w-full bg-black" aria-label={displayTitle} onError={() => void retry()}><source src={url} type={item.contentType} /></video>}
+          {item.kind === "VOICE" && <div className="memorial-audio-player"><p>A familiar voice. A lasting memory.</p><audio key={url} controls preload="metadata" aria-label={displayTitle} onError={() => void retry()}><source src={url} type={item.contentType} /></audio></div>}
         </div>
       ) : null}
 

@@ -4,6 +4,7 @@ import { m, LazyMotion, domAnimation, useScroll, useTransform } from "framer-mot
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
+import { Building, Heart, QrCode } from "lucide-react";
 
 interface HomeClientProps {
   packages: any[];
@@ -78,7 +79,7 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
                 href="/contact"
                 className="group relative inline-flex h-12 sm:h-14 items-center justify-center overflow-hidden rounded-full bg-gold px-6 sm:px-8 font-sans text-sm sm:text-base font-semibold text-black transition-all hover:scale-105"
               >
-                <span className="relative z-10">Create a Memorial</span>
+                <span className="relative z-10">Order Mathaka QR</span>
                 <div className="absolute inset-0 z-0 bg-white/20 opacity-0 transition-opacity group-hover:opacity-100" />
               </Link>
               <Link
@@ -137,23 +138,28 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
               {
                 title: "Organization creates the memorial",
                 body: "Staff set up a name-only profile, choose a package, and share a private setup link with the family.",
+                icon: Building,
               },
               {
                 title: "Family preserves memories",
                 body: "With a 6-digit PIN, the family adds statements, photos, video, and voice — never through a public account.",
+                icon: Heart,
               },
               {
                 title: "Visitors remember via QR",
                 body: "A unique QR opens a calm memorial page. Optional PIN keeps the most private moments protected.",
+                icon: QrCode,
               },
-            ].map((item, index) => (
+            ].map((item, index) => {
+              const Icon = item.icon;
+              return (
               <m.div
                 key={item.title}
                 variants={fadeUp}
                 className="group relative rounded-3xl border border-white/40 bg-white/[0.02] p-8 backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 hover:border-white hover:bg-white/[0.04] hover:shadow-[0_0_50px_rgba(255,255,255,0.3)]"
               >
                 <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gold/10 text-2xl font-bold text-gold transition-colors group-hover:bg-gold group-hover:text-black">
-                  {index + 1}
+                  <Icon className="h-7 w-7" />
                 </div>
                 <h3 className="font-sans text-xl font-semibold text-white sm:text-2xl">
                   {item.title}
@@ -162,7 +168,7 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
                   {item.body}
                 </p>
               </m.div>
-            ))}
+            )})}
           </m.div>
         </div>
       </section>

@@ -4,7 +4,6 @@ import { m, LazyMotion, domAnimation, useScroll, useTransform } from "framer-mot
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
-import { Building, Heart, QrCode } from "lucide-react";
 
 interface HomeClientProps {
   packages: any[];
@@ -34,7 +33,7 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
 
   return (
     <LazyMotion features={domAnimation}>
-      <main className="flex flex-1 flex-col overflow-hidden bg-[#0B0D0F]">
+      <main className="flex flex-1 flex-col overflow-hidden bg-[#050505]">
       {/* Hero Section with Parallax */}
       <section className="relative min-h-[calc(100vh-6rem)] overflow-hidden border-b border-border">
         <m.div style={{ y }} className="absolute inset-0 z-0">
@@ -49,8 +48,8 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
           />
         </m.div>
         
-        <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-[#0B0D0F]/90 via-[#0B0D0F]/60 to-[#0B0D0F]/10 sm:w-[60%]" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-40 bg-gradient-to-t from-[#0B0D0F] to-transparent" />
+        <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-[#050505]/95 via-[#050505]/70 to-[#050505]/10 sm:w-[60%]" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-40 bg-gradient-to-t from-[#050505] to-transparent" />
 
         <div className="relative z-10 mx-auto flex min-h-[calc(100vh-6rem)] w-full max-w-7xl flex-col justify-center px-6 pt-12 pb-16 sm:px-14 lg:px-20 sm:pt-20 sm:pb-32">
           <m.div
@@ -77,10 +76,10 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
             <m.div variants={fadeUp} className="mt-6 flex flex-wrap gap-4 sm:mt-6">
               <Link
                 href="/contact"
-                className="group relative inline-flex h-12 sm:h-14 items-center justify-center overflow-hidden rounded-full bg-gold px-6 sm:px-8 font-sans text-sm sm:text-base font-semibold text-black transition-all hover:scale-105"
+                className="group relative inline-flex h-12 sm:h-14 items-center justify-center overflow-hidden rounded-full bg-gold px-6 sm:px-8 font-sans text-base sm:text-lg font-extrabold tracking-wide text-black shadow-lg transition-all hover:scale-105"
               >
-                <span className="relative z-10">Order Mathaka QR</span>
-                <div className="absolute inset-0 z-0 bg-white/20 opacity-0 transition-opacity group-hover:opacity-100" />
+                <span className="relative z-10 drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">Create a Memorial</span>
+                <div className="absolute inset-0 z-0 bg-white/30 opacity-0 transition-opacity group-hover:opacity-100" />
               </Link>
               <Link
                 href="/about"
@@ -138,37 +137,32 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
               {
                 title: "Organization creates the memorial",
                 body: "Staff set up a name-only profile, choose a package, and share a private setup link with the family.",
-                icon: Building,
               },
               {
                 title: "Family preserves memories",
                 body: "With a 6-digit PIN, the family adds statements, photos, video, and voice — never through a public account.",
-                icon: Heart,
               },
               {
                 title: "Visitors remember via QR",
                 body: "A unique QR opens a calm memorial page. Optional PIN keeps the most private moments protected.",
-                icon: QrCode,
               },
-            ].map((item, index) => {
-              const Icon = item.icon;
-              return (
+            ].map((item, index) => (
               <m.div
                 key={item.title}
                 variants={fadeUp}
-                className="group relative rounded-3xl border border-white/40 bg-white/[0.02] p-8 backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 hover:border-white hover:bg-white/[0.04] hover:shadow-[0_0_50px_rgba(255,255,255,0.3)]"
+                className="group relative rounded-3xl border border-white/20 bg-[#0a0a0a] p-8 transition-all duration-500 hover:-translate-y-2 hover:border-white hover:bg-[#111111] hover:shadow-[0_0_50px_rgba(255,255,255,0.2)]"
               >
-                <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gold/10 text-2xl font-bold text-gold transition-colors group-hover:bg-gold group-hover:text-black">
-                  <Icon className="h-7 w-7" />
+                <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-white/20 bg-transparent text-2xl font-bold text-white transition-colors group-hover:bg-white group-hover:text-black">
+                  0{index + 1}
                 </div>
-                <h3 className="font-sans text-xl font-semibold text-white sm:text-2xl">
+                <h3 className="font-sans text-xl font-semibold text-white sm:text-2xl drop-shadow-sm">
                   {item.title}
                 </h3>
-                <p className="mt-4 text-base leading-relaxed text-gray-400 group-hover:text-gray-300">
+                <p className="mt-4 text-base leading-relaxed text-zinc-300 group-hover:text-zinc-100">
                   {item.body}
                 </p>
               </m.div>
-            )})}
+            ))}
           </m.div>
         </div>
       </section>

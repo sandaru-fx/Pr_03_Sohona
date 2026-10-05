@@ -150,7 +150,7 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
               <m.div
                 key={item.title}
                 variants={fadeUp}
-                className="group relative rounded-3xl border border-white/5 bg-white/[0.02] p-8 backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 hover:border-gold/50 hover:bg-white/[0.04] hover:shadow-[0_0_50px_rgba(201,164,92,0.3)]"
+                className="group relative rounded-3xl border border-white/40 bg-white/[0.02] p-8 backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 hover:border-white hover:bg-white/[0.04] hover:shadow-[0_0_50px_rgba(255,255,255,0.3)]"
               >
                 <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gold/10 text-2xl font-bold text-gold transition-colors group-hover:bg-gold group-hover:text-black">
                   {index + 1}
@@ -180,7 +180,7 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
              className="grid grid-cols-1 gap-6 md:grid-cols-2"
           >
              {/* Large Feature 1 */}
-             <m.div variants={fadeUp} className="group relative overflow-hidden rounded-[2.5rem] bg-[#121518] border border-white/5 md:col-span-2 min-h-[500px] transition-all duration-500 hover:border-gold/50 hover:shadow-[0_0_50px_rgba(201,164,92,0.3)]">
+             <m.div variants={fadeUp} className="group relative overflow-hidden rounded-[2.5rem] bg-[#121518] border border-white/5 md:col-span-2 min-h-[500px] transition-all duration-500 hover:border-gold/80 hover:shadow-[0_0_80px_rgba(201,164,92,0.6)]">
                 <Image src="/feature-voice.jpg" alt="Voice" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover opacity-50 transition-transform duration-1000 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
                 <div className="absolute inset-0 p-10 sm:p-16 flex flex-col justify-center max-w-2xl">
@@ -191,7 +191,7 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
              </m.div>
 
              {/* Small Feature 2 */}
-             <m.div variants={fadeUp} className="group relative overflow-hidden rounded-[2.5rem] bg-[#121518] border border-white/5 aspect-square sm:aspect-auto sm:min-h-[450px] transition-all duration-500 hover:border-gold/50 hover:shadow-[0_0_50px_rgba(201,164,92,0.3)]">
+             <m.div variants={fadeUp} className="group relative overflow-hidden rounded-[2.5rem] bg-[#121518] border border-white/5 aspect-square sm:aspect-auto sm:min-h-[450px] transition-all duration-500 hover:border-gold/80 hover:shadow-[0_0_80px_rgba(201,164,92,0.6)]">
                  <Image src="/feature-privacy.jpg" alt="Privacy" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover opacity-40 transition-transform duration-1000 group-hover:scale-105" />
                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-black/20" />
                  <div className="absolute inset-0 p-10 sm:p-12 flex flex-col justify-end">
@@ -202,7 +202,7 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
              </m.div>
 
              {/* Small Feature 3 */}
-             <m.div variants={fadeUp} className="group relative overflow-hidden rounded-[2.5rem] bg-[#121518] border border-white/5 aspect-square sm:aspect-auto sm:min-h-[450px] transition-all duration-500 hover:border-gold/50 hover:shadow-[0_0_50px_rgba(201,164,92,0.3)]">
+             <m.div variants={fadeUp} className="group relative overflow-hidden rounded-[2.5rem] bg-[#121518] border border-white/5 aspect-square sm:aspect-auto sm:min-h-[450px] transition-all duration-500 hover:border-gold/80 hover:shadow-[0_0_80px_rgba(201,164,92,0.6)]">
                  <Image src="/feature-words.jpg" alt="Words" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover opacity-40 transition-transform duration-1000 group-hover:scale-105" />
                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-black/20" />
                  <div className="absolute inset-0 p-10 sm:p-12 flex flex-col justify-end">

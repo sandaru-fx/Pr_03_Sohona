@@ -29,9 +29,10 @@ function demoProvider() {
       name: "Demo Login",
       credentials: {},
       async authorize() {
-        // Returns a dummy admin user based on the allowed email
+        // Returns a dummy admin user based on the allowed email. 
+        // ID must be a valid 24-hex-char MongoDB ObjectId.
         return {
-          id: "demo-admin-id",
+          id: "650000000000000000000000",
           name: "Demo Admin",
           email: "sandaruchamod62@gmail.com", 
           image: "https://api.dicebear.com/7.x/avataaars/svg?seed=DemoAdmin"

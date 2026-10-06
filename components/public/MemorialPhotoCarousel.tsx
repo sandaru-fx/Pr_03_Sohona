@@ -69,6 +69,7 @@ function PhotoCard({
         </div>
       </div>
     </motion.div>
+  );
 }
 
 export function MemorialPhotoCarousel({

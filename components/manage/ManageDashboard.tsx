@@ -298,73 +298,30 @@ export function ManageDashboard({
           durationSeconds = rounded;
         }
 
-        const presignResponse = await fetch("/api/manage/media/presign", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            kind,
-            contentType: file.type || "application/octet-stream",
-            sizeBytes: file.size,
-            fileName: file.name,
-          }),
-        });
-
-        const presign = (await presignResponse.json().catch(() => ({}))) as {
-          uploadUrl?: string;
-          r2ObjectKey?: string;
-          headers?: { "Content-Type"?: string };
-          message?: string;
-          error?: string;
-        };
-
-        if (!presignResponse.ok || !presign.uploadUrl || !presign.r2ObjectKey) {
-          setError(presign.message ?? presign.error ?? "Could not start upload.");
-          break;
+        const formData = new FormData();
+        formData.append("kind", kind);
+        formData.append("file", file);
+        if (durationSeconds !== undefined) {
+          formData.append("durationSeconds", String(durationSeconds));
         }
 
-        const putResponse = await fetch(presign.uploadUrl, {
-          method: "PUT",
-          headers: {
-            "Content-Type":
-              presign.headers?.["Content-Type"] ||
-              file.type ||
-              "application/octet-stream",
-          },
-          body: file,
-        });
-
-        if (!putResponse.ok) {
-          setError("Upload to storage failed. Please try again.");
-          break;
-        }
-
-        const confirmResponse = await fetch("/api/manage/media/confirm", {
+        const response = await fetch("/api/manage/media/upload", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            kind,
-            contentType: file.type || "application/octet-stream",
-            sizeBytes: file.size,
-            fileName: file.name,
-            r2ObjectKey: presign.r2ObjectKey,
-            ...(durationSeconds !== undefined ? { durationSeconds } : {}),
-          }),
+          body: formData,
         });
 
-        const confirm = (await confirmResponse.json().catch(() => ({}))) as {
+        const result = (await response.json().catch(() => ({}))) as {
           media?: MediaItem;
           message?: string;
           error?: string;
         };
 
-        if (!confirmResponse.ok || !confirm.media) {
-          setError(
-            confirm.message ?? confirm.error ?? "Could not confirm upload.",
-          );
+        if (!response.ok || !result.media) {
+          setError(result.message ?? result.error ?? "Could not upload file.");
           break;
         }
 
-        setMedia((current) => [...current, confirm.media as MediaItem]);
+        setMedia((current) => [...current, result.media as MediaItem]);
         if (kind === "PHOTO") currentPhotoCount++;
         uploadedCount++;
       } catch (err) {

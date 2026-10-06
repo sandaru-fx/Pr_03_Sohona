@@ -194,9 +194,6 @@ export default function PackagesPage() {
               <div className="group relative overflow-hidden rounded-3xl border border-[#2A2E33] bg-gradient-to-b from-[#121518] to-[#0A0C0E] p-8 transition-all duration-300 hover:-translate-y-1 hover:border-gold/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)]">
                 <div className="absolute inset-0 bg-gradient-to-b from-gold/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 <div className="relative z-10">
-                  <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gold/10 border border-gold/20 text-gold shadow-[0_0_15px_rgba(201,162,112,0.15)] group-hover:scale-110 transition-transform duration-300">
-                    <Sparkles className="h-6 w-6" />
-                  </div>
                   <h3 className="text-xl font-semibold text-[#F5F1E8] group-hover:text-gold transition-colors">Uncompromising Quality</h3>
                   <p className="mt-4 text-base leading-relaxed text-gray-400 group-hover:text-gray-300 transition-colors">
                     Every package at Mathaka QR is carefully crafted to honor your loved ones. 
@@ -210,9 +207,6 @@ export default function PackagesPage() {
               <div className="group relative overflow-hidden rounded-3xl border border-[#2A2E33] bg-gradient-to-b from-[#121518] to-[#0A0C0E] p-8 transition-all duration-300 hover:-translate-y-1 hover:border-gold/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)]">
                 <div className="absolute inset-0 bg-gradient-to-b from-gold/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 <div className="relative z-10">
-                  <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gold/10 border border-gold/20 text-gold shadow-[0_0_15px_rgba(201,162,112,0.15)] group-hover:scale-110 transition-transform duration-300">
-                    <ShieldCheck className="h-6 w-6" />
-                  </div>
                   <h3 className="text-xl font-semibold text-[#F5F1E8] group-hover:text-gold transition-colors">Absolute Privacy</h3>
                   <p className="mt-4 text-base leading-relaxed text-gray-400 group-hover:text-gray-300 transition-colors">
                     Your family's privacy is our highest priority. All media, statements, and comments are protected 
@@ -226,9 +220,6 @@ export default function PackagesPage() {
               <div className="group relative overflow-hidden rounded-3xl border border-[#2A2E33] bg-gradient-to-b from-[#121518] to-[#0A0C0E] p-8 transition-all duration-300 hover:-translate-y-1 hover:border-gold/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)] sm:col-span-2 lg:col-span-1">
                 <div className="absolute inset-0 bg-gradient-to-b from-gold/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 <div className="relative z-10">
-                  <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gold/10 border border-gold/20 text-gold shadow-[0_0_15px_rgba(201,162,112,0.15)] group-hover:scale-110 transition-transform duration-300">
-                    <MessageCircle className="h-6 w-6" />
-                  </div>
                   <h3 className="text-xl font-semibold text-[#F5F1E8] group-hover:text-gold transition-colors">Thoughtful Tributes</h3>
                   <p className="mt-4 text-base leading-relaxed text-gray-400 group-hover:text-gray-300 transition-colors">
                     Our structured comment sections are designed to encourage profound, considered tributes. 

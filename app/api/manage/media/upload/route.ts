@@ -14,6 +14,10 @@ import { buildR2ObjectKey } from "@/lib/r2-object-key";
 import { enforceIpRateLimit } from "@/lib/rate-limit-presets";
 
 export const runtime = "nodejs";
+export const maxDuration = 60; // 60s for large file uploads
+
+// Allow up to 50 MB request bodies (images, short video/audio)
+export const dynamic = "force-dynamic";
 
 /**
  * POST /api/manage/media/upload
@@ -88,20 +92,8 @@ export async function POST(request: Request) {
         ? Math.ceil(Number(durationSecondsRaw))
         : null;
 
-  const limitCheck = await assertMediaUploadAllowed({
-    profileId: auth.profile.id,
-    kind: uploadCheck.kind,
-    durationSeconds,
-    isProfilePhoto,
-  });
-  if (!limitCheck.ok) {
-    return NextResponse.json(
-      { error: limitCheck.error, message: limitCheck.message },
-      { status: 400 },
-    );
-  }
-
-  // If replacing profile photo, delete the old one from R2 + DB first
+  // If replacing profile photo, delete the old one from R2 + DB FIRST
+  // (must happen before limit check so the "max 1 profile photo" rule doesn't block)
   if (isProfilePhoto && uploadCheck.kind === "PHOTO") {
     const existing = await prisma.mediaAsset.findFirst({
       where: { profileId: auth.profile.id, isProfilePhoto: true },
@@ -120,6 +112,19 @@ export async function POST(request: Request) {
       }
       await prisma.mediaAsset.delete({ where: { id: existing.id } });
     }
+  }
+
+  const limitCheck = await assertMediaUploadAllowed({
+    profileId: auth.profile.id,
+    kind: uploadCheck.kind,
+    durationSeconds,
+    isProfilePhoto,
+  });
+  if (!limitCheck.ok) {
+    return NextResponse.json(
+      { error: limitCheck.error, message: limitCheck.message },
+      { status: 400 },
+    );
   }
 
   const r2ObjectKey = buildR2ObjectKey({

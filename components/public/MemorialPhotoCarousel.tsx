@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { MemorialMediaItem } from "@/components/public/MemorialMediaItem";
 import type { PublicMediaMetaItem } from "@/lib/public-profile";
 
@@ -21,18 +20,16 @@ function PhotoCard({
   r2Configured: boolean;
   captions: string[];
 }) {
-  const [showDetails, setShowDetails] = useState(false);
-
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8, delay: Math.min(index * 0.15, 0.6), ease: [0.25, 0.1, 0.25, 1] }}
-      className="group relative flex-1 hover:flex-[4] transition-all duration-[800ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] overflow-hidden rounded-2xl border-2 border-[#D4AF37]/30 hover:border-[#D4AF37]/80 bg-[#0a0a09]"
+      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, margin: "0px 0px -100px 0px" }}
+      transition={{ duration: 0.8, delay: (index % 3) * 0.15, ease: [0.16, 1, 0.3, 1] }}
+      className="group relative w-full aspect-square md:aspect-[4/5] overflow-hidden rounded-2xl md:rounded-[2rem] border border-[#2A2E33]/60 bg-[#0B0D0F] shadow-lg transition-all duration-500 hover:shadow-2xl hover:shadow-gold/10 hover:border-gold/30 hover:-translate-y-2"
     >
       {/* The Image inside */}
-      <div className="absolute inset-0 w-full h-full">
+      <div className="absolute inset-0 w-full h-full scale-[1.02] transition-transform duration-[1.2s] ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-110">
         <MemorialMediaItem
           item={item}
           enabled={r2Configured}
@@ -41,42 +38,37 @@ function PhotoCard({
       </div>
       
       {/* Gradient Overlay for Text */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a09]/95 via-[#0a0a09]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#050607] via-[#050607]/40 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-700 ease-in-out pointer-events-none" />
       
-      {/* Caption (Visible on Hover) */}
-      <div className="absolute bottom-0 left-0 w-full p-6 sm:p-8 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700 delay-150 ease-out flex flex-col justify-end">
+      {/* Decorative Border Glow */}
+      <div className="absolute inset-0 rounded-2xl md:rounded-[2rem] ring-1 ring-inset ring-white/10 group-hover:ring-gold/30 transition-all duration-500 pointer-events-none" />
+      
+      {/* Caption & Metadata (Visible on Hover / Always visible on mobile) */}
+      <div className="absolute bottom-0 left-0 w-full p-5 sm:p-6 translate-y-2 sm:translate-y-8 opacity-90 sm:opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700 delay-75 ease-out flex flex-col justify-end">
         <div className="pointer-events-auto flex items-end justify-between w-full gap-4">
-          <div>
-            <h3 className="text-xl sm:text-2xl font-serif text-[#D4AF37] mb-3 drop-shadow-md leading-tight">
-              {item.originalName?.replace(/\.[^.]+$/, "") ?? captions[index % captions.length]}
+          <div className="w-full">
+            <h3 className="text-lg sm:text-xl font-serif text-[#F5F1E8] group-hover:text-gold transition-colors duration-500 mb-2 drop-shadow-md leading-tight line-clamp-1">
+              {item.title || item.originalName?.replace(/\.[^.]+$/, "") || captions[index % captions.length]}
             </h3>
-            <div className="w-12 h-[2px] bg-[#D4AF37]/60" />
+            
+            <div className="w-0 group-hover:w-12 h-[2px] bg-gold/60 transition-all duration-700 ease-out mb-3 hidden sm:block" />
+            
+            {(item.dateTaken || item.location) && (
+               <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-gray-400 opacity-80 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-200">
+                 {item.dateTaken && <span>📅 {item.dateTaken}</span>}
+                 {item.location && <span>📍 {item.location}</span>}
+               </div>
+            )}
+            
+            {item.description && (
+              <p className="text-sm text-gray-300 mt-2 line-clamp-2 sm:line-clamp-none sm:h-0 sm:opacity-0 group-hover:h-auto group-hover:opacity-100 transition-all duration-700 delay-300">
+                {item.description}
+              </p>
+            )}
           </div>
-          {item.description && (
-            <button
-              onClick={() => setShowDetails(!showDetails)}
-              className="px-4 py-2 text-sm font-medium text-[#D4AF37] border border-[#D4AF37]/50 rounded-full bg-[#0a0a09]/50 backdrop-blur-sm hover:bg-[#D4AF37]/10 transition-colors shrink-0"
-            >
-              {showDetails ? "Hide details" : "More details"}
-            </button>
-          )}
         </div>
-        
-        <AnimatePresence>
-          {showDetails && item.description && (
-            <motion.div
-              initial={{ opacity: 0, height: 0, marginTop: 0 }}
-              animate={{ opacity: 1, height: "auto", marginTop: 16 }}
-              exit={{ opacity: 0, height: 0, marginTop: 0 }}
-              className="text-[#F5F1E8] text-sm sm:text-base leading-relaxed max-w-prose overflow-hidden pointer-events-auto"
-            >
-              <p>{item.description}</p>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </motion.div>
-  );
 }
 
 export function MemorialPhotoCarousel({
@@ -95,8 +87,8 @@ export function MemorialPhotoCarousel({
   ];
 
   return (
-    <div className="w-full px-4 sm:px-12 pb-6">
-      <div className="flex w-full h-[500px] sm:h-[600px] md:h-[700px] gap-2 md:gap-4">
+    <div className="w-full px-4 sm:px-12 pb-16">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6 md:gap-8 max-w-7xl mx-auto">
         {photos.map((item, index) => (
           <PhotoCard
             key={item.id}

@@ -88,11 +88,8 @@ export default function PackagesPage() {
         <div className="absolute inset-0 z-0 bg-[url('/noise.png')] opacity-[0.04] mix-blend-overlay" />
 
         <div className="relative z-10 flex w-full max-w-5xl flex-col items-center px-6 sm:px-10">
-          <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-[#0B0D0F]/50 px-8 py-16 text-center shadow-[0_0_50px_rgba(0,0,0,0.5)] backdrop-blur-xl sm:px-16 sm:py-20">
-            {/* Top gold accent line */}
-            <div className="absolute left-1/2 top-0 h-1 w-32 -translate-x-1/2 bg-gradient-to-r from-transparent via-gold to-transparent" />
-            
-            <h1 className="font-sans text-5xl font-medium tracking-tight text-[#F5F1E8] drop-shadow-xl sm:text-6xl lg:text-7xl">
+          <div className="relative px-8 py-16 text-center sm:px-16 sm:py-20">
+            <h1 className="font-sans text-5xl font-bold tracking-tight text-[#F5F1E8] drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] sm:text-6xl lg:text-7xl">
               Choose the Remembrance Horizon
             </h1>
             <p className="mx-auto mt-8 max-w-3xl text-lg leading-relaxed text-[#F5F1E8]/90 drop-shadow-md sm:text-xl">

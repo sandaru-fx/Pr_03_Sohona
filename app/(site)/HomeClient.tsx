@@ -76,9 +76,9 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
             <m.div variants={fadeUp} className="mt-6 flex flex-wrap gap-4 sm:mt-6">
               <Link
                 href="/contact"
-                className="group relative inline-flex h-12 sm:h-14 items-center justify-center overflow-hidden rounded-full bg-gold px-6 sm:px-8 font-sans text-base sm:text-lg font-extrabold tracking-wide text-black shadow-lg transition-all hover:scale-105"
+                className="group relative inline-flex h-12 sm:h-14 items-center justify-center overflow-hidden rounded-full bg-gold px-6 sm:px-8 font-sans text-base sm:text-lg font-semibold tracking-wide text-black shadow-lg transition-all hover:scale-105"
               >
-                <span className="relative z-10 drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">Create a Memorial</span>
+                <span className="relative z-10">Create a Memorial</span>
                 <div className="absolute inset-0 z-0 bg-white/30 opacity-0 transition-opacity group-hover:opacity-100" />
               </Link>
               <Link

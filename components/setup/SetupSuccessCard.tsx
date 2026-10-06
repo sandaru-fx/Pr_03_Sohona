@@ -4,6 +4,8 @@ import { useState } from "react";
 import { CheckCircle2, Copy, ExternalLink, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import confetti from "canvas-confetti";
+import { useEffect } from "react";
 
 type SetupSuccessCardProps = {
   displayName: string;
@@ -17,6 +19,34 @@ export function SetupSuccessCard({
   publicUrl,
 }: SetupSuccessCardProps) {
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    // Fire confetti when the component mounts
+    const duration = 3 * 1000;
+    const end = Date.now() + duration;
+
+    const frame = () => {
+      confetti({
+        particleCount: 5,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors: ["#C9A45C", "#ffffff", "#0B0D0F"]
+      });
+      confetti({
+        particleCount: 5,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors: ["#C9A45C", "#ffffff", "#0B0D0F"]
+      });
+
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    };
+    frame();
+  }, []);
 
   async function copyManageUrl() {
     try {
@@ -49,7 +79,7 @@ export function SetupSuccessCard({
         Mathaka QR
       </p>
       <h1 className="mt-4 font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-4xl relative z-10">
-        Setup complete
+        Successfully created your profile!
       </h1>
       <p className="mt-4 max-w-xl text-base leading-7 text-foreground-secondary relative z-10">
         The memorial for{" "}

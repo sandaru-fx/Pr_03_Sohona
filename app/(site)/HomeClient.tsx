@@ -137,17 +137,17 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
               {
                 title: "Organization creates the memorial",
                 body: "Staff set up a name-only profile, choose a package, and share a private setup link with the family.",
-                image: "/card_1.jpg",
+                image: "/images/card_1.jpg",
               },
               {
                 title: "Family preserves memories",
                 body: "With a 6-digit PIN, the family adds statements, photos, video, and voice — never through a public account.",
-                image: "/card_2.jpg",
+                image: "/images/card_2.jpg",
               },
               {
                 title: "Visitors remember via QR",
                 body: "A unique QR opens a calm memorial page. Optional PIN keeps the most private moments protected.",
-                image: "/card_3.jpg",
+                image: "/images/card_3.jpg",
               },
             ].map((item, index) => (
               <m.div
@@ -301,7 +301,7 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
              transition={{ duration: 0.8 }}
              className="relative overflow-hidden rounded-[3rem] border border-white/10 p-12 sm:p-20 text-center shadow-2xl"
           >
-             <Image src="/footer-realistic.jpg" alt="Calm memorial setting" fill className="object-cover" />
+             <Image src="/images/footer-realistic.jpg" alt="Calm memorial setting" fill className="object-cover" />
              <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
              <div className="relative z-10">
                  <h2 className="font-sans text-4xl font-semibold tracking-tight text-white sm:text-5xl">Begin with a conversation</h2>

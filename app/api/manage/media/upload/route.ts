@@ -56,8 +56,16 @@ export async function POST(request: Request) {
   const kind = formData.get("kind");
   const file = formData.get("file");
   const durationSecondsRaw = formData.get("durationSeconds");
+  
+  const titleRaw = formData.get("title");
+  const title = typeof titleRaw === "string" ? titleRaw : null;
   const descriptionRaw = formData.get("description");
   const description = typeof descriptionRaw === "string" ? descriptionRaw : null;
+  const dateTakenRaw = formData.get("dateTaken");
+  const dateTaken = typeof dateTakenRaw === "string" ? dateTakenRaw : null;
+  const locationRaw = formData.get("location");
+  const location = typeof locationRaw === "string" ? locationRaw : null;
+  
   const isProfilePhotoRaw = formData.get("isProfilePhoto");
   const isProfilePhoto = isProfilePhotoRaw === "true";
 
@@ -167,7 +175,10 @@ export async function POST(request: Request) {
         sizeBytes: uploadCheck.sizeBytes,
         durationSeconds,
         originalName: uploadCheck.fileName,
+        title,
         description,
+        dateTaken,
+        location,
         isProfilePhoto: isProfilePhoto && uploadCheck.kind === "PHOTO",
         sortOrder: 0,
       },
@@ -179,7 +190,10 @@ export async function POST(request: Request) {
         sizeBytes: true,
         durationSeconds: true,
         originalName: true,
+        title: true,
         description: true,
+        dateTaken: true,
+        location: true,
         isProfilePhoto: true,
         sortOrder: true,
         createdAt: true,

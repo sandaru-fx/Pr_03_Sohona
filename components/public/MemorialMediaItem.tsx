@@ -38,7 +38,7 @@ export function MemorialMediaItem({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const displayTitle = item.description || (item.kind === "VOICE" ? "Voice Tribute" : item.kind === "VIDEO" ? "Video Memory" : "Cherished Photograph");
+  const displayTitle = item.title || item.originalName || (item.kind === "VOICE" ? "Voice Tribute" : item.kind === "VIDEO" ? "Video Memory" : "Cherished Photograph");
   
 
   useEffect(() => {
@@ -224,9 +224,16 @@ export function MemorialMediaItem({
           <p className="truncate font-medium text-[#F5F1E8]">
             {displayTitle}
           </p>
-          <p className="text-xs text-gray-500">
-            {item.kind} · {formatBytes(item.sizeBytes)}
-          </p>
+          <div className="text-xs text-gray-500 mt-0.5 space-y-0.5 flex flex-wrap gap-x-3 gap-y-1">
+            <span>{item.kind} · {formatBytes(item.sizeBytes)}</span>
+            {item.dateTaken && <span>📅 {item.dateTaken}</span>}
+            {item.location && <span>📍 {item.location}</span>}
+          </div>
+          {item.description && (
+            <p className="mt-2 text-sm text-gray-300 leading-relaxed bg-[#181C20]/50 p-2 rounded-lg border border-[#2A2E33]/50">
+              {item.description}
+            </p>
+          )}
         </div>
       </div>
 

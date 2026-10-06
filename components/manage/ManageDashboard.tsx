@@ -31,6 +31,10 @@ type MediaItem = {
   contentType: string;
   durationSeconds?: number | null;
   isProfilePhoto?: boolean;
+  title?: string | null;
+  description?: string | null;
+  dateTaken?: string | null;
+  location?: string | null;
 };
 
 type CommentItem = {
@@ -187,6 +191,18 @@ export function ManageDashboard({
     | null
   >(null);
 
+  const [pendingUploadFiles, setPendingUploadFiles] = useState<{
+    files: File[];
+    isProfilePhoto: boolean;
+  } | null>(null);
+
+  const [metadataInputs, setMetadataInputs] = useState<{
+    title: string;
+    description: string;
+    dateTaken: string;
+    location: string;
+  }>({ title: "", description: "", dateTaken: "", location: "" });
+
   const usedWords = useMemo(
     () => totalStatementWords(statements.map((item) => ({ body: item.body }))),
     [statements],
@@ -259,26 +275,26 @@ export function ManageDashboard({
     }
   }
 
-  async function onUpload(fileList: FileList | null) {
-    if (!fileList || fileList.length === 0) return;
-    if (!r2Configured) {
-      setError(
-        "Media storage is not connected yet. You can still edit statements.",
-      );
+  async function processPendingUploads() {
+    if (!pendingUploadFiles) return;
+    const { files, isProfilePhoto } = pendingUploadFiles;
+    
+    // Title is mandatory
+    if (!metadataInputs.title.trim()) {
+      setError("Please provide a title for the upload.");
       return;
     }
 
+    setUploading(true);
     setError(null);
     setMessage(null);
-    setUploading(true);
     let currentPhotoCount = photoCount;
     let uploadedCount = 0;
-    const files = Array.from(fileList);
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       try {
-        if (kind === "PHOTO" && currentPhotoCount >= limits.maxImages) {
+        if (!isProfilePhoto && kind === "PHOTO" && currentPhotoCount >= limits.maxImages) {
           setError(`This package allows at most ${limits.maxImages} images.`);
           break;
         }
@@ -292,8 +308,8 @@ export function ManageDashboard({
           if (rounded > maxSeconds) {
             setError(
               kind === "VIDEO"
-                ? `Video must be ${limits.maxVideoSeconds}s or less (about ${rounded}s).`
-                : `Audio must be ${limits.maxAudioSeconds}s or less (about ${rounded}s).`,
+                ? `Video must be ${limits.maxVideoSeconds}s or less.`
+                : `Audio must be ${limits.maxAudioSeconds}s or less.`,
             );
             break;
           }
@@ -301,11 +317,17 @@ export function ManageDashboard({
         }
 
         const formData = new FormData();
-        formData.append("kind", kind);
+        formData.append("kind", isProfilePhoto ? "PHOTO" : kind);
         formData.append("file", file);
+        if (isProfilePhoto) formData.append("isProfilePhoto", "true");
         if (durationSeconds !== undefined) {
           formData.append("durationSeconds", String(durationSeconds));
         }
+        
+        formData.append("title", metadataInputs.title);
+        formData.append("description", metadataInputs.description);
+        formData.append("dateTaken", metadataInputs.dateTaken);
+        formData.append("location", metadataInputs.location);
 
         const response = await fetch("/api/manage/media/upload", {
           method: "POST",
@@ -323,8 +345,16 @@ export function ManageDashboard({
           break;
         }
 
-        setMedia((current) => [...current, result.media as MediaItem]);
-        if (kind === "PHOTO") currentPhotoCount++;
+        if (isProfilePhoto) {
+          setMedia((current) => [
+            result.media as MediaItem,
+            ...current.filter((m) => !m.isProfilePhoto),
+          ]);
+        } else {
+          setMedia((current) => [...current, result.media as MediaItem]);
+          if (kind === "PHOTO") currentPhotoCount++;
+        }
+        
         uploadedCount++;
       } catch (err) {
         setError(
@@ -338,50 +368,25 @@ export function ManageDashboard({
       setMessage(`Successfully uploaded ${uploadedCount} file(s).`);
       router.refresh();
     }
+    
     setUploading(false);
+    setPendingUploadFiles(null);
+    setMetadataInputs({ title: "", description: "", dateTaken: "", location: "" });
   }
 
-  async function onUploadProfilePhoto(fileList: FileList | null) {
+  function triggerUpload(fileList: FileList | null, isProfilePhoto: boolean) {
     if (!fileList || fileList.length === 0) return;
     if (!r2Configured) {
       setError("Media storage is not connected yet.");
       return;
     }
-    setError(null);
-    setMessage(null);
-    setUploading(true);
-    try {
-      const file = fileList[0];
-      const formData = new FormData();
-      formData.append("kind", "PHOTO");
-      formData.append("file", file);
-      formData.append("isProfilePhoto", "true");
-
-      const response = await fetch("/api/manage/media/upload", {
-        method: "POST",
-        body: formData,
-      });
-      const result = (await response.json().catch(() => ({}))) as {
-        media?: MediaItem;
-        message?: string;
-        error?: string;
-      };
-      if (!response.ok || !result.media) {
-        setError(result.message ?? result.error ?? "Could not upload profile photo.");
-        return;
-      }
-      // Replace profile photo in state
-      setMedia((current) => [
-        result.media as MediaItem,
-        ...current.filter((m) => !m.isProfilePhoto),
-      ]);
-      setMessage("Profile photo updated.");
-      router.refresh();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Network error during upload.");
-    } finally {
-      setUploading(false);
-    }
+    
+    // Auto-fill title with original file name stripped of extension as a suggestion
+    const firstFile = fileList[0];
+    const defaultTitle = firstFile.name.replace(/\.[^/.]+$/, "");
+    
+    setMetadataInputs({ title: defaultTitle, description: "", dateTaken: "", location: "" });
+    setPendingUploadFiles({ files: Array.from(fileList), isProfilePhoto });
   }
 
   async function onDeleteMedia(mediaId: string) {
@@ -768,7 +773,7 @@ export function ManageDashboard({
                 className="sr-only"
                 disabled={busy}
                 onChange={(event) => {
-                  void onUpload(event.target.files);
+                  triggerUpload(event.target.files, false);
                   event.target.value = "";
                 }}
               />
@@ -816,25 +821,12 @@ export function ManageDashboard({
                     )}
                   </button>
                 </div>
-                <MediaDescriptionInput
-                  item={item as any}
-                  onSave={async (newDesc) => {
-                    setMedia((curr) =>
-                      curr.map((m) =>
-                        m.id === item.id ? ({ ...m, description: newDesc } as any) : m
-                      )
-                    );
-                    try {
-                      await fetch(`/api/manage/media/${item.id}`, {
-                        method: "PATCH",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ description: newDesc }),
-                      });
-                    } catch (err) {
-                      console.error("Failed to save description in manage", err);
-                    }
-                  }}
-                />
+                <div className="mt-2 text-sm text-foreground-secondary space-y-1 bg-[#101214] p-3 rounded-lg border border-[#2A2E33]">
+                  {item.title && <p><strong className="text-foreground">Title:</strong> {item.title}</p>}
+                  {item.description && <p><strong className="text-foreground">Description:</strong> {item.description}</p>}
+                  {item.dateTaken && <p><strong className="text-foreground">Date:</strong> {item.dateTaken}</p>}
+                  {item.location && <p><strong className="text-foreground">Location:</strong> {item.location}</p>}
+                </div>
               </li>
             ))
           )}
@@ -1026,6 +1018,69 @@ export function ManageDashboard({
           }
         }}
       />
+
+      <Modal
+        open={pendingUploadFiles !== null}
+        onClose={() => setPendingUploadFiles(null)}
+        title="Media Details"
+        description="Please provide details for the new media."
+        confirmLabel="Upload"
+        busy={uploading}
+        disableConfirm={!metadataInputs.title.trim()}
+        onConfirm={() => void processPendingUploads()}
+      >
+        <div className="space-y-4">
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-foreground">
+              Title <span className="text-error">*</span>
+            </label>
+            <input
+              type="text"
+              value={metadataInputs.title}
+              onChange={(e) => setMetadataInputs(prev => ({ ...prev, title: e.target.value }))}
+              placeholder="e.g. At the beach 2018"
+              className="w-full rounded-xl border border-[#2A2E33] bg-[#0B0D0F] px-4 py-2.5 text-sm text-foreground placeholder-foreground-muted transition focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
+            />
+          </div>
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-foreground">
+              Description (Optional)
+            </label>
+            <textarea
+              value={metadataInputs.description}
+              onChange={(e) => setMetadataInputs(prev => ({ ...prev, description: e.target.value }))}
+              placeholder="A short story or context..."
+              className="w-full min-h-[80px] rounded-xl border border-[#2A2E33] bg-[#0B0D0F] px-4 py-2.5 text-sm text-foreground placeholder-foreground-muted transition focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
+            />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <label className="text-sm font-medium text-foreground">
+                Date (Optional)
+              </label>
+              <input
+                type="text"
+                value={metadataInputs.dateTaken}
+                onChange={(e) => setMetadataInputs(prev => ({ ...prev, dateTaken: e.target.value }))}
+                placeholder="e.g. Dec 2018"
+                className="w-full rounded-xl border border-[#2A2E33] bg-[#0B0D0F] px-4 py-2.5 text-sm text-foreground placeholder-foreground-muted transition focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-sm font-medium text-foreground">
+                Location (Optional)
+              </label>
+              <input
+                type="text"
+                value={metadataInputs.location}
+                onChange={(e) => setMetadataInputs(prev => ({ ...prev, location: e.target.value }))}
+                placeholder="e.g. Galle, Sri Lanka"
+                className="w-full rounded-xl border border-[#2A2E33] bg-[#0B0D0F] px-4 py-2.5 text-sm text-foreground placeholder-foreground-muted transition focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
+              />
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

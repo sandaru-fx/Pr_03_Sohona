@@ -14,6 +14,10 @@ export const MANAGE_MEDIA_SELECT = {
   sizeBytes: true,
   durationSeconds: true,
   originalName: true,
+  title: true,
+  description: true,
+  dateTaken: true,
+  location: true,
   isProfilePhoto: true,
   sortOrder: true,
   createdAt: true,
@@ -59,6 +63,10 @@ export type ManageOwnerContent = {
     sizeBytes: number;
     durationSeconds: number | null;
     originalName: string | null;
+    title: string | null;
+    description: string | null;
+    dateTaken: string | null;
+    location: string | null;
     isProfilePhoto: boolean;
     sortOrder: number;
     createdAt: Date;

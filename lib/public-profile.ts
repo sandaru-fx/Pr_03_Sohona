@@ -24,7 +24,10 @@ export type PublicMediaMetaItem = {
   originalName: string | null;
   sizeBytes: number;
   contentType: string;
+  title: string | null;
   description: string | null;
+  dateTaken: string | null;
+  location: string | null;
   isProfilePhoto: boolean;
 };
 
@@ -157,7 +160,10 @@ export const PUBLIC_MEDIA_META_SELECT = {
   originalName: true,
   sizeBytes: true,
   contentType: true,
+  title: true,
   description: true,
+  dateTaken: true,
+  location: true,
   isProfilePhoto: true,
 } as const;
 

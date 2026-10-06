@@ -27,9 +27,10 @@ export function Modal({
   cancelLabel = "Cancel",
   confirmVariant = "primary",
   busy = false,
+  disableConfirm = false,
   onConfirm,
   onClose,
-}: ModalProps) {
+}: ModalProps & { disableConfirm?: boolean }) {
   useEffect(() => {
     if (!open) return;
     const onKey = (event: KeyboardEvent) => {
@@ -88,7 +89,7 @@ export function Modal({
             <Button
               variant={confirmVariant === "danger" ? "danger" : "primary"}
               onClick={onConfirm}
-              disabled={busy}
+              disabled={busy || disableConfirm}
             >
               {confirmLabel}
             </Button>

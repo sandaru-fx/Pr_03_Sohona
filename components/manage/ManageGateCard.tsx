@@ -49,6 +49,10 @@ export function ManageGateCard({
           contentType: item.contentType,
           sizeBytes: item.sizeBytes,
           originalName: item.originalName,
+          title: item.title,
+          description: item.description,
+          dateTaken: item.dateTaken,
+          location: item.location,
           durationSeconds: item.durationSeconds,
           isProfilePhoto: item.isProfilePhoto,
         }))}

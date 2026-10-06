@@ -179,7 +179,6 @@ export default function PackagesPage() {
           {/* DESCRIPTIVE CONTENT SECTION */}
           <div className="mx-auto mt-32 max-w-6xl text-center">
             <div className="inline-flex items-center gap-2 rounded-full border border-gold/20 bg-gold/5 px-4 py-1.5 mb-6">
-              <Sparkles className="h-4 w-4 text-gold" />
               <span className="text-sm font-medium uppercase tracking-widest text-gold">Our Promise</span>
             </div>
             <h2 className="font-sans text-3xl font-medium tracking-tight text-[#F5F1E8] sm:text-5xl">

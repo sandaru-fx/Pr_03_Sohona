@@ -299,13 +299,17 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
              whileInView={{ opacity: 1, y: 0 }}
              viewport={{ once: true }}
              transition={{ duration: 0.8 }}
-             className="relative overflow-hidden rounded-[3rem] bg-gradient-to-br from-white/[0.08] to-transparent border border-white/10 p-12 sm:p-20 text-center shadow-2xl backdrop-blur-3xl"
+             className="relative overflow-hidden rounded-[3rem] border border-white/10 p-12 sm:p-20 text-center shadow-2xl"
           >
-             <h2 className="font-sans text-4xl font-semibold tracking-tight text-white sm:text-5xl">Begin with a conversation</h2>
-             <p className="mx-auto mt-6 max-w-2xl text-lg sm:text-xl text-gray-300">Speak with us about starting a dignified digital memorial for someone you love, without turning remembrance into a social feed.</p>
-             <Link href="/contact" className="mt-10 inline-flex h-14 items-center justify-center rounded-full bg-gold px-10 font-sans text-lg font-semibold text-black transition-transform hover:scale-105">
-                Contact Us Today
-             </Link>
+             <Image src="/footer-realistic.jpg" alt="Calm memorial setting" fill className="object-cover" />
+             <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+             <div className="relative z-10">
+                 <h2 className="font-sans text-4xl font-semibold tracking-tight text-white sm:text-5xl">Begin with a conversation</h2>
+                 <p className="mx-auto mt-6 max-w-2xl text-lg sm:text-xl text-gray-300">Speak with us about starting a dignified digital memorial for someone you love, without turning remembrance into a social feed.</p>
+                 <Link href="/contact" className="mt-10 inline-flex h-14 items-center justify-center rounded-full bg-gold px-10 font-sans text-lg font-semibold text-black transition-transform hover:scale-105">
+                    Contact Us Today
+                 </Link>
+             </div>
           </m.div>
         </div>
       </section>

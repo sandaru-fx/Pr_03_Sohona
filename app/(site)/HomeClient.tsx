@@ -137,30 +137,39 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
               {
                 title: "Organization creates the memorial",
                 body: "Staff set up a name-only profile, choose a package, and share a private setup link with the family.",
+                image: "/card_1.jpg",
               },
               {
                 title: "Family preserves memories",
                 body: "With a 6-digit PIN, the family adds statements, photos, video, and voice — never through a public account.",
+                image: "/card_2.jpg",
               },
               {
                 title: "Visitors remember via QR",
                 body: "A unique QR opens a calm memorial page. Optional PIN keeps the most private moments protected.",
+                image: "/card_3.jpg",
               },
             ].map((item, index) => (
               <m.div
                 key={item.title}
                 variants={fadeUp}
-                className="group relative rounded-3xl border border-white/20 bg-[#0a0a0a] p-8 transition-all duration-500 hover:-translate-y-2 hover:border-white hover:bg-[#111111] hover:shadow-[0_0_50px_rgba(255,255,255,0.2)]"
+                className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/20 bg-[#0a0a0a] transition-all duration-500 hover:-translate-y-2 hover:border-white hover:bg-[#111111] hover:shadow-[0_0_50px_rgba(255,255,255,0.2)]"
               >
-                <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-white/20 bg-transparent text-2xl font-bold text-white transition-colors group-hover:bg-white group-hover:text-black">
-                  0{index + 1}
+                <div className="relative h-56 w-full overflow-hidden">
+                  <Image src={item.image} alt={item.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent" />
                 </div>
-                <h3 className="font-sans text-xl font-semibold text-white sm:text-2xl drop-shadow-sm">
-                  {item.title}
-                </h3>
-                <p className="mt-4 text-base leading-relaxed text-zinc-300 group-hover:text-zinc-100">
-                  {item.body}
-                </p>
+                <div className="relative p-8 pt-4 flex flex-1 flex-col">
+                  <div className="absolute -top-7 right-8 inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-white/20 bg-black/60 backdrop-blur-md text-2xl font-bold text-white transition-colors group-hover:bg-white group-hover:text-black z-10 shadow-lg">
+                    0{index + 1}
+                  </div>
+                  <h3 className="font-sans text-xl font-semibold text-white sm:text-2xl drop-shadow-sm pr-12 mt-2">
+                    {item.title}
+                  </h3>
+                  <p className="mt-4 text-base leading-relaxed text-zinc-300 group-hover:text-zinc-100 flex-1">
+                    {item.body}
+                  </p>
+                </div>
               </m.div>
             ))}
           </m.div>

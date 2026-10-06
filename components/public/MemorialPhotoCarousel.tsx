@@ -40,11 +40,13 @@ function PhotoCard({
       {/* Gradient Overlay for Text */}
       <div className="absolute inset-0 bg-gradient-to-t from-[#050607] via-[#050607]/40 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-700 ease-in-out pointer-events-none" />
       
-      {/* Decorative Border Glow */}
-      <div className="absolute inset-0 rounded-2xl md:rounded-[2rem] ring-1 ring-inset ring-white/10 group-hover:ring-gold/30 transition-all duration-500 pointer-events-none" />
+      {/* Premium Gold Frame & Border Glow */}
+      <div className="absolute inset-0 rounded-2xl md:rounded-[2rem] border-2 border-gold/40 group-hover:border-gold/70 shadow-[inset_0_0_30px_rgba(212,175,55,0.15)] group-hover:shadow-[inset_0_0_40px_rgba(212,175,55,0.3)] transition-all duration-700 pointer-events-none z-10" />
+      <div className="absolute inset-[6px] md:inset-[10px] rounded-xl md:rounded-[1.5rem] border-[1.5px] border-gold/30 group-hover:border-gold/60 transition-all duration-700 pointer-events-none z-10" />
+
       
       {/* Caption & Metadata (Visible on Hover / Always visible on mobile) */}
-      <div className="absolute bottom-0 left-0 w-full p-5 sm:p-6 translate-y-2 sm:translate-y-8 opacity-90 sm:opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700 delay-75 ease-out flex flex-col justify-end">
+      <div className="absolute bottom-0 left-0 w-full p-5 sm:p-6 pb-6 sm:pb-8 translate-y-2 sm:translate-y-8 opacity-90 sm:opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700 delay-75 ease-out flex flex-col justify-end z-20">
         <div className="pointer-events-auto flex items-end justify-between w-full gap-4">
           <div className="w-full">
             <h3 className="text-lg sm:text-xl font-serif text-[#F5F1E8] group-hover:text-gold transition-colors duration-500 mb-2 drop-shadow-md leading-tight line-clamp-1">

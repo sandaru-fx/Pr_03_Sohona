@@ -191,11 +191,15 @@ export default function PackagesPage() {
             
             <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 text-left">
               {/* Card 1 */}
-              <div className="group relative overflow-hidden rounded-3xl border border-[#2A2E33] bg-gradient-to-b from-[#121518] to-[#0A0C0E] p-8 transition-all duration-300 hover:-translate-y-1 hover:border-gold/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)]">
+              <div className="group relative flex flex-col overflow-hidden rounded-3xl border border-[#2A2E33] bg-gradient-to-b from-[#121518] to-[#0A0C0E] transition-all duration-300 hover:-translate-y-1 hover:border-gold/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)]">
+                <div className="relative h-48 w-full overflow-hidden">
+                  <Image src="/pkg_quality.jpg" alt="Uncompromising Quality" fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A0C0E] to-transparent" />
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-b from-gold/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                <div className="relative z-10">
+                <div className="relative z-10 p-8 pt-4 flex flex-1 flex-col">
                   <h3 className="text-xl font-semibold text-[#F5F1E8] group-hover:text-gold transition-colors">Uncompromising Quality</h3>
-                  <p className="mt-4 text-base leading-relaxed text-gray-400 group-hover:text-gray-300 transition-colors">
+                  <p className="mt-4 text-base leading-relaxed text-gray-400 group-hover:text-gray-300 transition-colors flex-1">
                     Every package at Mathaka QR is carefully crafted to honor your loved ones. 
                     While the remembrance horizons vary—from a meaningful 25 years to an enduring century—the 
                     quality of the memorial remains exactly the same. Your photos, videos, and audio clips are preserved securely.
@@ -204,11 +208,15 @@ export default function PackagesPage() {
               </div>
 
               {/* Card 2 */}
-              <div className="group relative overflow-hidden rounded-3xl border border-[#2A2E33] bg-gradient-to-b from-[#121518] to-[#0A0C0E] p-8 transition-all duration-300 hover:-translate-y-1 hover:border-gold/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)]">
+              <div className="group relative flex flex-col overflow-hidden rounded-3xl border border-[#2A2E33] bg-gradient-to-b from-[#121518] to-[#0A0C0E] transition-all duration-300 hover:-translate-y-1 hover:border-gold/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)]">
+                <div className="relative h-48 w-full overflow-hidden">
+                  <Image src="/pkg_privacy.jpg" alt="Absolute Privacy" fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A0C0E] to-transparent" />
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-b from-gold/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                <div className="relative z-10">
+                <div className="relative z-10 p-8 pt-4 flex flex-1 flex-col">
                   <h3 className="text-xl font-semibold text-[#F5F1E8] group-hover:text-gold transition-colors">Absolute Privacy</h3>
-                  <p className="mt-4 text-base leading-relaxed text-gray-400 group-hover:text-gray-300 transition-colors">
+                  <p className="mt-4 text-base leading-relaxed text-gray-400 group-hover:text-gray-300 transition-colors flex-1">
                     Your family's privacy is our highest priority. All media, statements, and comments are protected 
                     by a secure family PIN. This ensures that the digital space remains a calm, respectful sanctuary 
                     for those who truly matter.
@@ -217,11 +225,15 @@ export default function PackagesPage() {
               </div>
 
               {/* Card 3 */}
-              <div className="group relative overflow-hidden rounded-3xl border border-[#2A2E33] bg-gradient-to-b from-[#121518] to-[#0A0C0E] p-8 transition-all duration-300 hover:-translate-y-1 hover:border-gold/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)] sm:col-span-2 lg:col-span-1">
+              <div className="group relative flex flex-col overflow-hidden rounded-3xl border border-[#2A2E33] bg-gradient-to-b from-[#121518] to-[#0A0C0E] transition-all duration-300 hover:-translate-y-1 hover:border-gold/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)] sm:col-span-2 lg:col-span-1">
+                <div className="relative h-48 w-full overflow-hidden">
+                  <Image src="/pkg_tributes.jpg" alt="Thoughtful Tributes" fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A0C0E] to-transparent" />
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-b from-gold/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                <div className="relative z-10">
+                <div className="relative z-10 p-8 pt-4 flex flex-1 flex-col">
                   <h3 className="text-xl font-semibold text-[#F5F1E8] group-hover:text-gold transition-colors">Thoughtful Tributes</h3>
-                  <p className="mt-4 text-base leading-relaxed text-gray-400 group-hover:text-gray-300 transition-colors">
+                  <p className="mt-4 text-base leading-relaxed text-gray-400 group-hover:text-gray-300 transition-colors flex-1">
                     Our structured comment sections are designed to encourage profound, considered tributes. 
                     By guiding visitors with thoughtful word limits, we foster a respectful environment free from 
                     the noise of public social media. Every word left behind becomes a cherished part of the legacy.

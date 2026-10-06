@@ -301,8 +301,8 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
              transition={{ duration: 0.8 }}
              className="relative overflow-hidden rounded-[3rem] border border-white/10 p-12 sm:p-20 text-center shadow-2xl"
           >
-             <Image src="/images/footer-realistic.jpg" alt="Calm memorial setting" fill className="object-cover" />
-             <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+             <Image src="/images/footer-realistic.jpg" alt="Calm memorial setting" fill className="object-cover object-[center_80%]" />
+             <div className="absolute inset-0 bg-black/60" />
              <div className="relative z-10">
                  <h2 className="font-sans text-4xl font-semibold tracking-tight text-white sm:text-5xl">Begin with a conversation</h2>
                  <p className="mx-auto mt-6 max-w-2xl text-lg sm:text-xl text-gray-300">Speak with us about starting a dignified digital memorial for someone you love, without turning remembrance into a social feed.</p>

@@ -50,6 +50,7 @@ export function ManageGateCard({
           sizeBytes: item.sizeBytes,
           originalName: item.originalName,
           durationSeconds: item.durationSeconds,
+          isProfilePhoto: item.isProfilePhoto,
         }))}
         initialComments={comments.map((item) => ({
           id: item.id,

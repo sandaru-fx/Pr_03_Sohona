@@ -1,4 +1,4 @@
-import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { DeleteObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { Prisma } from "@prisma/client";
 import { NextResponse } from "next/server";
 import {
@@ -54,6 +54,8 @@ export async function POST(request: Request) {
   const durationSecondsRaw = formData.get("durationSeconds");
   const descriptionRaw = formData.get("description");
   const description = typeof descriptionRaw === "string" ? descriptionRaw : null;
+  const isProfilePhotoRaw = formData.get("isProfilePhoto");
+  const isProfilePhoto = isProfilePhotoRaw === "true";
 
   if (typeof kind !== "string" || !(file instanceof File)) {
     return NextResponse.json(
@@ -90,12 +92,34 @@ export async function POST(request: Request) {
     profileId: auth.profile.id,
     kind: uploadCheck.kind,
     durationSeconds,
+    isProfilePhoto,
   });
   if (!limitCheck.ok) {
     return NextResponse.json(
       { error: limitCheck.error, message: limitCheck.message },
       { status: 400 },
     );
+  }
+
+  // If replacing profile photo, delete the old one from R2 + DB first
+  if (isProfilePhoto && uploadCheck.kind === "PHOTO") {
+    const existing = await prisma.mediaAsset.findFirst({
+      where: { profileId: auth.profile.id, isProfilePhoto: true },
+      select: { id: true, r2ObjectKey: true },
+    });
+    if (existing) {
+      try {
+        await getR2Client().send(
+          new DeleteObjectCommand({
+            Bucket: getR2BucketName(),
+            Key: existing.r2ObjectKey,
+          }),
+        );
+      } catch (e) {
+        console.warn("Could not delete old profile photo from R2", e);
+      }
+      await prisma.mediaAsset.delete({ where: { id: existing.id } });
+    }
   }
 
   const r2ObjectKey = buildR2ObjectKey({
@@ -139,6 +163,7 @@ export async function POST(request: Request) {
         durationSeconds,
         originalName: uploadCheck.fileName,
         description,
+        isProfilePhoto: isProfilePhoto && uploadCheck.kind === "PHOTO",
         sortOrder: 0,
       },
       select: {
@@ -150,6 +175,7 @@ export async function POST(request: Request) {
         durationSeconds: true,
         originalName: true,
         description: true,
+        isProfilePhoto: true,
         sortOrder: true,
         createdAt: true,
       },

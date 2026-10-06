@@ -9,8 +9,10 @@ import {
   FileVideo,
   Loader2,
   Plus,
+  RefreshCw,
   Trash2,
   Upload,
+  UserCircle2,
   CheckCircle2,
 } from "lucide-react";
 import { readFileDurationSeconds } from "@/lib/browser-media-duration";
@@ -339,6 +341,49 @@ export function ManageDashboard({
     setUploading(false);
   }
 
+  async function onUploadProfilePhoto(fileList: FileList | null) {
+    if (!fileList || fileList.length === 0) return;
+    if (!r2Configured) {
+      setError("Media storage is not connected yet.");
+      return;
+    }
+    setError(null);
+    setMessage(null);
+    setUploading(true);
+    try {
+      const file = fileList[0];
+      const formData = new FormData();
+      formData.append("kind", "PHOTO");
+      formData.append("file", file);
+      formData.append("isProfilePhoto", "true");
+
+      const response = await fetch("/api/manage/media/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const result = (await response.json().catch(() => ({}))) as {
+        media?: MediaItem;
+        message?: string;
+        error?: string;
+      };
+      if (!response.ok || !result.media) {
+        setError(result.message ?? result.error ?? "Could not upload profile photo.");
+        return;
+      }
+      // Replace profile photo in state
+      setMedia((current) => [
+        result.media as MediaItem,
+        ...current.filter((m) => !m.isProfilePhoto),
+      ]);
+      setMessage("Profile photo updated.");
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Network error during upload.");
+    } finally {
+      setUploading(false);
+    }
+  }
+
   async function onDeleteMedia(mediaId: string) {
     setError(null);
     setMessage(null);
@@ -583,6 +628,81 @@ export function ManageDashboard({
         </div>
       </section>
 
+      {/* PROFILE PHOTO SECTION */}
+      <section className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 shadow-none sm:px-8 sm:py-10">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="text-sm font-medium text-foreground">Profile photo</h2>
+          <p className="text-xs text-foreground-muted">Shown as the main hero image</p>
+        </div>
+        <p className="mt-1 text-sm text-foreground-secondary">
+          The main photo that appears at the top of the memorial page.
+        </p>
+
+        {!r2Configured ? (
+          <div className="mt-5 rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-warning">
+            Media storage (Cloudflare R2) is not connected yet.
+          </div>
+        ) : (
+          <div className="mt-5 flex items-center gap-4">
+            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl border border-[#2A2E33] bg-[#0B0D0F] text-foreground-muted overflow-hidden">
+              <UserCircle2 className={cn("h-10 w-10", !media.find((m) => m.isProfilePhoto) && "opacity-30")} />
+            </div>
+            <div className="flex flex-col gap-2">
+              <p className="text-sm text-foreground-secondary">
+                {media.find((m) => m.isProfilePhoto)
+                  ? media.find((m) => m.isProfilePhoto)!.originalName ?? "Profile photo set"
+                  : "No profile photo set"}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <label
+                  className={cn(
+                    "inline-flex h-9 items-center gap-1.5 rounded-xl border px-3 text-xs font-medium transition",
+                    busy
+                      ? "cursor-not-allowed border-[#2A2E33] text-foreground-muted opacity-40"
+                      : media.find((m) => m.isProfilePhoto)
+                      ? "cursor-pointer border-gold/30 bg-gold/10 text-gold hover:bg-gold/20"
+                      : "cursor-pointer border-gold bg-gold text-background hover:bg-gold-hover",
+                  )}
+                >
+                  {uploading ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : media.find((m) => m.isProfilePhoto) ? (
+                    <RefreshCw className="h-3.5 w-3.5" />
+                  ) : (
+                    <Upload className="h-3.5 w-3.5" />
+                  )}
+                  {media.find((m) => m.isProfilePhoto) ? "Change photo" : "Upload photo"}
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    className="sr-only"
+                    disabled={busy}
+                    onChange={(e) => {
+                      void onUploadProfilePhoto(e.target.files);
+                      e.target.value = "";
+                    }}
+                  />
+                </label>
+                {media.find((m) => m.isProfilePhoto) && (
+                  <button
+                    type="button"
+                    disabled={busy}
+                    onClick={() => {
+                      const p = media.find((m) => m.isProfilePhoto);
+                      if (p) setConfirmDelete({ type: "media", id: p.id, label: "Profile photo" });
+                    }}
+                    className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-[#2A2E33] px-3 text-xs font-medium text-foreground-muted transition hover:border-error/40 hover:bg-error/10 hover:text-error disabled:opacity-40"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                    Remove
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </section>
+
       <section className="rounded-2xl border border-[#2A2E33] bg-[#181C20] px-6 py-8 shadow-none sm:px-8 sm:py-10">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="text-sm font-medium text-foreground">
@@ -596,6 +716,7 @@ export function ManageDashboard({
           Upload new files or remove ones that should no longer appear. Video ≤{" "}
           {limits.maxVideoSeconds}s, audio ≤ {limits.maxAudioSeconds}s.
         </p>
+
 
         {!r2Configured ? (
           <div className="mt-5 rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-warning">

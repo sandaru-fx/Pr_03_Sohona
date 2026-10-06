@@ -26,7 +26,7 @@ function PhotoCard({
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, margin: "0px 0px -100px 0px" }}
       transition={{ duration: 0.8, delay: (index % 3) * 0.15, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative w-full aspect-square md:aspect-[4/5] overflow-hidden rounded-2xl md:rounded-[2rem] border border-[#2A2E33]/60 bg-[#0B0D0F] shadow-lg transition-all duration-500 hover:shadow-2xl hover:shadow-gold/10 hover:border-gold/30 hover:-translate-y-2"
+      className="group relative w-[calc(50%-0.5rem)] md:w-[calc(33.333%-1rem)] aspect-square md:aspect-[4/5] overflow-hidden rounded-2xl md:rounded-[2rem] border border-[#2A2E33]/60 bg-[#0B0D0F] shadow-lg transition-all duration-500 hover:shadow-2xl hover:shadow-gold/10 hover:border-gold/30 hover:-translate-y-2 shrink-0"
     >
       {/* The Image inside */}
       <div className="absolute inset-0 w-full h-full scale-[1.02] transition-transform duration-[1.2s] ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-110">
@@ -88,7 +88,7 @@ export function MemorialPhotoCarousel({
 
   return (
     <div className="w-full px-4 sm:px-12 pb-16">
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6 md:gap-8 max-w-7xl mx-auto">
+      <div className="flex flex-wrap justify-center gap-3 sm:gap-6 max-w-7xl mx-auto">
         {photos.map((item, index) => (
           <PhotoCard
             key={item.id}

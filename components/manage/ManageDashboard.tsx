@@ -45,25 +45,36 @@ type CommentItem = {
   createdAt: string | Date;
 };
 
-function MediaDescriptionInput({
+function MediaDetailsInput({
   item,
   onSave,
 }: {
-  item: MediaItem & { description?: string };
-  onSave: (newDesc: string) => Promise<void>;
+  item: MediaItem;
+  onSave: (updates: { title?: string | null; location?: string | null; dateTaken?: string | null; description?: string | null }) => Promise<void>;
 }) {
+  const [title, setTitle] = useState(item.title || "");
+  const [location, setLocation] = useState(item.location || "");
+  const [dateTaken, setDateTaken] = useState(item.dateTaken || "");
   const [desc, setDesc] = useState(item.description || "");
+  
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const hasChanges = title !== (item.title || "") || 
+                     location !== (item.location || "") ||
+                     dateTaken !== (item.dateTaken || "") ||
+                     desc !== (item.description || "");
 
   async function handleSave() {
-    if (desc === (item.description || "")) return;
+    if (!hasChanges) return;
     setSaving(true);
     setSaved(false);
     try {
-      await onSave(desc);
+      await onSave({ title, location, dateTaken, description: desc });
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
+      setIsOpen(false);
     } catch (err) {
       console.error(err);
     } finally {
@@ -72,48 +83,82 @@ function MediaDescriptionInput({
   }
 
   return (
-    <div className="mt-1 flex items-center gap-2 w-full">
-      <input
-        type="text"
-        placeholder="Optional: Add details or a story about this media..."
-        value={desc}
-        onChange={(e) => {
-          setDesc(e.target.value);
-          setSaved(false);
-        }}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            void handleSave();
-          }
-        }}
-        onBlur={() => void handleSave()}
-        className="flex-1 rounded-xl border border-[#2A2E33] bg-background-secondary/50 px-3 py-2 text-sm text-foreground shadow-none outline-none transition-all focus:border-gold/50 focus:ring-1 focus:ring-gold/50"
-      />
-      <button
-        type="button"
-        onClick={() => void handleSave()}
-        disabled={saving || desc === (item.description || "")}
-        className={cn(
-          "inline-flex h-[38px] shrink-0 items-center justify-center gap-1.5 rounded-xl border px-4 text-xs font-medium transition-all",
-          saved
-            ? "border-success/30 bg-success/10 text-success"
-            : desc !== (item.description || "")
-              ? "border-gold/30 bg-gold/10 text-gold hover:bg-gold/20 hover:border-gold/50"
-              : "border-[#2A2E33] bg-background text-foreground-muted opacity-50 cursor-not-allowed"
-        )}
-      >
-        {saving ? (
-          <Loader2 className="h-3.5 w-3.5 animate-spin" />
-        ) : saved ? (
-          <>
-            <CheckCircle2 className="h-3.5 w-3.5" />
-            Saved
-          </>
-        ) : (
-          "Save"
-        )}
-      </button>
+    <div className="mt-2 w-full">
+      {!isOpen ? (
+        <div className="mt-2 text-sm text-foreground-secondary space-y-1 bg-[#101214] p-3 rounded-lg border border-[#2A2E33] relative group">
+          {item.title && <p><strong className="text-foreground">Title:</strong> {item.title}</p>}
+          {item.description && <p><strong className="text-foreground">Description:</strong> {item.description}</p>}
+          {item.dateTaken && <p><strong className="text-foreground">Date:</strong> {item.dateTaken}</p>}
+          {item.location && <p><strong className="text-foreground">Location:</strong> {item.location}</p>}
+          {(!item.title && !item.description && !item.dateTaken && !item.location) && (
+            <p className="text-foreground-muted italic text-xs">No details added.</p>
+          )}
+          <button
+            type="button"
+            onClick={() => setIsOpen(true)}
+            className="absolute top-2 right-2 text-xs text-gold/80 hover:text-gold transition-colors underline underline-offset-2 opacity-0 group-hover:opacity-100 focus:opacity-100"
+          >
+            Edit
+          </button>
+        </div>
+      ) : (
+        <div className="space-y-3 rounded-xl border border-[#2A2E33] bg-[#101214] p-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <input
+              type="text"
+              placeholder="Short Description (Title)"
+              value={title}
+              onChange={(e) => { setTitle(e.target.value); setSaved(false); }}
+              className="w-full rounded-lg border border-[#2A2E33] bg-background-secondary/50 px-3 py-2 text-sm text-foreground shadow-none outline-none transition-all focus:border-gold/50 focus:ring-1 focus:ring-gold/50"
+            />
+            <input
+              type="text"
+              placeholder="Location (Optional)"
+              value={location}
+              onChange={(e) => { setLocation(e.target.value); setSaved(false); }}
+              className="w-full rounded-lg border border-[#2A2E33] bg-background-secondary/50 px-3 py-2 text-sm text-foreground shadow-none outline-none transition-all focus:border-gold/50 focus:ring-1 focus:ring-gold/50"
+            />
+            <input
+              type="date"
+              placeholder="Date Taken (Optional)"
+              value={dateTaken}
+              onChange={(e) => { setDateTaken(e.target.value); setSaved(false); }}
+              className="w-full rounded-lg border border-[#2A2E33] bg-background-secondary/50 px-3 py-2 text-sm text-foreground shadow-none outline-none transition-all focus:border-gold/50 focus:ring-1 focus:ring-gold/50"
+            />
+          </div>
+          <textarea
+            placeholder="More Details (Optional)"
+            value={desc}
+            onChange={(e) => { setDesc(e.target.value); setSaved(false); }}
+            rows={2}
+            className="w-full rounded-lg border border-[#2A2E33] bg-background-secondary/50 px-3 py-2 text-sm text-foreground shadow-none outline-none transition-all focus:border-gold/50 focus:ring-1 focus:ring-gold/50 resize-none"
+          />
+          <div className="flex justify-end gap-2">
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="px-3 py-1.5 text-xs font-medium text-foreground-muted hover:text-foreground transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={() => void handleSave()}
+              disabled={saving || !hasChanges}
+              className={cn(
+                "inline-flex h-8 items-center justify-center gap-1.5 rounded-lg border px-4 text-xs font-medium transition-all",
+                saved
+                  ? "border-success/30 bg-success/10 text-success"
+                  : hasChanges
+                    ? "border-gold/30 bg-gold/10 text-gold hover:bg-gold/20 hover:border-gold/50"
+                    : "border-[#2A2E33] bg-background text-foreground-muted opacity-50 cursor-not-allowed"
+              )}
+            >
+              {saving ? <Loader2 className="h-3 w-3 animate-spin" /> : saved ? "Saved" : "Save Details"}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -821,12 +866,25 @@ export function ManageDashboard({
                     )}
                   </button>
                 </div>
-                <div className="mt-2 text-sm text-foreground-secondary space-y-1 bg-[#101214] p-3 rounded-lg border border-[#2A2E33]">
-                  {item.title && <p><strong className="text-foreground">Title:</strong> {item.title}</p>}
-                  {item.description && <p><strong className="text-foreground">Description:</strong> {item.description}</p>}
-                  {item.dateTaken && <p><strong className="text-foreground">Date:</strong> {item.dateTaken}</p>}
-                  {item.location && <p><strong className="text-foreground">Location:</strong> {item.location}</p>}
-                </div>
+                <MediaDetailsInput
+                  item={item}
+                  onSave={async (updates) => {
+                    setMedia((curr) =>
+                      curr.map((m) =>
+                        m.id === item.id ? { ...m, ...updates } : m
+                      )
+                    );
+                    try {
+                      await fetch(`/api/manage/media/${item.id}`, {
+                        method: "PATCH",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(updates),
+                      });
+                    } catch (err) {
+                      console.error("Failed to update media details", err);
+                    }
+                  }}
+                />
               </li>
             ))
           )}

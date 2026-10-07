@@ -13,14 +13,14 @@ export async function PATCH(request: Request, context: RouteContext) {
   const ipLimited = await enforceIpRateLimit(request, "setupIp");
   if (ipLimited) return ipLimited;
 
-  let body: { profileId: string; setupToken: string; description?: string };
+  let body: { profileId: string; setupToken: string; description?: string; title?: string; location?: string; dateTaken?: string; };
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ error: "InvalidJSON" }, { status: 400 });
   }
 
-  const { profileId, setupToken, description } = body;
+  const { profileId, setupToken, description, title, location, dateTaken } = body;
   if (!profileId || !setupToken) {
     return NextResponse.json(
       { error: "MissingFields", message: "profileId and setupToken are required." },
@@ -41,7 +41,7 @@ export async function PATCH(request: Request, context: RouteContext) {
   try {
     const media = await prisma.mediaAsset.updateMany({
       where: { id, profileId: auth.profile.id },
-      data: { description },
+      data: { description, title, location, dateTaken },
     });
 
     if (media.count === 0) {

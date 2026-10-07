@@ -197,7 +197,20 @@ export function MemorialMediaItem({
             <dialog ref={dialogRef} className="memorial-lightbox" aria-label={`Enlarged ${displayTitle}`} onClick={event => { if (event.target === event.currentTarget) dialogRef.current?.close(); }}>
               <button type="button" className="memorial-lightbox-close" aria-label="Close photograph" onClick={() => dialogRef.current?.close()}><X size={24} /></button>
               <img src={url} alt={displayTitle} />
-              <p>{displayTitle}</p>
+              <div className="mt-4 text-center max-w-2xl mx-auto px-4">
+                <p className="text-xl font-serif text-[#F5F1E8]">{displayTitle}</p>
+                {(item.dateTaken || item.location) && (
+                  <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-2 text-sm text-gray-400">
+                    {item.dateTaken && <span>📅 {item.dateTaken}</span>}
+                    {item.location && <span>📍 {item.location}</span>}
+                  </div>
+                )}
+                {item.description && (
+                  <p className="mt-3 text-sm text-gray-300 leading-relaxed bg-[#181C20]/50 p-4 rounded-xl border border-[#2A2E33]/50">
+                    {item.description}
+                  </p>
+                )}
+              </div>
             </dialog>
           </>
         )}
@@ -276,7 +289,20 @@ export function MemorialMediaItem({
                 <button type="button" className="memorial-lightbox-close" aria-label="Close photograph" onClick={() => dialogRef.current?.close()}><X size={24} /></button>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={url} alt={displayTitle} />
-                <p>{displayTitle}</p>
+                <div className="mt-4 text-center max-w-2xl mx-auto px-4">
+                  <p className="text-xl font-serif text-[#F5F1E8]">{displayTitle}</p>
+                  {(item.dateTaken || item.location) && (
+                    <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-2 text-sm text-gray-400">
+                      {item.dateTaken && <span>📅 {item.dateTaken}</span>}
+                      {item.location && <span>📍 {item.location}</span>}
+                    </div>
+                  )}
+                  {item.description && (
+                    <p className="mt-3 text-sm text-gray-300 leading-relaxed bg-[#181C20]/50 p-4 rounded-xl border border-[#2A2E33]/50">
+                      {item.description}
+                    </p>
+                  )}
+                </div>
               </dialog>
             </>
           ) : null}

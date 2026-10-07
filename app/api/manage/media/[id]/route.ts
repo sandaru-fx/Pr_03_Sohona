@@ -114,7 +114,7 @@ export async function PATCH(request: Request, context: RouteContext) {
     );
   }
 
-  let body: { description?: string };
+  let body: { description?: string; title?: string; location?: string; dateTaken?: string; };
   try {
     body = await request.json();
   } catch {
@@ -124,7 +124,12 @@ export async function PATCH(request: Request, context: RouteContext) {
   try {
     const media = await prisma.mediaAsset.updateMany({
       where: { id, profileId: auth.profile.id },
-      data: { description: body.description },
+      data: {
+        description: body.description,
+        title: body.title,
+        location: body.location,
+        dateTaken: body.dateTaken,
+      },
     });
 
     if (media.count === 0) {

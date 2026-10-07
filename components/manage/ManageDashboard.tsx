@@ -728,7 +728,7 @@ export function ManageDashboard({
                     className="sr-only"
                     disabled={busy}
                     onChange={(e) => {
-                      void onUploadProfilePhoto(e.target.files);
+                      triggerUpload(e.target.files, true);
                       e.target.value = "";
                     }}
                   />

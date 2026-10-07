@@ -8,7 +8,7 @@ export function SiteFooter() {
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/images/new-footer-bg.png"
+          src="/new-footer-bg.png"
           alt="Footer Background"
           fill
           className="object-cover object-[center_65%] opacity-100"

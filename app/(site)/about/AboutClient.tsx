@@ -124,7 +124,7 @@ export function AboutClient() {
                 transition={{ duration: 0.8 }}
                 className="absolute inset-0"
               >
-                <Image src="/feature-family.jpg" alt="Family" fill className="object-cover opacity-60" />
+                <Image src="/feature-family.jpg" alt="Family" fill className="contrast-125 object-cover opacity-60" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
               </motion.div>
               <motion.div
@@ -132,7 +132,7 @@ export function AboutClient() {
                 transition={{ duration: 0.8 }}
                 className="absolute inset-0"
               >
-                <Image src="/feature-privacy.jpg" alt="Privacy" fill className="object-cover opacity-60" />
+                <Image src="/feature-privacy.jpg" alt="Privacy" fill className="contrast-125 object-cover opacity-60" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
               </motion.div>
               <motion.div
@@ -140,7 +140,7 @@ export function AboutClient() {
                 transition={{ duration: 0.8 }}
                 className="absolute inset-0"
               >
-                <Image src="/feature-words.jpg" alt="Words" fill className="object-cover opacity-60" />
+                <Image src="/feature-words.jpg" alt="Words" fill className="contrast-125 object-cover opacity-60" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
               </motion.div>
             </div>
@@ -205,7 +205,7 @@ export function AboutClient() {
         {/* Why it exists */}
         <div className="px-10 py-24 border-b border-border">
           <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[2rem] mb-10">
-             <Image src="/feature-family.jpg" alt="Family" fill className="object-cover opacity-60" />
+             <Image src="/feature-family.jpg" alt="Family" fill className="contrast-125 object-cover opacity-60" />
           </div>
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">Why it exists</p>
           <h2 className="mt-4 font-sans text-3xl font-semibold tracking-tight text-white">Remembrance should not feel like a social network.</h2>
@@ -215,7 +215,7 @@ export function AboutClient() {
         {/* What stays private */}
         <div className="px-10 py-24 border-b border-border">
           <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[2rem] mb-10">
-             <Image src="/feature-privacy.jpg" alt="Privacy" fill className="object-cover opacity-60" />
+             <Image src="/feature-privacy.jpg" alt="Privacy" fill className="contrast-125 object-cover opacity-60" />
           </div>
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">What stays private</p>
           <h2 className="mt-4 font-sans text-3xl font-semibold tracking-tight text-white">Family memories stay under family control.</h2>
@@ -231,7 +231,7 @@ export function AboutClient() {
         {/* Calm design */}
         <div className="px-10 py-24 border-b border-border">
           <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[2rem] mb-10">
-             <Image src="/feature-words.jpg" alt="Words" fill className="object-cover opacity-60" />
+             <Image src="/feature-words.jpg" alt="Words" fill className="contrast-125 object-cover opacity-60" />
           </div>
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">Designed to feel calm</p>
           <h2 className="mt-4 font-sans text-3xl font-semibold tracking-tight text-white">No feed. No vault. Just a place to remember.</h2>

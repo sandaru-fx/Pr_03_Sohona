@@ -66,6 +66,12 @@ export function CreateProfileWizard({ packages }: { packages: PackageInfo[] }) {
   const [wizardStep, setWizardStep] = useState(0);
   const [name, setName] = useState("");
   const [packageId, setPackageId] = useState<string>(packages[0]?.id ?? "");
+  const [memorialType, setMemorialType] = useState<"DECEASED" | "LIVING">("DECEASED");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [dateOfPassing, setDateOfPassing] = useState("");
+  const [contactName, setContactName] = useState("");
+  const [contactNumber, setContactNumber] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
   const [fieldError, setFieldError] = useState<string | null>(null);
   const [state, setState] = useState<CreateState>({ status: "idle" });
   const [copied, setCopied] = useState(false);
@@ -74,6 +80,12 @@ export function CreateProfileWizard({ packages }: { packages: PackageInfo[] }) {
   function resetForm() {
     setName("");
     setPackageId(packages[0]?.id ?? "");
+    setMemorialType("DECEASED");
+    setDateOfBirth("");
+    setDateOfPassing("");
+    setContactName("");
+    setContactNumber("");
+    setContactEmail("");
     setFieldError(null);
     setCopied(false);
     setWizardStep(0);
@@ -111,7 +123,16 @@ export function CreateProfileWizard({ packages }: { packages: PackageInfo[] }) {
       const response = await fetch("/api/admin/profiles", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ displayName: trimmed, packageId }),
+        body: JSON.stringify({ 
+          displayName: trimmed, 
+          packageId,
+          memorialType,
+          dateOfBirth: dateOfBirth || null,
+          dateOfPassing: dateOfPassing || null,
+          contactName: contactName || null,
+          contactNumber: contactNumber || null,
+          contactEmail: contactEmail || null,
+        }),
       });
 
       const data = (await response.json().catch(() => ({}))) as ApiSuccess;
@@ -293,45 +314,134 @@ export function CreateProfileWizard({ packages }: { packages: PackageInfo[] }) {
 
       <div className="rounded-2xl border border-border bg-surface p-6 sm:p-8">
         {wizardStep === 0 ? (
-          <div>
-            <h2 className="text-sm font-medium text-foreground">
-              Memorial information
-            </h2>
-            <label
-              htmlFor={nameId}
-              className="mt-5 block text-sm font-medium text-foreground"
-            >
-              Full name
-            </label>
-            <input
-              id={nameId}
-              name="displayName"
-              type="text"
-              autoComplete="name"
-              disabled={busy}
-              value={name}
-              onChange={(event) => {
-                setName(event.target.value);
-                if (fieldError) setFieldError(null);
-              }}
-              placeholder="Enter full name"
-              aria-invalid={Boolean(fieldError)}
-              aria-describedby={fieldError ? errorId : undefined}
-              className={cn(
-                "mt-2 h-11 w-full rounded-xl border bg-background-secondary px-3.5 text-sm text-foreground outline-none transition",
-                "placeholder:text-foreground-muted focus-visible:ring-2 focus-visible:ring-gold",
-                fieldError ? "border-error" : "border-border",
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-sm font-medium text-foreground mb-4">
+                Memorial Type
+              </h2>
+              <div className="flex gap-6">
+                <label className="flex items-center gap-2 text-sm cursor-pointer">
+                  <input
+                    type="radio"
+                    name="memorialType"
+                    checked={memorialType === "DECEASED"}
+                    onChange={() => setMemorialType("DECEASED")}
+                    className="h-4 w-4 text-gold focus:ring-gold"
+                  />
+                  <span>🕊️ In Memory (Deceased)</span>
+                </label>
+                <label className="flex items-center gap-2 text-sm cursor-pointer">
+                  <input
+                    type="radio"
+                    name="memorialType"
+                    checked={memorialType === "LIVING"}
+                    onChange={() => setMemorialType("LIVING")}
+                    className="h-4 w-4 text-gold focus:ring-gold"
+                  />
+                  <span>🌟 Celebrating Life (Living)</span>
+                </label>
+              </div>
+            </div>
+
+            <div>
+              <label
+                htmlFor={nameId}
+                className="block text-sm font-medium text-foreground"
+              >
+                Full name
+              </label>
+              <input
+                id={nameId}
+                name="displayName"
+                type="text"
+                autoComplete="name"
+                disabled={busy}
+                value={name}
+                onChange={(event) => {
+                  setName(event.target.value);
+                  if (fieldError) setFieldError(null);
+                }}
+                placeholder="Enter full name"
+                aria-invalid={Boolean(fieldError)}
+                aria-describedby={fieldError ? errorId : undefined}
+                className={cn(
+                  "mt-2 h-11 w-full rounded-xl border bg-background-secondary px-3.5 text-sm text-foreground outline-none transition",
+                  "placeholder:text-foreground-muted focus-visible:ring-2 focus-visible:ring-gold",
+                  fieldError ? "border-error" : "border-border",
+                )}
+              />
+              {fieldError ? (
+                <p id={errorId} className="mt-2 text-sm text-error" role="alert">
+                  {fieldError}
+                </p>
+              ) : null}
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label className="block text-sm font-medium text-foreground">Date of Birth (Optional)</label>
+                <input
+                  type="date"
+                  value={dateOfBirth}
+                  onChange={e => setDateOfBirth(e.target.value)}
+                  className="mt-2 h-11 w-full rounded-xl border border-border bg-background-secondary px-3.5 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                />
+              </div>
+              {memorialType === "DECEASED" && (
+                <div>
+                  <label className="block text-sm font-medium text-foreground">Date of Passing (Optional)</label>
+                  <input
+                    type="date"
+                    value={dateOfPassing}
+                    onChange={e => setDateOfPassing(e.target.value)}
+                    className="mt-2 h-11 w-full rounded-xl border border-border bg-background-secondary px-3.5 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                  />
+                </div>
               )}
-            />
-            {fieldError ? (
-              <p id={errorId} className="mt-2 text-sm text-error" role="alert">
-                {fieldError}
-              </p>
-            ) : null}
+            </div>
+
+            <div className="border-t border-border pt-6">
+              <h3 className="text-sm font-medium text-foreground mb-4">Family Contact (Optional)</h3>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-foreground-secondary">Contact Person Name</label>
+                  <input
+                    type="text"
+                    value={contactName}
+                    onChange={e => setContactName(e.target.value)}
+                    placeholder="e.g. John Doe (Son)"
+                    className="mt-2 h-11 w-full rounded-xl border border-border bg-background-secondary px-3.5 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                  />
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-sm font-medium text-foreground-secondary">Phone Number</label>
+                    <input
+                      type="tel"
+                      value={contactNumber}
+                      onChange={e => setContactNumber(e.target.value)}
+                      placeholder="e.g. 077 123 4567"
+                      className="mt-2 h-11 w-full rounded-xl border border-border bg-background-secondary px-3.5 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-foreground-secondary">Email Address</label>
+                    <input
+                      type="email"
+                      value={contactEmail}
+                      onChange={e => setContactEmail(e.target.value)}
+                      placeholder="e.g. family@example.com"
+                      className="mt-2 h-11 w-full rounded-xl border border-border bg-background-secondary px-3.5 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <button
               type="button"
               onClick={goNext}
-              className="mt-8 inline-flex h-11 items-center rounded-xl bg-gold px-5 text-sm font-medium text-background transition hover:bg-gold-hover"
+              className="inline-flex h-11 items-center rounded-xl bg-gold px-5 text-sm font-medium text-background transition hover:bg-gold-hover"
             >
               Continue
             </button>
@@ -416,6 +526,20 @@ export function CreateProfileWizard({ packages }: { packages: PackageInfo[] }) {
                   {selected?.name}
                 </dd>
               </div>
+              <div className="flex justify-between gap-4 border-b border-border pb-3">
+                <dt className="text-foreground-muted">Type</dt>
+                <dd className="font-medium text-foreground">
+                  {memorialType === "DECEASED" ? "In Memory (Deceased)" : "Celebrating Life (Living)"}
+                </dd>
+              </div>
+              {contactName && (
+                 <div className="flex justify-between gap-4 border-b border-border pb-3">
+                  <dt className="text-foreground-muted">Contact</dt>
+                  <dd className="font-medium text-foreground">
+                    {contactName}
+                  </dd>
+                 </div>
+              )}
             </dl>
             <p className="mt-4 text-sm leading-6 text-foreground-secondary">
               After create, you receive a one-time family setup link and a

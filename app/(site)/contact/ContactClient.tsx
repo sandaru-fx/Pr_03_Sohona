@@ -195,7 +195,7 @@ export function ContactClient() {
               fill
               quality={100}
               sizes="(max-width: 640px) 100vw, 50vw"
-              className="object-contain object-center"
+              className="contrast-125 object-contain object-center"
             />
           </motion.div>
           <div className="flex flex-col">
@@ -281,7 +281,7 @@ export function ContactClient() {
                 fill
                 quality={100}
                 sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover object-center opacity-80 mix-blend-luminosity hover:mix-blend-normal transition-all duration-700"
+                className="contrast-125 object-cover object-center opacity-80 mix-blend-luminosity hover:mix-blend-normal transition-all duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0B0D0F] to-transparent opacity-60 pointer-events-none" />
             </motion.div>

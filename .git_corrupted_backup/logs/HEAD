@@ -1,0 +1,59 @@
+0000000000000000000000000000000000000000 1e8909552b62de49c950245b0489f55ac5258348 Sandaru (Local) <local@example.com> 1790878375 +0530	commit (initial): Initial commit from ZIP
+1e8909552b62de49c950245b0489f55ac5258348 0000000000000000000000000000000000000000 Sandaru (Local) <local@example.com> 1790878376 +0530	Branch: renamed refs/heads/master to refs/heads/master
+1e8909552b62de49c950245b0489f55ac5258348 1e8909552b62de49c950245b0489f55ac5258348 Sandaru (Local) <local@example.com> 1790878376 +0530	Branch: renamed refs/heads/master to refs/heads/master
+1e8909552b62de49c950245b0489f55ac5258348 1e8909552b62de49c950245b0489f55ac5258348 Sandaru (Local) <local@example.com> 1790878377 +0530	checkout: moving from master to dev
+1e8909552b62de49c950245b0489f55ac5258348 0376e5554f1c8cdb302704b554ca611d33e3bb10 Sandaru (Local) <local@example.com> 1790879842 +0530	commit: style: fix hero section responsiveness on small screens
+0376e5554f1c8cdb302704b554ca611d33e3bb10 5f8834e8842abe555d983f8df16c1bddc2bca15b Sandaru (Local) <local@example.com> 1790922058 +0530	commit: Optimize HomeClient loading speed with LazyMotion and Image sizes
+5f8834e8842abe555d983f8df16c1bddc2bca15b 207a30438e4ee668e88a01d419c58902312ce150 Sandaru (Local) <local@example.com> 1790924189 +0530	commit: Update logo to circular design across header and footer
+207a30438e4ee668e88a01d419c58902312ce150 a44637be5fc7e4624c992ca699bbf622f2eb4998 Sandaru (Local) <local@example.com> 1790925493 +0530	commit: Implement regenerate setup link feature in Admin profile
+a44637be5fc7e4624c992ca699bbf622f2eb4998 641978543744df73b8ae338f85de0f7b217ad39f Sandaru (Local) <local@example.com> 1790927438 +0530	commit: Enhance glow effect on HomeClient cards and add to Bento Grid
+641978543744df73b8ae338f85de0f7b217ad39f 72332f9e6829f3c8df347295c975ecc91676ec5d Sandaru (Local) <local@example.com> 1790927982 +0530	commit: Increase padding for all setup flow cards
+72332f9e6829f3c8df347295c975ecc91676ec5d 5474a8e769209f35d6207bc4542b8ddc5e7285c0 Sandaru (Local) <local@example.com> 1790928377 +0530	commit: Fix hydration mismatch in SetupContentForm
+5474a8e769209f35d6207bc4542b8ddc5e7285c0 ec69c5130b14598aacac168b0cdd6dee1e95132a Sandaru (Local) <local@example.com> 1790965176 +0530	commit: UI: Improve setup flow design for memories and progress steps
+ec69c5130b14598aacac168b0cdd6dee1e95132a 9f0e0ca4f5346f70c62e20d9ff6b4e32648a75ca Sandaru (Local) <local@example.com> 1791002821 +0530	commit: Update HomeClient package plans and SetupContentForm media filtering
+9f0e0ca4f5346f70c62e20d9ff6b4e32648a75ca 78e9b56d70bbdc3fc9dcb1b5dfe6553ecd9beddb Sandaru (Local) <local@example.com> 1791012094 +0530	commit: UI enhancements: adjust hero positioning and upgrade memorial profile photo styling
+78e9b56d70bbdc3fc9dcb1b5dfe6553ecd9beddb dd862cfe9b1ea49896209beeafb6173bd8c584f1 Sandaru (Local) <local@example.com> 1791123949 +0530	commit: Fix media uploads (voice formats), optimize memorial profile image loading, and enhance Manage dashboard UI
+dd862cfe9b1ea49896209beeafb6173bd8c584f1 4aea8f7e86b28bf7e0dcb3dda55921c19022c254 Sandaru (Local) <local@example.com> 1791125151 +0530	commit: Add comprehensive E2E test suite — 287 tests covering CRUD, auth, security, UI, accessibility, and performance
+4aea8f7e86b28bf7e0dcb3dda55921c19022c254 6a1d585df24eab19f56c5cf71e8857beb5a059f0 Sandaru (Local) <local@example.com> 1791126208 +0530	commit: Fix hydration mismatch in manage statements textarea IDs
+6a1d585df24eab19f56c5cf71e8857beb5a059f0 292d6e681d0f605a27f5d1f9d7acc7e1359d1ebe Sandaru (Local) <local@example.com> 1791127972 +0530	commit: Fix failing tests due to UI text changes and missing cache-control header
+292d6e681d0f605a27f5d1f9d7acc7e1359d1ebe 408c8a0afb524066dd1e43b3d875d8bf5d045df3 Sandaru (Local) <local@example.com> 1791128865 +0530	commit: Fix remaining strict mode violation and smoke test strings
+408c8a0afb524066dd1e43b3d875d8bf5d045df3 61bb7edcd0bdb547cec274139099e9896be20f55 Sandaru (Local) <local@example.com> 1791129438 +0530	commit: Fix final smoke test text mismatch
+61bb7edcd0bdb547cec274139099e9896be20f55 a6c0f277f16aea36e68bd29688361d04afd00e43 Sandaru (Local) <local@example.com> 1791142695 +0530	commit: docs: Add QA test execution reports
+a6c0f277f16aea36e68bd29688361d04afd00e43 9bf411ae5ac8a6e9399c2c4f135d168d7c7db721 Sandaru (Local) <local@example.com> 1791174256 +0530	commit: Add demo login button
+9bf411ae5ac8a6e9399c2c4f135d168d7c7db721 ed21ab7ed9971d14c76cd737d200c8d37b46c614 Sandaru (Local) <local@example.com> 1791174861 +0530	commit: Fix demo admin MongoDB ObjectId
+ed21ab7ed9971d14c76cd737d200c8d37b46c614 374afe450a85df26f72520c23d36fc7c6ec5dccc Sandaru (Local) <local@example.com> 1791178125 +0530	commit: Enhance mobile UI and contrast
+374afe450a85df26f72520c23d36fc7c6ec5dccc 766cb165dc9a7251e0d57c0d1370657996d5f026 Sandaru (Local) <local@example.com> 1791178479 +0530	commit: Enhance contrast with pure white and deep black
+766cb165dc9a7251e0d57c0d1370657996d5f026 e7cf27786d17cebc5da27bfe53650c9bb4994b2c Sandaru (Local) <local@example.com> 1791179096 +0530	commit: Add white frames to info cards
+e7cf27786d17cebc5da27bfe53650c9bb4994b2c 0bd543f9b44900657a15473eb53107895fbfe591 Sandaru (Local) <local@example.com> 1791179511 +0530	commit: Update feature icons and CTA text
+0bd543f9b44900657a15473eb53107895fbfe591 8ab492812f122bcaa3110ef6f2a5de8bbc1684c9 Sandaru (Local) <local@example.com> 1791179967 +0530	commit: Revert CTA text and enhance clarity
+8ab492812f122bcaa3110ef6f2a5de8bbc1684c9 92c99618adf7be44e744aaea829a4042239fcb52 Sandaru (Local) <local@example.com> 1791180431 +0530	commit: Fix vertical alignment of dashboard stats
+92c99618adf7be44e744aaea829a4042239fcb52 c51a195170943be363abcc485cf29cbcafd88a72 Sandaru (Local) <local@example.com> 1791261217 +0530	commit: Update UI
+c51a195170943be363abcc485cf29cbcafd88a72 217604c83b8554bab4c116445ccf70890311a700 Sandaru (Local) <local@example.com> 1791262384 +0530	commit: Fix Manage Profile media upload CORS issue
+217604c83b8554bab4c116445ccf70890311a700 b1a6947b5b4e2c3e69c5517ac426c1405a2f1edf Sandaru (Local) <local@example.com> 1791263277 +0530	commit: Improve Create Memorial button typography
+b1a6947b5b4e2c3e69c5517ac426c1405a2f1edf 8ab94b7b4ce70e13e355df939a55175ddf5f3418 Sandaru (Local) <local@example.com> 1791263917 +0530	commit: Fix manage page: add profile photo section, fix upload CORS, pass isProfilePhoto
+8ab94b7b4ce70e13e355df939a55175ddf5f3418 fd82b37624056b97d88d1ae76e3d8c3122001656 Sandaru (Local) <local@example.com> 1791265051 +0530	commit: Fix profile photo replace + increase upload route limits
+fd82b37624056b97d88d1ae76e3d8c3122001656 1e8909552b62de49c950245b0489f55ac5258348 Sandaru (Local) <local@example.com> 1791267323 +0530	checkout: moving from dev to master
+1e8909552b62de49c950245b0489f55ac5258348 fd82b37624056b97d88d1ae76e3d8c3122001656 Sandaru (Local) <local@example.com> 1791267331 +0530	merge dev: Fast-forward
+fd82b37624056b97d88d1ae76e3d8c3122001656 fd82b37624056b97d88d1ae76e3d8c3122001656 Sandaru (Local) <local@example.com> 1791267340 +0530	checkout: moving from master to dev
+fd82b37624056b97d88d1ae76e3d8c3122001656 8f4c97b8da977ade415a600f6a46d60e81c84eec Sandaru (Local) <local@example.com> 1791271923 +0530	commit: feat: add metadata modal for media uploads
+8f4c97b8da977ade415a600f6a46d60e81c84eec dc60bbb282523253b05a28c4cbcd789cfb713109 Sandaru (Local) <local@example.com> 1791272198 +0530	commit: style: remove icons from promise cards on packages page
+dc60bbb282523253b05a28c4cbcd789cfb713109 3587f29151b96bd72b44a2a1775f654114fda185 Sandaru (Local) <local@example.com> 1791272783 +0530	commit: feat: upgrade memorial photo gallery to a premium responsive grid layout with motion effects
+3587f29151b96bd72b44a2a1775f654114fda185 f42066778271916db12074d0e2e460b7b6ba481e Sandaru (Local) <local@example.com> 1791273539 +0530	commit: style: switch to flex wrap to center the 5 photo layout beautifully (3 top, 2 bottom)
+f42066778271916db12074d0e2e460b7b6ba481e 29e3e9401fa3af7f2e796613f0c46efdbdc64739 Sandaru (Local) <local@example.com> 1791275686 +0530	commit: Fix syntax error in MemorialPhotoCarousel.tsx
+29e3e9401fa3af7f2e796613f0c46efdbdc64739 f6fc357b6a5d108c0c93a39bd9103493e21b0da8 Sandaru (Local) <local@example.com> 1791286152 +0530	commit: feat: add generated images to home and packages cards
+f6fc357b6a5d108c0c93a39bd9103493e21b0da8 752f5210f76ce9e7696b0c36540b8a1fffc23d7a Sandaru (Local) <local@example.com> 1791287082 +0530	commit: fix: replace footer image with blank stone, revert hero, remove sparkles
+752f5210f76ce9e7696b0c36540b8a1fffc23d7a cf90b0eef8c0922bf09b5a0da9a5f24a83c0f91c Sandaru (Local) <local@example.com> 1791287384 +0530	commit: fix: replace footer image with a peaceful conversation setting (no stones)
+cf90b0eef8c0922bf09b5a0da9a5f24a83c0f91c 1df77989d1dc5d200e62b7253281ad9935bcddd2 Sandaru (Local) <local@example.com> 1791287727 +0530	commit: chore: move generated images to public/images folder
+1df77989d1dc5d200e62b7253281ad9935bcddd2 019493f328e89367b8069d262007973c30d34255 Sandaru (Local) <local@example.com> 1791287865 +0530	commit: fix: remove blur overlay and fix object-position on footer image
+019493f328e89367b8069d262007973c30d34255 3eba9e10e053ba1aac57c7d999419190107a8892 Sandaru (Local) <local@example.com> 1791343825 +0530	commit: Feat: Add media metadata editing and viewing support
+3eba9e10e053ba1aac57c7d999419190107a8892 fd82b37624056b97d88d1ae76e3d8c3122001656 Sandaru (Local) <local@example.com> 1791348703 +0530	checkout: moving from dev to master
+fd82b37624056b97d88d1ae76e3d8c3122001656 3eba9e10e053ba1aac57c7d999419190107a8892 Sandaru (Local) <local@example.com> 1791348705 +0530	merge dev: Fast-forward
+3eba9e10e053ba1aac57c7d999419190107a8892 3eba9e10e053ba1aac57c7d999419190107a8892 Sandaru (Local) <local@example.com> 1791348714 +0530	checkout: moving from master to dev
+3eba9e10e053ba1aac57c7d999419190107a8892 5275202a3adf38efca6e0117de70abea969fe88d Sandaru (Local) <local@example.com> 1791349221 +0530	commit: Fix: TS build error in ManageDashboard
+5275202a3adf38efca6e0117de70abea969fe88d 3eba9e10e053ba1aac57c7d999419190107a8892 Sandaru (Local) <local@example.com> 1791349254 +0530	checkout: moving from dev to master
+3eba9e10e053ba1aac57c7d999419190107a8892 5275202a3adf38efca6e0117de70abea969fe88d Sandaru (Local) <local@example.com> 1791349255 +0530	merge dev: Fast-forward
+5275202a3adf38efca6e0117de70abea969fe88d 5275202a3adf38efca6e0117de70abea969fe88d Sandaru (Local) <local@example.com> 1791349262 +0530	checkout: moving from master to dev
+5275202a3adf38efca6e0117de70abea969fe88d ed94f3d78fd63480da6654a01deae587d1a93565 Sandaru (Local) <local@example.com> 1791350024 +0530	commit: Fix: Correct footer background image path
+ed94f3d78fd63480da6654a01deae587d1a93565 5275202a3adf38efca6e0117de70abea969fe88d Sandaru (Local) <local@example.com> 1791350025 +0530	checkout: moving from dev to master
+5275202a3adf38efca6e0117de70abea969fe88d ed94f3d78fd63480da6654a01deae587d1a93565 Sandaru (Local) <local@example.com> 1791350026 +0530	merge dev: Fast-forward
+ed94f3d78fd63480da6654a01deae587d1a93565 ed94f3d78fd63480da6654a01deae587d1a93565 Sandaru (Local) <local@example.com> 1791350035 +0530	checkout: moving from master to dev

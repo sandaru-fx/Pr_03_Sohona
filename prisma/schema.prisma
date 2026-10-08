@@ -139,6 +139,14 @@ model Profile {
   
   viewCount Int @default(0)
 
+  memorialType MemorialType @default(DECEASED)
+  dateOfBirth DateTime?
+  dateOfPassing DateTime?
+  
+  contactNumber String?
+  contactEmail String?
+  contactName String?
+
   statements     Statement[]
   mediaAssets    MediaAsset[]
   comments       Comment[]
@@ -149,6 +157,11 @@ model Profile {
   @@index([setupTokenHash])
   @@index([manageTokenHash])
   @@index([packageId])
+}
+
+enum MemorialType {
+  DECEASED
+  LIVING
 }
 
 model Package {

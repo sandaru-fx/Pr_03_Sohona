@@ -156,7 +156,7 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
                 className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/20 bg-[#0a0a0a] transition-all duration-500 hover:-translate-y-2 hover:border-white hover:bg-[#111111] hover:shadow-[0_0_50px_rgba(255,255,255,0.2)]"
               >
                 <div className="relative h-56 w-full overflow-hidden">
-                  <Image src={item.image} alt={item.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <Image src={item.image} alt={item.title} fill className="contrast-125 object-cover transition-transform duration-700 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent" />
                 </div>
                 <div className="relative p-8 pt-4 flex flex-1 flex-col">
@@ -190,7 +190,7 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
           >
              {/* Large Feature 1 */}
              <m.div variants={fadeUp} className="group relative overflow-hidden rounded-[2.5rem] bg-[#121518] border border-white/5 md:col-span-2 min-h-[500px] transition-all duration-500 hover:border-gold/80 hover:shadow-[0_0_80px_rgba(201,164,92,0.6)]">
-                <Image src="/feature-voice.jpg" alt="Voice" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover opacity-50 transition-transform duration-1000 group-hover:scale-105" />
+                <Image src="/feature-voice.jpg" alt="Voice" fill sizes="(max-width: 768px) 100vw, 50vw" className="contrast-125 object-cover opacity-50 transition-transform duration-1000 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
                 <div className="absolute inset-0 p-10 sm:p-16 flex flex-col justify-center max-w-2xl">
                     <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">Voice & presence</p>
@@ -201,7 +201,7 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
 
              {/* Small Feature 2 */}
              <m.div variants={fadeUp} className="group relative overflow-hidden rounded-[2.5rem] bg-[#121518] border border-white/5 aspect-square sm:aspect-auto sm:min-h-[450px] transition-all duration-500 hover:border-gold/80 hover:shadow-[0_0_80px_rgba(201,164,92,0.6)]">
-                 <Image src="/feature-privacy.jpg" alt="Privacy" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover opacity-40 transition-transform duration-1000 group-hover:scale-105" />
+                 <Image src="/feature-privacy.jpg" alt="Privacy" fill sizes="(max-width: 768px) 100vw, 50vw" className="contrast-125 object-cover opacity-40 transition-transform duration-1000 group-hover:scale-105" />
                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-black/20" />
                  <div className="absolute inset-0 p-10 sm:p-12 flex flex-col justify-end">
                     <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">Privacy promise</p>
@@ -212,7 +212,7 @@ export function HomeClient({ packages, limits }: HomeClientProps) {
 
              {/* Small Feature 3 */}
              <m.div variants={fadeUp} className="group relative overflow-hidden rounded-[2.5rem] bg-[#121518] border border-white/5 aspect-square sm:aspect-auto sm:min-h-[450px] transition-all duration-500 hover:border-gold/80 hover:shadow-[0_0_80px_rgba(201,164,92,0.6)]">
-                 <Image src="/feature-words.jpg" alt="Words" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover opacity-40 transition-transform duration-1000 group-hover:scale-105" />
+                 <Image src="/feature-words.jpg" alt="Words" fill sizes="(max-width: 768px) 100vw, 50vw" className="contrast-125 object-cover opacity-40 transition-transform duration-1000 group-hover:scale-105" />
                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-black/20" />
                  <div className="absolute inset-0 p-10 sm:p-12 flex flex-col justify-end">
                     <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">Words that stay</p>

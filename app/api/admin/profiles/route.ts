@@ -61,8 +61,16 @@ export async function POST(request: Request) {
   }
 
   const { APP_URL } = getServerEnv();
-  const displayName = parsed.data.displayName;
-  const packageId = parsed.data.packageId;
+  const {
+    displayName,
+    packageId,
+    memorialType,
+    dateOfBirth,
+    dateOfPassing,
+    contactName,
+    contactNumber,
+    contactEmail,
+  } = parsed.data;
   const setupToken = generateSetupToken();
   const setupTokenHash = hashToken(setupToken);
   const setupTokenExpiresAt = getSetupTokenExpiry();
@@ -74,6 +82,12 @@ export async function POST(request: Request) {
     profile = await prisma.profile.create({
       data: {
         displayName,
+        memorialType,
+        dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
+        dateOfPassing: dateOfPassing ? new Date(dateOfPassing) : null,
+        contactName: contactName || null,
+        contactNumber: contactNumber || null,
+        contactEmail: contactEmail || null,
         qrId,
         setupTokenHash,
         setupTokenExpiresAt,
@@ -100,6 +114,12 @@ export async function POST(request: Request) {
       profile = await prisma.profile.create({
         data: {
           displayName,
+          memorialType,
+          dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
+          dateOfPassing: dateOfPassing ? new Date(dateOfPassing) : null,
+          contactName: contactName || null,
+          contactNumber: contactNumber || null,
+          contactEmail: contactEmail || null,
           qrId,
           setupTokenHash,
           setupTokenExpiresAt,

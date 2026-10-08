@@ -1,0 +1,6 @@
+0000000000000000000000000000000000000000 1e8909552b62de49c950245b0489f55ac5258348 Sandaru (Local) <local@example.com> 1790878375 +0530	commit (initial): Initial commit from ZIP
+1e8909552b62de49c950245b0489f55ac5258348 1e8909552b62de49c950245b0489f55ac5258348 Sandaru (Local) <local@example.com> 1790878376 +0530	Branch: renamed refs/heads/master to refs/heads/master
+1e8909552b62de49c950245b0489f55ac5258348 fd82b37624056b97d88d1ae76e3d8c3122001656 Sandaru (Local) <local@example.com> 1791267331 +0530	merge dev: Fast-forward
+fd82b37624056b97d88d1ae76e3d8c3122001656 3eba9e10e053ba1aac57c7d999419190107a8892 Sandaru (Local) <local@example.com> 1791348705 +0530	merge dev: Fast-forward
+3eba9e10e053ba1aac57c7d999419190107a8892 5275202a3adf38efca6e0117de70abea969fe88d Sandaru (Local) <local@example.com> 1791349255 +0530	merge dev: Fast-forward
+5275202a3adf38efca6e0117de70abea969fe88d ed94f3d78fd63480da6654a01deae587d1a93565 Sandaru (Local) <local@example.com> 1791350026 +0530	merge dev: Fast-forward

@@ -185,7 +185,7 @@ export function MemorialMediaItem({
               <img 
                 src={url} 
                 alt={displayTitle} 
-                className="h-full w-full object-cover transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-[1.03]" 
+                className="contrast-125 h-full w-full object-cover transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-[1.03]" 
                 onError={() => void retry()} 
               />
               <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-700 group-hover:bg-black/20 group-hover:opacity-100">
@@ -196,7 +196,7 @@ export function MemorialMediaItem({
             </button>
             <dialog ref={dialogRef} className="memorial-lightbox" aria-label={`Enlarged ${displayTitle}`} onClick={event => { if (event.target === event.currentTarget) dialogRef.current?.close(); }}>
               <button type="button" className="memorial-lightbox-close" aria-label="Close photograph" onClick={() => dialogRef.current?.close()}><X size={24} /></button>
-              <img src={url} alt={displayTitle} />
+              <img src={url} alt={displayTitle} className="contrast-125" />
               <div className="mt-4 text-center max-w-2xl mx-auto px-4">
                 <p className="text-xl font-serif text-[#F5F1E8]">{displayTitle}</p>
                 {(item.dateTaken || item.location) && (
@@ -282,13 +282,13 @@ export function MemorialMediaItem({
             <>
               <button type="button" className="memorial-photo-open" onClick={() => dialogRef.current?.showModal()} aria-label={`Enlarge ${displayTitle}`}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={url} alt={displayTitle} className="memorial-gallery-image" onError={() => void retry()} />
+                <img src={url} alt={displayTitle} className="contrast-125 memorial-gallery-image" onError={() => void retry()} />
                 <span><Maximize2 size={16} /> View photograph</span>
               </button>
               <dialog ref={dialogRef} className="memorial-lightbox" aria-label={`Enlarged ${displayTitle}`} onClick={event => { if (event.target === event.currentTarget) dialogRef.current?.close(); }}>
                 <button type="button" className="memorial-lightbox-close" aria-label="Close photograph" onClick={() => dialogRef.current?.close()}><X size={24} /></button>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={url} alt={displayTitle} />
+                <img src={url} alt={displayTitle} className="contrast-125" />
                 <div className="mt-4 text-center max-w-2xl mx-auto px-4">
                   <p className="text-xl font-serif text-[#F5F1E8]">{displayTitle}</p>
                   {(item.dateTaken || item.location) && (

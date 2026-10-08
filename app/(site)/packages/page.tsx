@@ -192,7 +192,7 @@ export default function PackagesPage() {
               {/* Card 1 */}
               <div className="group relative flex flex-col overflow-hidden rounded-3xl border border-[#2A2E33] bg-gradient-to-b from-[#121518] to-[#0A0C0E] transition-all duration-300 hover:-translate-y-1 hover:border-gold/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)]">
                 <div className="relative h-48 w-full overflow-hidden">
-                  <Image src="/images/pkg_quality.jpg" alt="Uncompromising Quality" fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <Image src="/images/pkg_quality.jpg" alt="Uncompromising Quality" fill className="contrast-125 object-cover transition-transform duration-700 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0A0C0E] to-transparent" />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-b from-gold/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
@@ -209,7 +209,7 @@ export default function PackagesPage() {
               {/* Card 2 */}
               <div className="group relative flex flex-col overflow-hidden rounded-3xl border border-[#2A2E33] bg-gradient-to-b from-[#121518] to-[#0A0C0E] transition-all duration-300 hover:-translate-y-1 hover:border-gold/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)]">
                 <div className="relative h-48 w-full overflow-hidden">
-                  <Image src="/images/pkg_privacy.jpg" alt="Absolute Privacy" fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <Image src="/images/pkg_privacy.jpg" alt="Absolute Privacy" fill className="contrast-125 object-cover transition-transform duration-700 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0A0C0E] to-transparent" />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-b from-gold/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
@@ -226,7 +226,7 @@ export default function PackagesPage() {
               {/* Card 3 */}
               <div className="group relative flex flex-col overflow-hidden rounded-3xl border border-[#2A2E33] bg-gradient-to-b from-[#121518] to-[#0A0C0E] transition-all duration-300 hover:-translate-y-1 hover:border-gold/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)] sm:col-span-2 lg:col-span-1">
                 <div className="relative h-48 w-full overflow-hidden">
-                  <Image src="/images/pkg_tributes.jpg" alt="Thoughtful Tributes" fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <Image src="/images/pkg_tributes.jpg" alt="Thoughtful Tributes" fill className="contrast-125 object-cover transition-transform duration-700 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0A0C0E] to-transparent" />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-b from-gold/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />

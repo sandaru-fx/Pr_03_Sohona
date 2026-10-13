@@ -4,17 +4,20 @@
  * is reached without a trusted proxy in front — production should sit behind one.
  */
 export function getClientIp(request: Request): string | null {
+  // 1. Prioritize Cloudflare edge connecting IP (tamper-proof from Cloudflare proxy)
+  const cfIp = request.headers.get("cf-connecting-ip")?.trim();
+  if (cfIp && isPlausibleIp(cfIp)) return cfIp;
+
+  // 2. Real-IP header from trusted reverse proxy
+  const realIp = request.headers.get("x-real-ip")?.trim();
+  if (realIp && isPlausibleIp(realIp)) return realIp;
+
+  // 3. X-Forwarded-For fallback (extract client IP)
   const forwarded = request.headers.get("x-forwarded-for");
   if (forwarded) {
     const first = forwarded.split(",")[0]?.trim();
     if (first && isPlausibleIp(first)) return first;
   }
-
-  const realIp = request.headers.get("x-real-ip")?.trim();
-  if (realIp && isPlausibleIp(realIp)) return realIp;
-
-  const cfIp = request.headers.get("cf-connecting-ip")?.trim();
-  if (cfIp && isPlausibleIp(cfIp)) return cfIp;
 
   return null;
 }

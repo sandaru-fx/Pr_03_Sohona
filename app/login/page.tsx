@@ -100,14 +100,16 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             </button>
           </form>
 
-          <form action={signInWithDemo.bind(null, callbackUrl)}>
-            <button
-              type="submit"
-              className="flex h-12 min-h-12 w-full items-center justify-center rounded-xl border border-[#2A2E33] bg-transparent px-5 text-sm font-medium text-white transition-colors duration-300 hover:bg-[#2A2E33]"
-            >
-              Demo Admin Login (Testing)
-            </button>
-          </form>
+          {process.env.NODE_ENV !== "production" ? (
+            <form action={signInWithDemo.bind(null, callbackUrl)}>
+              <button
+                type="submit"
+                className="flex h-12 min-h-12 w-full items-center justify-center rounded-xl border border-[#2A2E33] bg-transparent px-5 text-sm font-medium text-white transition-colors duration-300 hover:bg-[#2A2E33]"
+              >
+                Demo Admin Login (Testing)
+              </button>
+            </form>
+          ) : null}
         </div>
 
         <p className="mt-8 text-center text-sm text-gray-500">

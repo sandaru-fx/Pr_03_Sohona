@@ -24,12 +24,18 @@ function googleProvider() {
 }
 
 function demoProvider() {
+  // STRICT PRODUCTION SECURITY GATE (Finding SEC-01):
+  // Demo credentials provider is strictly disabled in production environments.
+  if (process.env.NODE_ENV === "production") {
+    return [];
+  }
+
   return [
     Credentials({
       name: "Demo Login",
       credentials: {},
       async authorize() {
-        // Returns a dummy admin user based on the allowed email. 
+        // Returns a dummy admin user based on the allowed email for local dev only. 
         // ID must be a valid 24-hex-char MongoDB ObjectId.
         return {
           id: "650000000000000000000000",
